@@ -1,0 +1,17 @@
+//
+//  FuegoOnAppleSiliconIosApp.swift
+//  FuegoOnAppleSiliconIos
+//
+//  Created by Luca Ban on 2024/05/28.
+//
+
+import SwiftUI
+
+@main
+struct FuegoOnAppleSiliconIosApp: App {
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+        }
+    }
+}
