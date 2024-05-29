@@ -1,4 +1,0 @@
-[submodule "boost"]
-	path = boost
-	url = https://github.com/apotocki/boost-iosx.git
-	branch = 1.75.0
