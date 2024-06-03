@@ -23,6 +23,7 @@ set (LIBRARY_SOURCES
         GoUctMoveFilter.cpp
         GoUctSearch.cpp
         GoUctUtil.cpp
+        FuegoEngine.cpp
 )
 
 add_library(${LIBRARY_NAME} STATIC ${LIBRARY_SOURCES})

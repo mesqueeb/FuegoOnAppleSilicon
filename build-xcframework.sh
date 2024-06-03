@@ -58,21 +58,36 @@ generic_build()
 if true; then
 [ -d build ] && rm -rf build
 
-generic_build xros arm64 "-sdk xros" "-DCMAKE_SYSTEM_NAME=visionOS" "-fembed-bitcode"
-generic_build xros-simulator "arm64;x86_64" "-sdk xrsimulator" "-DCMAKE_SYSTEM_NAME=iOS -DCMAKE_XCODE_ATTRIBUTE_ONLY_ACTIVE_ARCH=NO" "-fembed-bitcode"
+HEADERS="-headers $HOME_DIR/gouct/FuegoEngine.hpp"
+LIBRARIES=""
 
-generic_build ios arm64 "-sdk iphoneos" "-DCMAKE_SYSTEM_NAME=iOS -DCMAKE_OSX_DEPLOYMENT_TARGET=$IOS_VERSION" "-fembed-bitcode"
-generic_build simulator "arm64;x86_64" "-sdk iphonesimulator" "-DCMAKE_SYSTEM_NAME=iOS -DCMAKE_OSX_DEPLOYMENT_TARGET=$IOS_SIM_VERSION" "-fembed-bitcode"
-generic_build osx "arm64;x86_64" "" "-DCMAKE_XCODE_ATTRIBUTE_ONLY_ACTIVE_ARCH=NO -DCMAKE_IOS_INSTALL_COMBINED=YES -DCMAKE_OSX_DEPLOYMENT_TARGET=$MACOSX_VERSION" "-mmacosx-version-min=$MACOSX_VERSION"
+if true; then
+	generic_build xros-simulator "arm64;x86_64" "-sdk xrsimulator" "-DCMAKE_SYSTEM_NAME=iOS -DCMAKE_XCODE_ATTRIBUTE_ONLY_ACTIVE_ARCH=NO" "-fembed-bitcode"
+	LIBRARIES="-library $HOME_DIR/build/build.xros-simulator.arm64_x86_64/libfuego.a $HEADERS"
+fi
+
+if true; then
+	generic_build xros arm64 "-sdk xros" "-DCMAKE_SYSTEM_NAME=visionOS" "-fembed-bitcode"
+	LIBRARIES="$LIBRARIES -library $HOME_DIR/build/build.xros.arm64/libfuego.a $HEADERS"
+fi
+
+if false; then
+	generic_build ios arm64 "-sdk iphoneos" "-DCMAKE_SYSTEM_NAME=iOS -DCMAKE_OSX_DEPLOYMENT_TARGET=$IOS_VERSION" "-fembed-bitcode"
+	LIBRARIES="$LIBRARIES -library $HOME_DIR/build/build.ios.arm64/libfuego.a $HEADERS"
+fi
+
+if false; then
+	generic_build simulator "arm64;x86_64" "-sdk iphonesimulator" "-DCMAKE_SYSTEM_NAME=iOS -DCMAKE_OSX_DEPLOYMENT_TARGET=$IOS_SIM_VERSION" "-fembed-bitcode"
+	LIBRARIES="$LIBRARIES -library $HOME_DIR/build/build.simulator.arm64_x86_64/libfuego.a $HEADERS"
+fi
+
+if false; then
+	generic_build osx "arm64;x86_64" "" "-DCMAKE_XCODE_ATTRIBUTE_ONLY_ACTIVE_ARCH=NO -DCMAKE_IOS_INSTALL_COMBINED=YES -DCMAKE_OSX_DEPLOYMENT_TARGET=$MACOSX_VERSION" "-mmacosx-version-min=$MACOSX_VERSION"
+	LIBRARIES="$LIBRARIES -library $HOME_DIR/build/build.osx.arm64_x86_64/libfuego.a $HEADERS"
+fi
 
 fi
 
 [ -d $HOME_DIR/build/fuego.xcframework ] && rm -rf $HOME_DIR/build/fuego.xcframework
 
-xcodebuild -create-xcframework \
-	-library $HOME_DIR/build/build.xros-simulator.arm64_x86_64/libfuego.a \
-	-library $HOME_DIR/build/build.xros.arm64/libfuego.a \
-	-library $HOME_DIR/build/build.ios.arm64/libfuego.a \
-	-library $HOME_DIR/build/build.simulator.arm64_x86_64/libfuego.a \
-	-library $HOME_DIR/build/build.osx.arm64_x86_64/libfuego.a \
-	-output "$HOME_DIR/build/fuego.xcframework"
+xcodebuild -create-xcframework $LIBRARIES -output "$HOME_DIR/build/fuego.xcframework"
