@@ -29,7 +29,7 @@ set (LIBRARY_SOURCES
         SgPointSet.cpp
         SgPointSetUtil.cpp
         SgProbCut.cpp
-        SgProcess.cpp
+#        SgProcess.cpp
         SgProp.cpp
         SgRandom.cpp
         SgRect.cpp
