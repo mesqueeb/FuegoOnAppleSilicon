@@ -83,6 +83,5 @@ add_executable(${EXE_NAME} ${EXE_SOURCES})
 target_link_libraries(${EXE_NAME} fuego_gouct)
 target_link_libraries(${EXE_NAME} fuego_simpleplayers)
 
-add_framework(${EXE_NAME} boost_unit_test_framework ${BOOST_HOME})
-add_framework(${EXE_NAME} boost_test_exec_monitor ${BOOST_HOME})
-
+#used included
+#add_framework(${EXE_NAME} boost_unit_test_framework ${BOOST_HOME})
