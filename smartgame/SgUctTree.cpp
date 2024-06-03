@@ -160,14 +160,14 @@ void SgUctTree::CheckConsistency() const
 {
     for (SgUctTreeIterator it(*this); it; ++it)
         if (! Contains(*it))
-            ThrowConsistencyError(str(format("! Contains(%1%)") % &(*it)));
+            ThrowConsistencyError(str(boost::format("! Contains(%1%)") % &(*it)));
 }
 
 void SgUctTree::Clear()
 {
     for (size_t i = 0; i < NuAllocators(); ++i)
         Allocator(i).Clear();
-    m_root = SgUctNode(SG_NULLMOVE);
+    m_root = SG_NULLMOVE;
 }
 
 /** Check if node is in tree.
@@ -435,7 +435,8 @@ void SgUctTree::Swap(SgUctTree& tree)
 {
     SG_ASSERT(MaxNodes() == tree.MaxNodes());
     SG_ASSERT(NuAllocators() == tree.NuAllocators());
-    std::swap(m_root, tree.m_root);
+    using std::swap;
+    swap(m_root, tree.m_root);
     for (size_t i = 0; i < NuAllocators(); ++i)
         Allocator(i).Swap(tree.Allocator(i));
 }

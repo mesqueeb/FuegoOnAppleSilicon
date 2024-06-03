@@ -9,6 +9,7 @@
 #include <limits>
 #include <stack>
 #include <memory>
+#include <atomic>
 #include "SgMove.h"
 #include "SgStatistics.h"
 #include "SgStatisticsVlt.h"
@@ -117,11 +118,18 @@ typedef enum
     zero or that the mean value of the move and RAVE value statistics is valid
     if the corresponding count is greater zero.
     @ingroup sguctgroup */
+/** apotocki note: that's absolutely the wrong approach. OK, volatile makes the compiler stop reordering code,
+    but code execution can be reordered in runtime by modern processors.
+*/
 class SgUctNode
 {
 public:
     /** Initializes node with given move, value and count. */
     SgUctNode(const SgUctMoveInfo& info);
+
+    SgUctNode & operator=(const SgUctMoveInfo& info);
+
+    friend void swap(SgUctNode &, SgUctNode &);
 
     /** Add game result.
         @param eval The game result (e.g. score or 0/1 for win loss) */
@@ -258,27 +266,27 @@ public:
 private:
     SgUctStatisticsVolatile m_statistics;
 
-    const SgUctNode* volatile m_firstChild;
+    std::atomic<const SgUctNode*> m_firstChild;
 
-    volatile int m_nuChildren;
+    std::atomic<int> m_nuChildren;
 
-    volatile SgMove m_move;
+    std::atomic<SgMove> m_move;
 
     /* Value of additive predictor */
-    volatile float m_predictorValue;
+    std::atomic<float> m_predictorValue;
 
     /** RAVE statistics.
         Uses double for count to allow adding fractional values if RAVE
         updates are weighted. */
     SgUctStatisticsVolatile m_raveValue;
 
-    volatile SgUctValue m_posCount;
+    std::atomic<SgUctValue> m_posCount;
 
-    volatile SgUctValue m_knowledgeCount;
+    std::atomic<SgUctValue> m_knowledgeCount;
 
-    volatile SgUctProvenType m_provenType;
+    std::atomic<SgUctProvenType> m_provenType;
 
-    volatile int m_virtualLossCount;
+    std::atomic<int> m_virtualLossCount;
 };
 
 inline SgUctNode::SgUctNode(const SgUctMoveInfo& info)
@@ -293,6 +301,43 @@ inline SgUctNode::SgUctNode(const SgUctMoveInfo& info)
       m_virtualLossCount(0)
 {
     // m_firstChild is not initialized, only defined if m_nuChildren > 0
+}
+
+inline SgUctNode& SgUctNode::operator=(const SgUctMoveInfo& info)
+{
+    m_statistics = SgUctStatisticsVolatile(info.m_value, info.m_count);
+    m_nuChildren.store(0);
+    m_move.store(info.m_move);
+    m_predictorValue.store(info.m_predictorValue);
+    m_raveValue = SgUctStatisticsVolatile(info.m_raveValue, info.m_raveCount);
+    m_posCount.store(0);
+    m_knowledgeCount.store(0);
+    m_provenType.store(SG_NOT_PROVEN);
+    m_virtualLossCount.store(0);
+    return *this;
+}
+
+template <typename T>
+void fuzzy_swap(std::atomic<T> &l, std::atomic<T> &r)
+{
+    T lval = l.load();
+    l.store(r.load());
+    r.store(lval);
+}
+
+inline void swap(SgUctNode & l, SgUctNode & r)
+{
+    using std::swap;
+    swap(l.m_statistics, r.m_statistics);
+    fuzzy_swap(l.m_firstChild, r.m_firstChild);
+    fuzzy_swap(l.m_nuChildren, r.m_nuChildren);
+    fuzzy_swap(l.m_move, r.m_move);
+    fuzzy_swap(l.m_predictorValue, r.m_predictorValue);
+    swap(l.m_raveValue, r.m_raveValue);
+    fuzzy_swap(l.m_posCount, r.m_posCount);
+    fuzzy_swap(l.m_knowledgeCount, r.m_knowledgeCount);
+    fuzzy_swap(l.m_provenType, r.m_provenType);
+    fuzzy_swap(l.m_virtualLossCount, r.m_virtualLossCount);
 }
 
 inline void SgUctNode::AddGameResult(SgUctValue eval)
@@ -341,13 +386,13 @@ inline void SgUctNode::RemoveRaveValue(SgUctValue value, SgUctValue weight)
 inline void SgUctNode::CopyDataFrom(const SgUctNode& node)
 {
     m_statistics = node.m_statistics;
-    m_move = node.m_move;
-    m_predictorValue = node.m_predictorValue;
+    m_move.store(node.m_move.load());
+    m_predictorValue.store(node.m_predictorValue.load());
     m_raveValue = node.m_raveValue;
-    m_posCount = node.m_posCount;
-    m_knowledgeCount = node.m_knowledgeCount;
-    m_provenType = node.m_provenType;
-    m_virtualLossCount = node.m_virtualLossCount;
+    m_posCount.store(node.m_posCount.load());
+    m_knowledgeCount.store(node.m_knowledgeCount.load());
+    m_provenType.store(node.m_provenType.load());
+    m_virtualLossCount.store(node.m_virtualLossCount.load());
 }
 
 inline const SgUctNode* SgUctNode::FirstChild() const
@@ -406,12 +451,15 @@ inline void SgUctNode::RemoveVirtualLoss()
 
 inline void SgUctNode::IncPosCount()
 {
-    ++m_posCount;
+    IncPosCount(1);
 }
 
 inline void SgUctNode::IncPosCount(SgUctValue count)
 {
-    m_posCount += count;
+    SgUctValue prev_value;
+    {
+        prev_value = m_posCount.load();
+    } while (!m_posCount.compare_exchange_strong(prev_value, prev_value + count));
 }
 
 inline void SgUctNode::DecPosCount()
