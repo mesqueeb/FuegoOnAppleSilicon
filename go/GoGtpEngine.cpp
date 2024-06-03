@@ -158,7 +158,7 @@ GoGtpEngine::GoGtpEngine(int fixedBoardSize, const char* programPath,
     }
 }
 
-GoGtpEngine::~GoGtpEngine()
+GoGtpEngine::~GoGtpEngine() noexcept
 {
     delete m_player;
 }

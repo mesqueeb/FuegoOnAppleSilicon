@@ -98,7 +98,7 @@ public:
     virtual void CmdKomi(GtpCommand&);
     virtual void CmdListStones(GtpCommand&);
     virtual void CmdLoadSgf(GtpCommand&);
-    virtual void CmdName(GtpCommand&);
+    void CmdName(GtpCommand&) override;
     virtual void CmdParam(GtpCommand&);
     virtual void CmdParamRules(GtpCommand&);
     virtual void CmdParamTimecontrol(GtpCommand&);
@@ -108,7 +108,7 @@ public:
     virtual void CmdPlaySequence(GtpCommand&);
     virtual void CmdPointNumbers(GtpCommand&);
     virtual void CmdPointInfo(GtpCommand&);
-    virtual void CmdQuit(GtpCommand& cmd);
+    void CmdQuit(GtpCommand& cmd) override;
     virtual void CmdRegGenMove(GtpCommand&);
     virtual void CmdRegGenMoveToPlay(GtpCommand&);
     virtual void CmdRules(GtpCommand&);
@@ -204,21 +204,21 @@ public:
 #if GTPENGINE_PONDER
     /** Implementation of GtpEngine::Ponder()
         Calls GoPlayer::Ponder() if a player is set. */
-    void Ponder();
+    void Ponder() override;
 
     /** Implementation of GtpEngine::StopPonder()
         Calls SgSetUserAbort() */
-    void StopPonder();
+    void StopPonder() override;
 
     /** Implementation of GtpEngine::InitPonder()
         Calls SgSetUserAbort(false) */
-    void InitPonder();
+    void InitPonder() override;
 #endif // GTPENGINE_PONDER
 
 #if GTPENGINE_INTERRUPT
     /** Implementation of GtpEngine::Interrupt().
         Calls SgSetUserAbort() */
-    void Interrupt();
+    void Interrupt() override;
 #endif // GTPENGINE_INTERRUPT
 
     void SetMpiSynchronizer(const SgMpiSynchronizerHandle &m_handle);
@@ -243,12 +243,12 @@ protected:
         Resets user abort flag. Lengthy functions should poll SgUserAbort but
         should not reset the user abort flag themselves.
         Also flushes SgDebug() (see comment at BeforeWritingResponse()). */
-    void BeforeHandleCommand();
+    void BeforeHandleCommand() override;
 
     /** Hook function to be executed before the response of a command is
         written.
         Flushes SgDebug(). */
-    void BeforeWritingResponse();
+    void BeforeWritingResponse() override;
 
     void BoardChanged();
 
