@@ -33,8 +33,10 @@ void Fini()
 // http://lists.boost.org/Archives/boost/2006/11/112946.php
 
 #include <cstdlib>
-#define BOOST_TEST_DYN_LINK // Must be defined before including unit_test.hpp
-#include <boost/test/unit_test.hpp>
+#define BOOST_TEST_ALTERNATIVE_INIT_API
+#define BOOST_TEST_NO_MAIN
+
+#include <boost/test/included/unit_test.hpp>
 
 bool init_unit_test()
 {

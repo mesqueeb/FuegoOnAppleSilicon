@@ -5,3 +5,4 @@ fuego-on-ios.xcodeproj/project.xcworkspace/
 build/
 DerivedData/
 ios/
+windows/build.cmd
