@@ -3,18 +3,16 @@
     Class SgUctSearch and helper classes. */
 //----------------------------------------------------------------------------
 
-#ifndef SG_UCTSEARCH_H
-#define SG_UCTSEARCH_H
+#pragma once
 
 #include <fstream>
 #include <vector>
-#include <boost/scoped_array.hpp>
-#include <boost/shared_ptr.hpp>
-#include <boost/thread/barrier.hpp>
-#include <boost/thread/condition.hpp>
-#include <boost/thread/mutex.hpp>
-#include <boost/thread/recursive_mutex.hpp>
-#include <boost/thread/thread.hpp>
+#include <memory>
+#include <thread>
+#include <mutex>
+#include <barrier>
+#include <condition_variable>
+
 #include "SgAdditiveKnowledge.h"
 #include "SgBlackWhite.h"
 #include "SgBWArray.h"
@@ -235,7 +233,7 @@ struct SgUctGameInfo
         in-tree phase. */
     std::vector<std::vector<bool> > m_skipRaveUpdate;
 
-    void Clear(std::size_t numberPlayouts);
+    void Clear(size_t numberPlayouts);
 };
 
 //----------------------------------------------------------------------------
@@ -288,11 +286,11 @@ public:
         by the color to play at the root position (move is used as an index,
         do m_moveRange must be > 0); numeric_limits<size_t>::max(), if the
         move was not played. */
-    boost::scoped_array<std::size_t> m_firstPlay;
+    std::unique_ptr<size_t[]> m_firstPlay;
 
     /** Local variable for SgUctSearch::UpdateRaveValues().
         Like m_firstPlayToPlay, but for opponent color. */
-    boost::scoped_array<std::size_t> m_firstPlayOpp;
+    std::unique_ptr<size_t[]> m_firstPlayOpp;
 
     /** Local variable for SgUctSearch::PlayInTree().
         Reused for efficiency. */
@@ -359,7 +357,7 @@ public:
     virtual void StartSearch() = 0;
 
     /** Take back moves played in the in-tree phase. */
-    virtual void TakeBackInTree(std::size_t nuMoves) = 0;
+    virtual void TakeBackInTree(size_t nuMoves) = 0;
 
     /** Take back moves played in the playout phase.
         The search engine does not assume that the moves are really taken back
@@ -367,7 +365,7 @@ public:
         in s separate state, which is initialized in StartPlayout() and does
         not support undo, the implementation of this function can be left
         empty in the subclass. */
-    virtual void TakeBackPlayout(std::size_t nuMoves) = 0;
+    virtual void TakeBackPlayout(size_t nuMoves) = 0;
 
     // @} // name
 
@@ -407,9 +405,9 @@ class SgUctSearch;
 class SgUctThreadStateFactory
 {
 public:
-    virtual ~SgUctThreadStateFactory();
+    virtual ~SgUctThreadStateFactory() = default;
 
-    virtual SgUctThreadState* Create(unsigned int threadId,
+    virtual std::unique_ptr<SgUctThreadState> Create(unsigned int threadId,
                                      const SgUctSearch& search) = 0;
 };
 
@@ -672,9 +670,9 @@ public:
 
     void SetBiasTermFrequency(int frequency);
 
-    int BiasTermDepth() const;
+    size_t BiasTermDepth() const;
 
-    void SetBiasTermDepth(int depth);
+    void SetBiasTermDepth(size_t depth);
 
     /** Points at which to recompute children.  
         Specifies the number of visits at which GenerateAllMoves() is
@@ -696,17 +694,17 @@ public:
         @note The search owns two trees, one of which is used as a temporary
         tree for some operations (see GetTempTree()). This functions sets
         the maximum number of nodes per tree. */
-    std::size_t MaxNodes() const;
+    size_t MaxNodes() const;
 
     /** See MaxNodes()
         @param maxNodes Maximum number of nodes (>= 1) */
-    void SetMaxNodes(std::size_t maxNodes);
+    void SetMaxNodes(size_t maxNodes);
 
     /** The number of threads to use during the search. */
-    unsigned int NumberThreads() const;
+    size_t NumberThreads() const;
 
     /** See SetNumberThreads() */
-    void SetNumberThreads(unsigned int n);
+    void SetNumberThreads(size_t n);
 
     /** Interval in number of games in which to check time abort.
         Avoids that the potentially expensive SgTime::Get() is called after
@@ -767,10 +765,10 @@ public:
         If the number of moves in a game exceed this length, it will be
         counted as a loss.
         The default is @c numeric_limits<size_t>::max() */
-    std::size_t MaxGameLength() const;
+    size_t MaxGameLength() const;
 
     /** See MaxGameLength() */
-    void SetMaxGameLength(std::size_t maxGameLength);
+    void SetMaxGameLength(size_t maxGameLength);
 
     /** Required number of simulations to expand a node in the tree.
         The default is 2, which means a node will be expanded on the second
@@ -783,9 +781,9 @@ public:
     /** The number of playouts per simulated game.
         Useful for multi-threading to increase the workload of the threads.
         Default is 1. */
-    std::size_t NumberPlayouts() const;
+    size_t NumberPlayouts() const;
 
-    void SetNumberPlayouts(std::size_t n);
+    void SetNumberPlayouts(size_t n);
 
     /** Use the RAVE algorithm (Rapid Action Value Estimation).
         See Gelly, Silver 2007 in the references in the class description.
@@ -900,16 +898,16 @@ public:
     void CreateThreads();
 
 private:
-    typedef boost::recursive_mutex::scoped_lock GlobalLock;
-
+    using GlobalLock = std::unique_lock<std::recursive_mutex>;
+    
     friend class Thread;
 
     class Thread
     {
     public:
-        std::auto_ptr<SgUctThreadState> m_state;
+        std::unique_ptr<SgUctThreadState> m_state;
 
-        Thread(SgUctSearch& search, std::auto_ptr<SgUctThreadState> state);
+        Thread(SgUctSearch& search, std::unique_ptr<SgUctThreadState> state);
 
         ~Thread();
 
@@ -938,31 +936,31 @@ private:
 
         bool m_quit;
 
-        boost::barrier m_threadReady;
+        std::barrier<void(*)() noexcept> m_threadReady;
 
-        boost::mutex m_startPlayMutex;
+        std::mutex m_startPlayMutex;
 
-        boost::mutex m_playFinishedMutex;
+        std::mutex m_playFinishedMutex;
 
-        boost::condition m_startPlay;
+        std::condition_variable m_startPlay;
 
-        boost::condition m_playFinished;
+        std::condition_variable m_playFinished;
 
-        boost::mutex::scoped_lock m_playFinishedLock;
-
+        std::unique_lock<std::mutex> m_playFinishedLock;
+        
         GlobalLock m_globalLock;
 
         /** The thread.
             Order dependency: must be constructed as the last member, because
             the constructor starts the thread. */
-        boost::thread m_thread;
+        std::thread m_thread;
 
         void operator()();
 
         void PlayGames();
     };
 
-    std::auto_ptr<SgUctThreadStateFactory> m_threadStateFactory;
+    std::unique_ptr<SgUctThreadStateFactory> m_threadStateFactory;
 
     /** See LogGames() */
     bool m_logGames;
@@ -981,14 +979,14 @@ private:
     
     volatile bool m_isTreeOutOfMemory;
 
-    std::auto_ptr<boost::barrier> m_searchLoopFinished;
+    std::unique_ptr<std::barrier<void(*)() noexcept>> m_searchLoopFinished;
 
     /** See SgUctEarlyAbortParam. */
     bool m_wasEarlyAbort;
 
     /** See SgUctEarlyAbortParam.
         The auto pointer is empty, if no early abort is used. */
-    std::auto_ptr<SgUctEarlyAbortParam> m_earlyAbort;
+    std::unique_ptr<SgUctEarlyAbortParam> m_earlyAbort;
 
     /** See SgUctMoveSelect */
     SgUctMoveSelect m_moveSelect;
@@ -1012,16 +1010,16 @@ private:
     bool m_checkFloatPrecision;
 
     /** See NumberThreads() */
-    unsigned int m_numberThreads;
+    size_t m_numberThreads;
 
     /** See NumberPlayouts() */
-    std::size_t m_numberPlayouts;
+    size_t m_numberPlayouts;
     
     /** See UpdateMultiplePlayoutsAsSingle() */
     bool m_updateMultiplePlayoutsAsSingle;
 
     /** See MaxNodes() */
-    std::size_t m_maxNodes;
+    size_t m_maxNodes;
 
     /** See PruneMinCount() */
     SgUctValue m_pruneMinCount;
@@ -1030,7 +1028,7 @@ private:
     const int m_moveRange;
 
     /** See MaxGameLength() */
-    std::size_t m_maxGameLength;
+    size_t m_maxGameLength;
 
     /** See ExpandThreshold() */
     SgUctValue m_expandThreshold;
@@ -1055,7 +1053,7 @@ private:
 
     int m_biasTermFrequency;
 
-    std::size_t m_biasTermDepth;
+    size_t m_biasTermDepth;
 
     /** See FirstPlayUrgency() */
     SgUctValue m_firstPlayUrgency;
@@ -1099,20 +1097,20 @@ private:
         Currently, only the play-out phase of games is thread safe, therefore
         this lock is always locked elsewhere (in-tree phase, updating of
         values and statistics, etc.) */
-    boost::recursive_mutex m_globalMutex;
+    std::recursive_mutex m_globalMutex;
 
     SgUctSearchStat m_statistics;
 
     /** List of threads.
         The elements are owned by the vector (shared_ptr is only used because
         auto_ptr should not be used with standard containers) */
-    std::vector<boost::shared_ptr<Thread> > m_threads;
+    std::vector<std::shared_ptr<Thread> > m_threads;
 
 #if SG_UCTFASTLOG
     SgFastLog m_fastLog;
 #endif
 
-    boost::shared_ptr<SgMpiSynchronizer> m_mpiSynchronizer;
+    std::shared_ptr<SgMpiSynchronizer> m_mpiSynchronizer;
 
     void ApplyRootFilter(std::vector<SgUctMoveInfo>& moves);
 
@@ -1150,7 +1148,7 @@ private:
 
     bool PlayInTree(SgUctThreadState& state, bool& isTerminal);
 
-    bool PlayoutGame(SgUctThreadState& state, std::size_t playout);
+    bool PlayoutGame(SgUctThreadState& state, size_t playout);
 
     void PrintSearchProgress(double currTime) const;
     
@@ -1166,12 +1164,12 @@ private:
 
     void UpdateRaveValues(SgUctThreadState& state);
 
-    void UpdateRaveValues(SgUctThreadState& state, std::size_t playout);
+    void UpdateRaveValues(SgUctThreadState& state, size_t playout);
 
-    void UpdateRaveValues(SgUctThreadState& state, std::size_t playout,
-                          SgUctValue eval, std::size_t i,
-                          const std::size_t firstPlay[],
-                          const std::size_t firstPlayOpp[]);
+    void UpdateRaveValues(SgUctThreadState& state, size_t playout,
+                          SgUctValue eval, size_t i,
+                          const size_t firstPlay[],
+                          const size_t firstPlayOpp[]);
 
     void UpdateStatistics(const SgUctGameInfo& info);
 
@@ -1213,12 +1211,12 @@ inline void SgUctSearch::SetBiasTermFrequency(int frequency)
     m_biasTermFrequency = frequency;
 }
 
-inline int SgUctSearch::BiasTermDepth() const
+inline size_t SgUctSearch::BiasTermDepth() const
 {
     return m_biasTermDepth;
 }
 
-inline void SgUctSearch::SetBiasTermDepth(int depth) 
+inline void SgUctSearch::SetBiasTermDepth(size_t depth)
 {
     m_biasTermDepth = depth;
 }
@@ -1259,12 +1257,12 @@ inline bool SgUctSearch::LogGames() const
     return m_logGames;
 }
 
-inline std::size_t SgUctSearch::MaxGameLength() const
+inline size_t SgUctSearch::MaxGameLength() const
 {
     return m_maxGameLength;
 }
 
-inline std::size_t SgUctSearch::MaxNodes() const
+inline size_t SgUctSearch::MaxNodes() const
 {
     return m_maxNodes;
 }
@@ -1274,7 +1272,7 @@ inline SgUctMoveSelect SgUctSearch::MoveSelect() const
     return m_moveSelect;
 }
 
-inline unsigned int SgUctSearch::NumberThreads() const
+inline size_t SgUctSearch::NumberThreads() const
 {
     return m_numberThreads;
 }
@@ -1284,7 +1282,7 @@ inline SgUctValue SgUctSearch::CheckTimeInterval() const
     return m_checkTimeInterval;
 }
 
-inline std::size_t SgUctSearch::NumberPlayouts() const
+inline size_t SgUctSearch::NumberPlayouts() const
 {
     return m_numberPlayouts;
 }
@@ -1360,12 +1358,12 @@ inline void SgUctSearch::SetLogGames(bool enable)
     m_logGames = enable;
 }
 
-inline void SgUctSearch::SetMaxGameLength(std::size_t maxGameLength)
+inline void SgUctSearch::SetMaxGameLength(size_t maxGameLength)
 {
     m_maxGameLength = maxGameLength;
 }
 
-inline void SgUctSearch::SetMaxNodes(std::size_t maxNodes)
+inline void SgUctSearch::SetMaxNodes(size_t maxNodes)
 {
     m_maxNodes = maxNodes;
     if (m_threads.size() > 0) // Threads already created
@@ -1399,7 +1397,7 @@ SgUctSearch::SetMaxKnowledgeThreads(unsigned int threads)
     m_maxKnowledgeThreads = threads;
 }
 
-inline void SgUctSearch::SetNumberPlayouts(std::size_t n)
+inline void SgUctSearch::SetNumberPlayouts(size_t n)
 {
     SG_ASSERT(n >= 1);
     m_numberPlayouts = n;
@@ -1488,7 +1486,7 @@ inline bool SgUctSearch::ThreadsCreated() const
 
 inline SgUctThreadState& SgUctSearch::ThreadState(int i) const
 {
-    SG_ASSERT(static_cast<std::size_t>(i) < m_threads.size());
+    SG_ASSERT(static_cast<size_t>(i) < m_threads.size());
     return *m_threads[i]->m_state;
 }
 
@@ -1508,5 +1506,3 @@ inline bool SgUctSearch::WeightRaveUpdates() const
 }
 
 //----------------------------------------------------------------------------
-
-#endif // SG_UCTSEARCH_H

@@ -3,10 +3,8 @@
     Class GoUctPlayer. */
 //----------------------------------------------------------------------------
 
-#ifndef GOUCT_PLAYER_H
-#define GOUCT_PLAYER_H
+#pragma once
 
-#include <boost/scoped_ptr.hpp>
 #include <vector>
 #include "GoBoard.h"
 #include "GoBoardRestorer.h"
@@ -300,11 +298,11 @@ public:
 
     Statistics m_statistics;
 
-    boost::scoped_ptr<GoUctMoveFilter> m_rootFilter;
+    std::unique_ptr<GoUctMoveFilter> m_rootFilter;
 
     /** Playout policy used if search mode is
         GOUCT_SEARCHMODE_PLAYOUTPOLICY. */
-    boost::scoped_ptr<GoUctPlayoutPolicy<GoBoard> > m_playoutPolicy;
+    std::unique_ptr<GoUctPlayoutPolicy<GoBoard> > m_playoutPolicy;
 
     SgMpiSynchronizerHandle m_mpiSynchronizer;
 
@@ -1121,5 +1119,3 @@ bool GoUctPlayer<SEARCH, THREAD>::VerifyNeutralMove(SgUctValue maxGames,
 }
 
 //----------------------------------------------------------------------------
-
-#endif // GOUCT_PLAYER_H

@@ -2,8 +2,7 @@
 /** @file GoUctPatterns.h */
 //----------------------------------------------------------------------------
 
-#ifndef GOUCT_PATTERNS_H
-#define GOUCT_PATTERNS_H
+#pragma once
 
 #include "GoBoard.h"
 #include "GoBoardUtil.h"
@@ -74,7 +73,7 @@ public:
     PatternInfo() : m_gammaValue(0.f), m_isPattern(false)
     { }
 
-	void SetGammaValue(float value);
+	void SetGammaValue(double value);
 
 	float GetGammaValue() const;
 
@@ -88,9 +87,9 @@ private:
     bool m_isPattern;
 };
 
-inline void PatternInfo::SetGammaValue(float value)
+inline void PatternInfo::SetGammaValue(double value)
 {
-    m_gammaValue = value;
+    m_gammaValue = (float)value;
 }
 
 inline float PatternInfo::GetGammaValue() const
@@ -782,4 +781,3 @@ inline bool GoUctPatterns<BOARD>::MatchAnyEdge(SgPoint p, float& gamma) const
 }
 
 //----------------------------------------------------------------------------
-#endif // GOUCT_PATTERNS_H

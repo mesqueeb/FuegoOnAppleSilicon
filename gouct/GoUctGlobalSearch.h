@@ -6,13 +6,11 @@
 */
 //----------------------------------------------------------------------------
 
-#ifndef GOUCT_GLOBALSEARCH_H
-#define GOUCT_GLOBALSEARCH_H
+#pragma once
 
 #include <cstdlib>
 #include <limits>
-#include <boost/scoped_ptr.hpp>
-#include <boost/version.hpp>
+
 #include "GoBoard.h"
 #include "GoBoardUtil.h"
 #include "GoEyeUtil.h"
@@ -24,9 +22,6 @@
 #include "GoUctKnowledgeFactory.h"
 #include "GoUctSearch.h"
 #include "GoUctUtil.h"
-
-#define BOOST_VERSION_MAJOR (BOOST_VERSION / 100000)
-#define BOOST_VERSION_MINOR (BOOST_VERSION / 100 % 1000)
 
 //----------------------------------------------------------------------------
 
@@ -220,7 +215,7 @@ private:
     
     GoUctAdditiveKnowledge* m_additivePredictor;
 
-    boost::scoped_ptr<POLICY> m_policy;
+    std::unique_ptr<POLICY> m_policy;
 
     GoUctDefaultMoveFilter m_treeFilter;
 
@@ -488,8 +483,8 @@ void GoUctGlobalSearchState<POLICY>::ApplyAdditivePredictors(
         for (size_t j = 0; j < moves.size(); ++j)
         {
             SgUctValue v = kn->CappedValue(moves[j].m_predictorValue);
-            moves[j].m_predictorValue = kn->Scale() 
-                * sqrt(predictorTotal / v);
+            moves[j].m_predictorValue = (float)(kn->Scale() 
+                * sqrt(predictorTotal / v));
         }
     } 
     else 
@@ -499,8 +494,8 @@ void GoUctGlobalSearchState<POLICY>::ApplyAdditivePredictors(
         for (size_t j = 0; j < moves.size(); ++j)
         {
             SgUctValue v = kn->CappedValue(moves[j].m_predictorValue);
-            moves[j].m_predictorValue = kn->Scale()
-                * predictorMultiplier / v;
+            moves[j].m_predictorValue = (float)(kn->Scale()
+                * predictorMultiplier / v);
         }
     }
 }
@@ -644,7 +639,7 @@ public:
                           const SgBWSet& safe,
                           const SgPointArray<bool>& allSafe);
 
-    SgUctThreadState* Create(unsigned int threadId, 
+    std::unique_ptr<SgUctThreadState> Create(unsigned int threadId, 
                              const SgUctSearch& search);
 
 private:
@@ -741,7 +736,7 @@ private:
 
     SgPointArray<bool> m_allSafe;
 
-    boost::scoped_ptr<FACTORY> m_playoutPolicyFactory;
+    std::unique_ptr<FACTORY> m_playoutPolicyFactory;
 
     GoRegionBoard m_regions;
 
@@ -894,18 +889,19 @@ void GoUctGlobalSearchState<POLICY>::SetAdditiveKnowledge(
 //----------------------------------------------------------------------------
 
 template<class POLICY, class FACTORY>
-SgUctThreadState* GoUctGlobalSearchStateFactory<POLICY,FACTORY>::Create(
+std::unique_ptr<SgUctThreadState> GoUctGlobalSearchStateFactory<POLICY,FACTORY>::Create(
                             unsigned int threadId, const SgUctSearch& search)
 {
     const GoUctGlobalSearch<POLICY,FACTORY>& globalSearch =
         dynamic_cast<const GoUctGlobalSearch<POLICY,FACTORY>&>(search);
     const GoBoard& bd = globalSearch.Board();
-    GoUctGlobalSearchState<POLICY>* state =
-        new GoUctGlobalSearchState<POLICY>(threadId, bd, 0,
-                                           globalSearch.m_param, 
-                                           m_policyParam,
-                                           m_treeFilterParam,
-                                           m_safe, m_allSafe);
+
+    auto state = std::make_unique<GoUctGlobalSearchState<POLICY>>(threadId, bd, nullptr,
+        globalSearch.m_param,
+        m_policyParam,
+        m_treeFilterParam,
+        m_safe, m_allSafe);
+
     POLICY* policy = m_playoutPolicyFactory.Create(state->UctBoard());
     state->SetPolicy(policy);
     GoUctAdditiveKnowledge* knowledge = 
@@ -915,5 +911,3 @@ SgUctThreadState* GoUctGlobalSearchStateFactory<POLICY,FACTORY>::Create(
 }
 
 //----------------------------------------------------------------------------
-
-#endif // GOUCT_GLOBALSEARCH_H

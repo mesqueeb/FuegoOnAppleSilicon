@@ -7,7 +7,7 @@
 
 #include <sstream>
 #include <vector>
-#include <boost/test/auto_unit_test.hpp>
+#include <boost/test/unit_test.hpp>
 #include "SgDebug.h"
 #include "SgHashTable.h"
 #include "SgSearch.h"

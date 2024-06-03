@@ -11,20 +11,11 @@
 #include <fstream>
 
 #if GTPENGINE_PONDER || GTPENGINE_INTERRUPT
-#include <boost/thread/barrier.hpp>
-#include <boost/thread/condition.hpp>
-#include <boost/thread/mutex.hpp>
-#include <boost/thread/thread.hpp>
-#include <boost/thread/xtime.hpp>
-
-using boost::barrier;
-using boost::condition;
-using boost::thread;
-using boost::xtime;
-using boost::xtime_get;
+#   include <thread>
+#   include <mutex>
+#   include <barrier>
+#   include <condition_variable>
 #endif
-
-using std::string;
 
 #ifdef _MSC_VER
 // Don't report Visual C++ warning 4355 ('this' : used in base member
@@ -39,17 +30,16 @@ using std::string;
 /** Utility functions. */
 namespace {
 
-void Trim(string& str);
+void Trim(std::string& str);
 
 /** Check, if line contains a command.
     @param line The line to check.
     @return True, if command does not contain only whitespaces and is not a
     comment line. */
-bool IsCommandLine(const string& line)
+bool IsCommandLine(std::string line)
 {
-    string trimmedLine = line;
-    Trim(trimmedLine);
-    return (! trimmedLine.empty() && trimmedLine[0] != '#');
+    Trim(line);
+    return (!line.empty() && line[0] != '#');
 }
 
 #if ! GTPENGINE_INTERRUPT
@@ -60,7 +50,7 @@ bool IsCommandLine(const string& line)
     @return @c false on end-of-stream or read error. */
 bool ReadCommand(GtpCommand& cmd, GtpInputStream& in)
 {
-    string line;
+    std::string line;
     while (in.GetLine(line) && ! IsCommandLine(line))
     {
     }
@@ -77,9 +67,9 @@ bool ReadCommand(GtpCommand& cmd, GtpInputStream& in)
     @param text The input string.
     @return The input string with all occurrences of "\n\n" replaced by
     "\n \n". */
-string ReplaceEmptyLines(const string& text)
+std::string ReplaceEmptyLines(const std::string& text)
 {
-    if (text.find("\n\n") == string::npos)
+    if (text.find("\n\n") == std::string::npos)
         return text;
     std::istringstream in(text);
     std::ostringstream result;
@@ -99,7 +89,7 @@ string ReplaceEmptyLines(const string& text)
 /** Remove leading and trailing whitespaces from a string.
     Whitespaces are tab, carriage return and space.
     @param str The input string. */
-void Trim(string& str)
+void Trim(std::string& str)
 {
     char const* whiteSpace = " \t\r";
     size_t pos = str.find_first_not_of(whiteSpace);
@@ -117,9 +107,9 @@ void Trim(string& str)
 /** Utility functions for Boost.Thread. */
 namespace {
 
-void Notify(boost::mutex& aMutex, condition& aCondition)
+void Notify(std::mutex& aMutex, std::condition_variable& aCondition)
 {
-    boost::mutex::scoped_lock lock(aMutex);
+    std::unique_lock lock(aMutex);
     aCondition.notify_all();
 }
 
@@ -164,22 +154,22 @@ private:
 
     GtpEngine& m_engine;
 
-    barrier m_threadReady;
+    std::barrier<void(*)() noexcept> m_threadReady;
 
-    boost::mutex m_startPonderMutex;
+    std::mutex m_startPonderMutex;
 
-    boost::mutex m_ponderFinishedMutex;
+    std::mutex m_ponderFinishedMutex;
 
-    condition m_startPonder;
+    std::condition_variable m_startPonder;
 
-    condition m_ponderFinished;
+    std::condition_variable m_ponderFinished;
 
-    boost::mutex::scoped_lock m_ponderFinishedLock;
+    std::unique_lock<std::mutex> m_ponderFinishedLock;
 
     /** The thread to run the ponder function.
         Order dependency: must be constructed as the last member, because the
         constructor starts the thread. */
-    boost::thread m_thread;
+    std::thread m_thread;
 };
 
 PonderThread::Function::Function(PonderThread& ponderThread)
@@ -188,8 +178,8 @@ PonderThread::Function::Function(PonderThread& ponderThread)
 
 void PonderThread::Function::operator()()
 {
-    boost::mutex::scoped_lock lock(m_ponderThread.m_startPonderMutex);
-    m_ponderThread.m_threadReady.wait();
+    std::unique_lock lock(m_ponderThread.m_startPonderMutex);
+    m_ponderThread.m_threadReady.arrive_and_wait();
     while (true)
     {
         m_ponderThread.m_startPonder.wait(lock);
@@ -204,11 +194,11 @@ void PonderThread::Function::operator()()
 
 PonderThread::PonderThread(GtpEngine& engine)
     : m_engine(engine),
-      m_threadReady(2),
+    m_threadReady(2, []()noexcept{}),
       m_ponderFinishedLock(m_ponderFinishedMutex),
       m_thread(Function(*this))
 {
-    m_threadReady.wait();
+    m_threadReady.arrive_and_wait();
 }
 
 void PonderThread::StartPonder()
@@ -264,7 +254,7 @@ private:
     private:
         ReadThread& m_readThread;
 
-        void ExecuteSleepLine(const string& line);
+        void ExecuteSleepLine(const std::string& line);
     };
 
     friend class ReadThread::Function;
@@ -273,26 +263,26 @@ private:
 
     GtpEngine& m_engine;
 
-    string m_line;
+    std::string m_line;
 
     bool m_isStreamGood;
 
-    barrier m_threadReady;
+    std::barrier<void(*)() noexcept> m_threadReady;
 
-    boost::mutex m_waitCommandMutex;
+    std::mutex m_waitCommandMutex;
 
-    condition m_waitCommand;
+    std::condition_variable m_waitCommand;
 
-    boost::mutex m_commandReceivedMutex;
+    std::mutex m_commandReceivedMutex;
 
-    condition m_commandReceived;
+    std::condition_variable m_commandReceived;
 
-    boost::mutex::scoped_lock m_commandReceivedLock;
+    std::unique_lock<std::mutex> m_commandReceivedLock;
 
     /** The thread to run the read command function.
         Order dependency: must be constructed as the last member, because the
         constructor starts the thread. */
-    boost::thread m_thread;
+    std::thread m_thread;
 };
 
 ReadThread::Function::Function(ReadThread& readThread)
@@ -301,11 +291,11 @@ ReadThread::Function::Function(ReadThread& readThread)
 
 void ReadThread::Function::operator()()
 {
-    boost::mutex::scoped_lock lock(m_readThread.m_waitCommandMutex);
-    m_readThread.m_threadReady.wait();
+    std::unique_lock lock(m_readThread.m_waitCommandMutex);
+    m_readThread.m_threadReady.arrive_and_wait();
     GtpEngine& engine = m_readThread.m_engine;
     GtpInputStream& in = m_readThread.m_in;
-    string line;
+    std::string line;
     while (true)
     {
         while (in.GetLine(line))
@@ -332,10 +322,10 @@ void ReadThread::Function::operator()()
     }
 }
 
-void ReadThread::Function::ExecuteSleepLine(const string& line)
+void ReadThread::Function::ExecuteSleepLine(const std::string& line)
 {
     std::istringstream buffer(line);
-    string s;
+    std::string s;
     buffer >> s;
     assert(s == "#");
     buffer >> s;
@@ -345,14 +335,7 @@ void ReadThread::Function::ExecuteSleepLine(const string& line)
     if (seconds > 0)
     {
         std::cerr << "GtpEngine: sleep " << seconds << '\n';
-        xtime time;
-        #if BOOST_VERSION >= 105000
-            xtime_get(&time, boost::TIME_UTC_);
-        #else
-            xtime_get(&time, boost::TIME_UTC);
-        #endif
-        time.sec += seconds;
-        thread::sleep(time);
+        std::this_thread::sleep_for(std::chrono::seconds(seconds));
         std::cerr << "GtpEngine: sleep done\n";
     }
 }
@@ -365,11 +348,11 @@ void ReadThread::JoinThread()
 ReadThread::ReadThread(GtpInputStream& in, GtpEngine& engine)
     : m_in(in),
       m_engine(engine),
-      m_threadReady(2),
+      m_threadReady(2, []()noexcept{}),
       m_commandReceivedLock(m_commandReceivedMutex),
       m_thread(Function(*this))
 {
-    m_threadReady.wait();
+    m_threadReady.arrive_and_wait();
 }
 
 bool ReadThread::ReadCommand(GtpCommand& cmd)
@@ -397,7 +380,7 @@ GtpFailure::GtpFailure(const GtpFailure& failure)
     m_response.copyfmt(failure.m_response);
 }
 
-GtpFailure::GtpFailure(const string& response)
+GtpFailure::GtpFailure(const std::string& response)
 {
     m_response << response;
 }
@@ -407,7 +390,7 @@ GtpFailure::~GtpFailure() throw()
 
 //----------------------------------------------------------------------------
 
-GtpCommand::Argument::Argument(const string& value, std::size_t end)
+GtpCommand::Argument::Argument(const std::string& value, size_t end)
     : m_value(value),
       m_end(end)
 { }
@@ -416,7 +399,7 @@ GtpCommand::Argument::Argument(const string& value, std::size_t end)
 
 std::ostringstream GtpCommand::s_dummy;
 
-const string& GtpCommand::Arg(std::size_t number) const
+const std::string& GtpCommand::Arg(size_t number) const
 {
     size_t index = number + 1;
     if (number >= NuArg())
@@ -424,18 +407,18 @@ const string& GtpCommand::Arg(std::size_t number) const
     return m_arguments[index].m_value;
 }
 
-const string& GtpCommand::Arg() const
+const std::string& GtpCommand::Arg() const
 {
     CheckNuArg(1);
     return Arg(0);
 }
 
 template<>
-std::size_t GtpCommand::Arg<std::size_t>(std::size_t i) const
+size_t GtpCommand::Arg<size_t>(size_t i) const
 {
     // See the function declaration in GtpEngine.h for the rationale why this
     // template specialization is necessary.
-    string arg = Arg(i);
+    std::string arg = Arg(i);
     bool fail = (! arg.empty() && arg[0] == '-');
     size_t result;
     if (! fail)
@@ -452,25 +435,25 @@ std::size_t GtpCommand::Arg<std::size_t>(std::size_t i) const
 
 std::string GtpCommand::ArgLine() const
 {
-    string result = m_line.substr(m_arguments[0].m_end);
+    std::string result = m_line.substr(m_arguments[0].m_end);
     Trim(result);
     return result;
 }
 
-string GtpCommand::ArgToLower(std::size_t number) const
+std::string GtpCommand::ArgToLower(size_t number) const
 {
-    string value = Arg(number);
+    std::string value = Arg(number);
     for (size_t i = 0; i < value.length(); ++i)
         value[i] = char(tolower(value[i]));
     return value;
 }
 
-bool GtpCommand::BoolArg(std::size_t number) const
+bool GtpCommand::BoolArg(size_t number) const
 {
     return Arg<bool>(number);
 }
 
-void GtpCommand::CheckNuArg(std::size_t number) const
+void GtpCommand::CheckNuArg(size_t number) const
 {
     if (NuArg() == number)
         return;
@@ -482,7 +465,7 @@ void GtpCommand::CheckNuArg(std::size_t number) const
         throw GtpFailure() << "command needs " << number << " arguments";
 }
 
-void GtpCommand::CheckNuArgLessEqual(std::size_t number) const
+void GtpCommand::CheckNuArgLessEqual(size_t number) const
 {
     if (NuArg() <= number)
         return;
@@ -492,27 +475,27 @@ void GtpCommand::CheckNuArgLessEqual(std::size_t number) const
     throw GtpFailure() << "command needs at most " << number << " arguments";
 }
 
-double GtpCommand::FloatArg(std::size_t number) const
+double GtpCommand::FloatArg(size_t number) const
 {
     return Arg<double>(number);
 }
 
-int GtpCommand::IntArg(std::size_t number) const
+int GtpCommand::IntArg(size_t number) const
 {
     return Arg<int>(number);
 }
 
-int GtpCommand::IntArg(std::size_t number, int min) const
+int GtpCommand::IntArg(size_t number, int min) const
 {
     return ArgMin<int>(number, min);
 }
 
-int GtpCommand::IntArg(std::size_t number, int min, int max) const
+int GtpCommand::IntArg(size_t number, int min, int max) const
 {
     return ArgMinMax<int>(number, min, max);
 }
 
-void GtpCommand::Init(const string& line)
+void GtpCommand::Init(std::string_view line)
 {
     m_line = line;
     Trim(m_line);
@@ -539,17 +522,17 @@ void GtpCommand::ParseCommandId()
     }
 }
 
-string GtpCommand::RemainingLine(std::size_t number) const
+std::string GtpCommand::RemainingLine(size_t number) const
 {
     size_t index = number + 1;
     if (number >= NuArg())
         throw GtpFailure() << "missing argument " << index;
-    string result = m_line.substr(m_arguments[index].m_end);
+    std::string result = m_line.substr(m_arguments[index].m_end);
     Trim(result);
     return result;
 }
 
-void GtpCommand::SetResponse(const string& response)
+void GtpCommand::SetResponse(const std::string& response)
 {
     m_response.str(response);
 }
@@ -559,12 +542,12 @@ void GtpCommand::SetResponseBool(bool value)
     m_response.str(value ? "true" : "false");
 }
 
-std::size_t GtpCommand::SizeTypeArg(std::size_t number) const
+size_t GtpCommand::SizeTypeArg(size_t number) const
 {
     return Arg<size_t>(number);
 }
 
-std::size_t GtpCommand::SizeTypeArg(std::size_t number, std::size_t min) const
+size_t GtpCommand::SizeTypeArg(size_t number, size_t min) const
 {
     return ArgMin<size_t>(number, min);
 }
@@ -574,7 +557,7 @@ std::size_t GtpCommand::SizeTypeArg(std::size_t number, std::size_t min) const
     Arguments with whitespaces can be quoted with quotation marks ('"').
     Characters can be escaped with a backslash ('\').
     @param line The line to split. */
-void GtpCommand::SplitLine(const string& line)
+void GtpCommand::SplitLine(const std::string& line)
 {
     m_arguments.clear();
     bool escape = false;
@@ -692,7 +675,22 @@ void GtpEngine::CmdVersion(GtpCommand& cmd)
     cmd.CheckArgNone();
 }
 
-string GtpEngine::ExecuteCommand(const string& cmdline, std::ostream& log)
+std::pair<bool, std::string> GtpEngine::ExecuteCommand(std::string_view cmdline)
+{
+    using namespace std::string_view_literals;
+
+    if (!IsCommandLine(std::string{cmdline}))
+        return { false, (std::ostringstream{} << "Bad command: "sv << cmdline).str() };
+    GtpCommand cmd;
+    cmd.Init(cmdline);
+    
+    std::ostringstream rss;
+    GtpOutputStream gtpLog(rss);
+    bool status = HandleCommand(cmd, gtpLog);
+    return { status, cmd.Response() };
+}
+
+std::string GtpEngine::ExecuteCommand(const std::string& cmdline, std::ostream& log)
 {
     if (! IsCommandLine(cmdline))
         throw GtpFailure() << "Bad command: " << cmdline;
@@ -701,18 +699,18 @@ string GtpEngine::ExecuteCommand(const string& cmdline, std::ostream& log)
     log << cmd.Line() << '\n';
     GtpOutputStream gtpLog(log);
     bool status = HandleCommand(cmd, gtpLog);
-    string response = cmd.Response();
+    std::string response = cmd.Response();
     if (! status)
         throw GtpFailure() << "Executing " << cmd.Line() << " failed";
     return response;
 }
 
-void GtpEngine::ExecuteFile(const string& name, std::ostream& log)
+void GtpEngine::ExecuteFile(const std::string& name, std::ostream& log)
 {
     std::ifstream in(name.c_str());
     if (! in)
         throw GtpFailure() << "Cannot read " << name;
-    string line;
+    std::string line;
     GtpCommand cmd;
     GtpOutputStream gtpLog(log);
     while (getline(in, line))
@@ -732,7 +730,7 @@ bool GtpEngine::HandleCommand(GtpCommand& cmd, GtpOutputStream& out)
 {
     BeforeHandleCommand();
     bool status = true;
-    string response;
+    std::string response;
     try
     {
         CallbackMap::const_iterator pos = m_callbacks.find(cmd.Name());
@@ -766,7 +764,7 @@ bool GtpEngine::HandleCommand(GtpCommand& cmd, GtpOutputStream& out)
     return status;
 }
 
-bool GtpEngine::IsRegistered(const string& command) const
+bool GtpEngine::IsRegistered(const std::string& command) const
 {
     return (m_callbacks.find(command) != m_callbacks.end());
 }
@@ -811,7 +809,7 @@ void GtpEngine::MainLoop(GtpInputStream& in, GtpOutputStream& out)
     }
 }
 
-void GtpEngine::Register(const string& command, GtpCallbackBase* callback)
+void GtpEngine::Register(const std::string& command, GtpCallbackBase* callback)
 {
     CallbackMap::iterator pos = m_callbacks.find(command);
     if (pos != m_callbacks.end())

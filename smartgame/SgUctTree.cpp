@@ -305,8 +305,7 @@ void SgUctTree::CreateAllocators(std::size_t nuThreads)
     m_allocators.clear();
     for (size_t i = 0; i < nuThreads; ++i)
     {
-        boost::shared_ptr<SgUctAllocator> allocator(new SgUctAllocator());
-        m_allocators.push_back(allocator);
+        m_allocators.emplace_back(std::make_shared<SgUctAllocator>());
     }
 }
 
@@ -464,7 +463,7 @@ void SgUctTreeIterator::operator++()
     if (m_current->HasChildren())
     {
         SgUctChildIterator* it = new SgUctChildIterator(m_tree, *m_current);
-        m_stack.push(shared_ptr<SgUctChildIterator>(it));
+        m_stack.push(std::shared_ptr<SgUctChildIterator>(it));
         m_current = &(**it);
         return;
     }

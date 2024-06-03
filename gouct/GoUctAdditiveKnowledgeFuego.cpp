@@ -28,8 +28,9 @@ void
 GoUctAdditiveKnowledgeFuego::ProcessPosition(std::vector<SgUctMoveInfo>&
                                              moves)
 {
-    float sum = 0.0;
-    float values[moves.size()];
+    double sum = 0.0;
+    std::unique_ptr<double[]> values(new double[moves.size()]);
+    //float values[moves.size()];
     for (size_t i = 0; i < moves.size(); ++i) 
     {
         values[i] = exp(VALUE_MULTIPLIER * moves[i].m_raveValue);
@@ -37,7 +38,7 @@ GoUctAdditiveKnowledgeFuego::ProcessPosition(std::vector<SgUctMoveInfo>&
     }
     if (sum > 0.0)
         for (size_t i = 0; i < moves.size(); ++i)
-            moves[i].m_predictorValue = values[i] / sum;
+            moves[i].m_predictorValue = (float)(values[i] / sum);
 }
 
 //----------------------------------------------------------------------------

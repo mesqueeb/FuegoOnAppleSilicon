@@ -6,15 +6,14 @@
 #include "SgSystem.h"
 
 #include <iostream>
-#include <boost/foreach.hpp>
+#include <filesystem>
+
 #include <boost/format.hpp>
-#include <boost/filesystem/path.hpp>
-#include <boost/filesystem.hpp>
 #include <boost/program_options/options_description.hpp>
 #include <boost/program_options/cmdline.hpp>
 #include <boost/program_options/variables_map.hpp>
 #include <boost/program_options/parsers.hpp>
-#include <boost/utility.hpp>
+
 #include "FuegoMainEngine.h"
 #include "FuegoMainUtil.h"
 #include "GoInit.h"
@@ -23,10 +22,7 @@
 #include "SgInit.h"
 #include "SgPlatform.h"
 
-using boost::filesystem::path;
-using std::ostream;
-using std::string;
-using std::vector;
+namespace fs = std::filesystem;
 namespace po = boost::program_options;
 
 //----------------------------------------------------------------------------
@@ -48,45 +44,37 @@ int g_fixedBoardSize;
 
 int g_maxGames;
 
-string g_config;
+std::string g_config;
 
 const char* g_programPath;
 
 int g_srand;
 
-vector<string> g_inputFiles;
+std::vector<std::string> g_inputFiles;
 
 // @} // @name
 
 /** Get program directory from program path.
     @param programPath Program path taken from @c argv[0] in
     @c main. According to ANSI C, this can be @c 0. */
-path GetProgramDir(const char* programPath)
+fs::path GetProgramDir(const char* programPath)
 {
-    if (programPath == 0)
+    if (!programPath)
         return "";
-    # if defined(BOOST_FILESYSTEM_VERSION)
-        SG_ASSERT (  BOOST_FILESYSTEM_VERSION == 2
-                  || BOOST_FILESYSTEM_VERSION == 3);
-    #endif
 
-    #if (defined(BOOST_FILESYSTEM_VERSION) && (BOOST_FILESYSTEM_VERSION == 3))
-        return path(programPath).branch_path();
-    #else
-        return path(programPath, boost::filesystem::native).branch_path();
-    #endif	
+    return fs::path(programPath).parent_path();
 }
 
-path GetTopSourceDir()
+fs::path GetTopSourceDir()
 {
     #ifdef ABS_TOP_SRCDIR
-        return path(ABS_TOP_SRCDIR);
+        return fs::path(ABS_TOP_SRCDIR);
     #else
         return "";
     #endif
 }
 
-void Help(po::options_description& desc, ostream& out)
+void Help(po::options_description& desc, std::ostream& out)
 {
     out << "Usage: fuego [options] [input files]\n" << desc << "\n";
     exit(0);
@@ -97,7 +85,7 @@ void ParseOptions(int argc, char** argv)
     po::options_description normalOptions("Options");
     normalOptions.add_options()
         ("config", 
-         po::value<std::string>(&g_config)->default_value(""),
+            po::value<std::string>(&g_config)->value_name("_")->default_value(""),
          "execute GTP commands from file before starting main command loop")
         ("help", "Displays this help and exit")
         ("maxgames", 
@@ -114,7 +102,7 @@ void ParseOptions(int argc, char** argv)
          "initial (and fixed) board size");
     po::options_description hiddenOptions;
     hiddenOptions.add_options()
-        ("input-file", po::value<vector<string> >(&g_inputFiles),
+        ("input-file", po::value<std::vector<std::string> >(&g_inputFiles),
          "input file");
     po::options_description allOptions;
     allOptions.add(normalOptions).add(hiddenOptions);
@@ -193,7 +181,7 @@ int main(int argc, char** argv)
         {
             for (size_t i = 0; i < g_inputFiles.size(); i++)
             {
-                string file = g_inputFiles[i];
+                std::string file = g_inputFiles[i];
                 std::ifstream fin(file.c_str());
                 if (! fin)
                     throw SgException(boost::format("Error file '%1%'") 

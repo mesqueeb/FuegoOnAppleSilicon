@@ -925,7 +925,7 @@ void GoUctCommands::CmdParamSearch(GtpCommand& cmd)
         else if (name == "bias_term_frequency")
             s.SetBiasTermFrequency(cmd.IntArg(1));
         else if (name == "bias_term_depth")
-            s.SetBiasTermDepth(cmd.Arg<size_t>(1));
+            s.SetBiasTermDepth((int)cmd.Arg<size_t>(1));
         else if (name == "check_float_precision")
             s.SetCheckFloatPrecision(cmd.Arg<bool>(1));
         else if (name == "expand_threshold")

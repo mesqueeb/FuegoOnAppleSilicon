@@ -381,7 +381,7 @@ SgPropFlags SgProp::s_flags[SG_MAX_PROPCLASS];
 
 string SgProp::s_label[SG_MAX_PROPCLASS];
 
-SgProp* SgProp::s_prop[SG_MAX_PROPCLASS];
+std::shared_ptr<SgProp> SgProp::s_prop[SG_MAX_PROPCLASS];
 
 SgProp::~SgProp()
 { }
@@ -412,7 +412,7 @@ string SgProp::Label() const
     return s_label[m_id];
 }
 
-SgPropID SgProp::Register(SgProp* prop, const char* label, SgPropFlags flags)
+SgPropID SgProp::Register(std::shared_ptr<SgProp> prop, const char* label, SgPropFlags flags)
 {
     ++s_numPropClasses;
     SG_ASSERT(s_numPropClasses < SG_MAX_PROPCLASS);
@@ -420,7 +420,7 @@ SgPropID SgProp::Register(SgProp* prop, const char* label, SgPropFlags flags)
     {
         s_flags[s_numPropClasses] = flags;
         s_label[s_numPropClasses] = label;
-        s_prop[s_numPropClasses] = prop;
+        s_prop[s_numPropClasses] = std::move(prop);
         if (prop)
         {
             SG_ASSERT(prop->m_id == 0); // can't know the ID yet
@@ -560,20 +560,20 @@ void SgProp::Init()
     s_prop[0] = 0;
 
     // Create prototype properties, one for each property class.
-    SgProp* unknownProp = new SgPropUnknown(0);
-    SgProp* simpleProp = new SgPropSimple(0);
-    SgProp* intProp = new SgPropInt(0);
-    SgProp* realProp = new SgPropReal(0);
-    SgProp* multipleProp = new SgPropMultiple(0);
-    SgProp* valueProp = new SgPropValue(0);
-    SgProp* timeProp = new SgPropTime(0);
-    SgProp* mSecProp = new SgPropMSec(0);
-    SgProp* moveProp = new SgPropMove(0);
-    SgProp* listProp = new SgPropPointList(0);
-    SgProp* textProp = new SgPropText(0);
-    SgProp* textListProp = new SgPropTextList(0);
-    SgProp* playerProp = new SgPropPlayer(0);
-    SgProp* addStoneProp = new SgPropAddStone(0);
+    auto unknownProp = std::make_shared<SgPropUnknown>(0);
+    auto simpleProp = std::make_shared<SgPropSimple>(0);
+    auto intProp = std::make_shared<SgPropInt>(0);
+    auto realProp = std::make_shared<SgPropReal>(0);
+    auto multipleProp = std::make_shared<SgPropMultiple>(0);
+    auto valueProp = std::make_shared<SgPropValue>(0);
+    auto timeProp = std::make_shared<SgPropTime>(0);
+    auto mSecProp = std::make_shared<SgPropMSec>(0);
+    auto moveProp = std::make_shared<SgPropMove>(0);
+    auto listProp = std::make_shared<SgPropPointList>(0);
+    auto textProp = std::make_shared<SgPropText>(0);
+    auto textListProp = std::make_shared<SgPropTextList>(0);
+    auto playerProp = std::make_shared<SgPropPlayer>(0);
+    auto addStoneProp = std::make_shared<SgPropAddStone>(0);
 
     // Register abstract property classes so they get cleaned up on fini.
     SG_PROP_NONE = 0;

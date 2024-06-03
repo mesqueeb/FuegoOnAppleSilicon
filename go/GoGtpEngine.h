@@ -3,12 +3,12 @@
     GtpEngine with GoBoard, GoPlayer and GoGame. */
 //----------------------------------------------------------------------------
 
-#ifndef GO_GTPENGINE_H
-#define GO_GTPENGINE_H
+#pragma once
 
 #include <sstream>
-#include <boost/filesystem/path.hpp>
-#include <boost/scoped_ptr.hpp>
+#include <memory>
+#include <filesystem>
+
 #include "GoBoard.h"
 #include "GoBook.h"
 #include "GoAutoBook.h"
@@ -140,7 +140,7 @@ public:
     GoGtpEngine(int fixedBoardSize = 0, const char* programPath = 0,
                 bool noPlayer = false, bool noHandicap = false);
 
-    ~GoGtpEngine();
+    ~GoGtpEngine() noexcept override;
 
     GoBook& Book();
 
@@ -237,7 +237,7 @@ protected:
         have to check first, that the current player is the expected one. */
     GoPlayer* m_player;
 
-    boost::scoped_ptr<GoAutoBook> m_autoBook;
+    std::unique_ptr<GoAutoBook> m_autoBook;
 
     /** Hook function to be executed before each command.
         Resets user abort flag. Lengthy functions should poll SgUserAbort but
@@ -393,7 +393,7 @@ private:
     std::string m_autoSavePrefix;
 
     /** See CmdSentinelFile() */
-    boost::filesystem::path m_sentinelFile;
+    std::filesystem::path m_sentinelFile;
 
     std::string m_statisticsFile;
 
@@ -492,5 +492,3 @@ private:
 };
 
 //----------------------------------------------------------------------------
-
-#endif // GO_GTPENGINE_H

@@ -8,28 +8,21 @@
 #include <algorithm>
 #include <cmath>
 #include <iomanip>
+#include <vector>
+
 #include <boost/format.hpp>
 #include <boost/io/ios_state.hpp>
-#include <boost/version.hpp>
+
 #include "SgDebug.h"
 #include "SgHashTable.h"
 #include "SgMath.h"
 #include "SgPlatform.h"
 #include "SgWrite.h"
 
-using boost::barrier;
-using boost::condition;
 using boost::format;
-using boost::mutex;
-using boost::shared_ptr;
 using boost::io::ios_all_saver;
-using std::vector;
 using std::setprecision;
-using std::numeric_limits;
 using std::fixed;
-
-#define BOOST_VERSION_MAJOR (BOOST_VERSION / 100000)
-#define BOOST_VERSION_MINOR (BOOST_VERSION / 100 % 1000)
 
 //----------------------------------------------------------------------------
 
@@ -81,9 +74,9 @@ size_t GetMaxNodesDefault()
     return nodesPerTree;
 }
 
-void Notify(mutex& aMutex, condition& aCondition)
+void Notify(std::mutex& aMutex, std::condition_variable& aCondition)
 {
-    mutex::scoped_lock lock(aMutex);
+    std::scoped_lock lock(aMutex);
     aCondition.notify_all();
 }
 
@@ -148,11 +141,6 @@ void SgUctThreadState::StartPlayouts()
 
 //----------------------------------------------------------------------------
 
-SgUctThreadStateFactory::~SgUctThreadStateFactory()
-{ }
-
-//----------------------------------------------------------------------------
-
 SgUctSearch::Thread::Function::Function(Thread& thread)
     : m_thread(thread)
 { }
@@ -163,20 +151,16 @@ void SgUctSearch::Thread::Function::operator()()
 }
 
 SgUctSearch::Thread::Thread(SgUctSearch& search,
-                            std::auto_ptr<SgUctThreadState> state)
-    : m_state(state),
+                            std::unique_ptr<SgUctThreadState> state)
+    : m_state(std::move(state)),
       m_search(search),
       m_quit(false),
-      m_threadReady(2),
+      m_threadReady(2, []() noexcept {}),
       m_playFinishedLock(m_playFinishedMutex),
-#if BOOST_VERSION_MAJOR == 1 && BOOST_VERSION_MINOR <= 34
-      m_globalLock(search.m_globalMutex, false),
-#else
-      m_globalLock(search.m_globalMutex, boost::defer_lock),
-#endif
+      m_globalLock(search.m_globalMutex, std::defer_lock),
       m_thread(Function(*this))
 {
-    m_threadReady.wait();
+    m_threadReady.arrive_and_wait();
 }
 
 SgUctSearch::Thread::~Thread()
@@ -191,8 +175,8 @@ void SgUctSearch::Thread::operator()()
     if (DEBUG_THREADS)
         SgDebug() << "SgUctSearch::Thread: starting thread "
                   << m_state->m_threadId << '\n';
-    mutex::scoped_lock lock(m_startPlayMutex);
-    m_threadReady.wait();
+    std::unique_lock lock(m_startPlayMutex);
+    m_threadReady.arrive_and_wait();
     while (true)
     {
         m_startPlay.wait(lock);
@@ -266,10 +250,10 @@ SgUctSearch::SgUctSearch(SgUctThreadStateFactory* threadStateFactory,
       m_maxNodes(GetMaxNodesDefault()),
       m_pruneMinCount(16),
       m_moveRange(moveRange),
-      m_maxGameLength(numeric_limits<size_t>::max()),
-      m_expandThreshold(numeric_limits<SgUctValue>::is_integer ?
+      m_maxGameLength((std::numeric_limits<size_t>::max)()),
+      m_expandThreshold(std::numeric_limits<SgUctValue>::is_integer ?
                         SgUctValue(1) : 
-                        numeric_limits<SgUctValue>::epsilon()),
+                        std::numeric_limits<SgUctValue>::epsilon()),
       m_biasTermConstant(0.7f),
       m_biasTermFrequency(1),
       m_biasTermDepth(0),
@@ -291,11 +275,11 @@ SgUctSearch::~SgUctSearch()
     DeleteThreads();
 }
 
-void SgUctSearch::ApplyRootFilter(vector<SgUctMoveInfo>& moves)
+void SgUctSearch::ApplyRootFilter(std::vector<SgUctMoveInfo>& moves)
 {
     // Filter without changing the order of the unfiltered moves
-    vector<SgUctMoveInfo> filteredMoves;
-    for (vector<SgUctMoveInfo>::const_iterator it = moves.begin();
+    std::vector<SgUctMoveInfo> filteredMoves;
+    for (std::vector<SgUctMoveInfo>::const_iterator it = moves.begin();
          it != moves.end(); ++it)
         if (find(m_rootFilter.begin(), m_rootFilter.end(), it->m_move)
             == m_rootFilter.end())
@@ -375,7 +359,7 @@ bool SgUctSearch::CheckAbortSearch(SgUctThreadState& state)
                         std::min(remainingGamesDouble,
                         remainingTime * m_statistics.m_gamesPerSecond);
             }
-            SgUctValue uctCountMax = numeric_limits<SgUctValue>::max();
+            SgUctValue uctCountMax = (std::numeric_limits<SgUctValue>::max)();
             SgUctValue remainingGames;
             if (remainingGamesDouble >= static_cast<double>(uctCountMax - 1))
                 remainingGames = uctCountMax;
@@ -404,7 +388,7 @@ bool SgUctSearch::CheckCountAbort(SgUctThreadState& state,
     if (bestChild == 0)
         return false;
     SgUctValue bestCount = bestChild->MoveCount();
-    vector<SgMove>& excludeMoves = state.m_excludeMoves;
+    std::vector<SgMove>& excludeMoves = state.m_excludeMoves;
     excludeMoves.clear();
     excludeMoves.push_back(bestChild->Move());
     const SgUctNode* secondBestChild = FindBestChild(root, &excludeMoves);
@@ -429,15 +413,12 @@ void SgUctSearch::CreateThreads()
     DeleteThreads();
     for (unsigned int i = 0; i < m_numberThreads; ++i)
     {
-        std::auto_ptr<SgUctThreadState>
-        state(m_threadStateFactory->Create(i, *this));
-        shared_ptr<Thread> thread(new Thread(*this, state));
-        m_threads.push_back(thread);
+        m_threads.emplace_back(std::make_shared<Thread>(*this, m_threadStateFactory->Create(i, *this)));
     }
     m_tree.CreateAllocators(m_numberThreads);
     m_tree.SetMaxNodes(m_maxNodes);
 
-    m_searchLoopFinished.reset(new barrier(m_numberThreads));
+    m_searchLoopFinished.reset(new std::barrier<void(*)()noexcept>(m_numberThreads, []()noexcept{}));
 }
 
 /** Write a debugging line of text from within a thread.
@@ -484,7 +465,7 @@ void SgUctSearch::ExpandNode(SgUctThreadState& state, const SgUctNode& node)
 
 const SgUctNode*
 SgUctSearch::FindBestChild(const SgUctNode& node,
-                           const vector<SgMove>* excludeMoves) const
+                           const std::vector<SgMove>* excludeMoves) const
 {
     if (! node.HasChildren())
         return 0;
@@ -495,8 +476,8 @@ SgUctSearch::FindBestChild(const SgUctNode& node,
         const SgUctNode& child = *it;
         if (excludeMoves != 0)
         {
-            vector<SgMove>::const_iterator begin = excludeMoves->begin();
-            vector<SgMove>::const_iterator end = excludeMoves->end();
+            std::vector<SgMove>::const_iterator begin = excludeMoves->begin();
+            std::vector<SgMove>::const_iterator end = excludeMoves->end();
             if (find(begin, end, child.Move()) != end)
                 continue;
         }
@@ -542,7 +523,7 @@ SgUctSearch::FindBestChild(const SgUctNode& node,
     return bestChild;
 }
 
-void SgUctSearch::FindBestSequence(vector<SgMove>& sequence) const
+void SgUctSearch::FindBestSequence(std::vector<SgMove>& sequence) const
 {
     sequence.clear();
     const SgUctNode* current = &m_tree.Root();
@@ -934,7 +915,7 @@ void SgUctSearch::PlayGame(SgUctThreadState& state, GlobalLock* lock)
 
 /** Backs up proven information. Last node of nodes is the newly
     proven node. */
-void SgUctSearch::PropagateProvenStatus(const vector<const SgUctNode*>& nodes)
+void SgUctSearch::PropagateProvenStatus(const std::vector<const SgUctNode*>& nodes)
 {
     if (nodes.size() <= 1) 
         return;
@@ -971,8 +952,8 @@ void SgUctSearch::PropagateProvenStatus(const vector<const SgUctNode*>& nodes)
     @return @c false, if game was aborted due to maximum length */
 bool SgUctSearch::PlayInTree(SgUctThreadState& state, bool& isTerminal)
 {
-    vector<SgMove>& sequence = state.m_gameInfo.m_inTreeSequence;
-    vector<const SgUctNode*>& nodes = state.m_gameInfo.m_nodes;
+    std::vector<SgMove>& sequence = state.m_gameInfo.m_inTreeSequence;
+    std::vector<const SgUctNode*>& nodes = state.m_gameInfo.m_nodes;
     const SgUctNode* root = &m_tree.Root();
     const SgUctNode* current = root;
     if (m_virtualLoss && m_numberThreads > 1)
@@ -1069,8 +1050,8 @@ bool SgUctSearch::PlayInTree(SgUctThreadState& state, bool& isTerminal)
 bool SgUctSearch::PlayoutGame(SgUctThreadState& state, std::size_t playout)
 {
     SgUctGameInfo& info = state.m_gameInfo;
-    vector<SgMove>& sequence = info.m_sequence[playout];
-    vector<bool>& skipRaveUpdate = info.m_skipRaveUpdate[playout];
+    std::vector<SgMove>& sequence = info.m_sequence[playout];
+    std::vector<bool>& skipRaveUpdate = info.m_skipRaveUpdate[playout];
     while (true)
     {
         if (sequence.size() == m_maxGameLength)
@@ -1087,8 +1068,8 @@ bool SgUctSearch::PlayoutGame(SgUctThreadState& state, std::size_t playout)
 }
 
 SgUctValue SgUctSearch::Search(SgUctValue maxGames, double maxTime,
-                               vector<SgMove>& sequence,
-                               const vector<SgMove>& rootFilter,
+                               std::vector<SgMove>& sequence,
+                               const std::vector<SgMove>& rootFilter,
                                SgUctTree* initTree,
                                SgUctEarlyAbortParam* earlyAbort)
 {
@@ -1143,7 +1124,7 @@ SgUctValue SgUctSearch::Search(SgUctValue maxGames, double maxTime,
     }
     EndSearch();
     m_statistics.m_time = m_timer.GetTime();
-    if (m_statistics.m_time > numeric_limits<double>::epsilon())
+    if (m_statistics.m_time > std::numeric_limits<double>::epsilon())
         m_statistics.m_gamesPerSecond = GamesPlayed() / m_statistics.m_time;
     if (m_logGames)
         m_log.close();
@@ -1187,7 +1168,7 @@ void SgUctSearch::SearchLoop(SgUctThreadState& state, GlobalLock* lock)
     if (lock != 0)
         lock->unlock();
 
-    m_searchLoopFinished->wait();
+    m_searchLoopFinished->arrive_and_wait();
     if (m_aborted || ! m_pruneFullTree)
         OnThreadEndSearch(state);
 }
@@ -1212,11 +1193,11 @@ SgPoint SgUctSearch::SearchOnePly(SgUctValue maxGames, double maxTime,
     // It uses the state of the first thread.
     SgUctThreadState& state = ThreadState(0);
     state.StartSearch();
-    vector<SgUctMoveInfo> moves;
+    std::vector<SgUctMoveInfo> moves;
     SgUctProvenType provenType;
     state.GameStart();
     state.GenerateAllMoves(0, moves, provenType);
-    vector<SgUctStatistics> statistics(moves.size());
+    std::vector<SgUctStatistics> statistics(moves.size());
     SgUctValue games = 0;
     m_timer.Start();
     SgUctGameInfo& info = state.m_gameInfo;
@@ -1322,7 +1303,7 @@ const SgUctNode& SgUctSearch::SelectChild(int& randomizeCounter,
     return *node.FirstChild();
 }
 
-void SgUctSearch::SetNumberThreads(unsigned int n)
+void SgUctSearch::SetNumberThreads(size_t n)
 {
     SG_ASSERT(n >= 1);
     if (m_numberThreads == n)
@@ -1354,7 +1335,7 @@ void SgUctSearch::SetThreadStateFactory(SgUctThreadStateFactory* factory)
     // is not fully constructed) as an argument to the Create() function
 }
 
-void SgUctSearch::StartSearch(const vector<SgMove>& rootFilter,
+void SgUctSearch::StartSearch(const std::vector<SgMove>& rootFilter,
                               SgUctTree* initTree)
 {
     if (m_threads.size() == 0)
@@ -1409,7 +1390,7 @@ void SgUctSearch::EndSearch()
 std::string SgUctSearch::SummaryLine(const SgUctGameInfo& info) const
 {
     std::ostringstream buffer;
-    const vector<const SgUctNode*>& nodes = info.m_nodes;
+    const std::vector<const SgUctNode*>& nodes = info.m_nodes;
     for (size_t i = 1; i < nodes.size(); ++i)
     {
         const SgUctNode* node = nodes[i];
@@ -1424,7 +1405,7 @@ std::string SgUctSearch::SummaryLine(const SgUctGameInfo& info) const
 
 void SgUctSearch::UpdateCheckTimeInterval(double time)
 {
-    if (time < numeric_limits<double>::epsilon())
+    if (time < std::numeric_limits<double>::epsilon())
         return;
     // Dynamically update m_checkTimeInterval (see comment at definition of
     // m_checkTimeInterval)
@@ -1456,16 +1437,16 @@ void SgUctSearch::UpdateRaveValues(SgUctThreadState& state,
                                    std::size_t playout)
 {
     SgUctGameInfo& info = state.m_gameInfo;
-    const vector<SgMove>& sequence = info.m_sequence[playout];
+    const std::vector<SgMove>& sequence = info.m_sequence[playout];
     if (sequence.size() == 0)
         return;
     SG_ASSERT(m_moveRange > 0);
     size_t* firstPlay = state.m_firstPlay.get();
     size_t* firstPlayOpp = state.m_firstPlayOpp.get();
-    std::fill_n(firstPlay, m_moveRange, numeric_limits<size_t>::max());
-    std::fill_n(firstPlayOpp, m_moveRange, numeric_limits<size_t>::max());
-    const vector<const SgUctNode*>& nodes = info.m_nodes;
-    const vector<bool>& skipRaveUpdate = info.m_skipRaveUpdate[playout];
+    std::fill_n(firstPlay, m_moveRange, (std::numeric_limits<size_t>::max)());
+    std::fill_n(firstPlayOpp, m_moveRange, (std::numeric_limits<size_t>::max)());
+    const std::vector<const SgUctNode*>& nodes = info.m_nodes;
+    const std::vector<bool>& skipRaveUpdate = info.m_skipRaveUpdate[playout];
     SgUctValue eval = info.m_eval[playout];
     SgUctValue invEval = InverseEval(eval);
     size_t nuNodes = nodes.size();
@@ -1530,7 +1511,7 @@ void SgUctSearch::UpdateRaveValues(SgUctThreadState& state,
         SgMove mv = child.Move();
         size_t first = firstPlay[mv];
         SG_ASSERT(first >= i);
-        if (first == numeric_limits<size_t>::max())
+        if (first == (std::numeric_limits<size_t>::max)())
             continue;
         if  (m_raveCheckSame && SgUtil::InRange(firstPlayOpp[mv], i, first))
             continue;
@@ -1562,7 +1543,7 @@ void SgUctSearch::UpdateTree(const SgUctGameInfo& info)
         eval += info.m_eval[i];
     eval /= SgUctValue(m_numberPlayouts);
     SgUctValue inverseEval = InverseEval(eval);
-    const vector<const SgUctNode*>& nodes = info.m_nodes;
+    const std::vector<const SgUctNode*>& nodes = info.m_nodes;
     const SgUctValue count = 
     	SgUctValue(m_updateMultiplePlayoutsAsSingle ? 1 : m_numberPlayouts);
     for (size_t i = 0; i < nodes.size(); ++i)

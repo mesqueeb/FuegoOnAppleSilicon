@@ -75,8 +75,7 @@ void SgHandleAssertion(const char* expr, const char* file, int line)
     /** Set a breakpoint on the next line to drop into the debugger */
     cerr << "Assertion failed "
          << file << ':' << line << ": " << expr << '\n';
-    for_each(AssertionHandlers().begin(), AssertionHandlers().end(),
-             mem_fun(&SgAssertionHandler::Run));
+    for_each(AssertionHandlers().begin(), AssertionHandlers().end(), [](SgAssertionHandler* ph) { ph->Run(); });
     if (! s_assertContinue)
         abort();
 }

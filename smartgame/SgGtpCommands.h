@@ -3,8 +3,7 @@
     General utility GTP commands. */
 //----------------------------------------------------------------------------
 
-#ifndef SG_GTPCOMMANDS_H
-#define SG_GTPCOMMANDS_H
+#pragma once
 
 #include "GtpEngine.h"
 
@@ -79,5 +78,3 @@ private:
 };
 
 //----------------------------------------------------------------------------
-
-#endif // SG_GTPCOMMANDS_H

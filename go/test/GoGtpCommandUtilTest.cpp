@@ -5,7 +5,7 @@
 
 #include "SgSystem.h"
 
-#include <boost/test/auto_unit_test.hpp>
+#include <boost/test/unit_test.hpp>
 #include "GoGtpCommandUtil.h"
 #include "GtpEngine.h"
 
@@ -48,7 +48,7 @@ BOOST_AUTO_TEST_CASE(GoGtpCommandUtilTest_GetHandicapStones)
             {
                 stones = GoGtpCommandUtil::GetHandicapStones(size, n);
             }
-            catch (const GtpFailure& e)
+            catch (const GtpFailure&)
             {
                 didThrow = true;
             }

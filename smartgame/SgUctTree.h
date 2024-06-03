@@ -3,13 +3,12 @@
     Class SgUctTree and strongly related classes. */
 //----------------------------------------------------------------------------
 
-#ifndef SG_UCTTREE_H
-#define SG_UCTTREE_H
+#pragma once
 
 #include <iostream>
 #include <limits>
 #include <stack>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "SgMove.h"
 #include "SgStatistics.h"
 #include "SgStatisticsVlt.h"
@@ -875,7 +874,7 @@ private:
     /** Allocators.
         The elements are owned by the vector (shared_ptr is only used because
         auto_ptr should not be used with standard containers) */
-    std::vector<boost::shared_ptr<SgUctAllocator> > m_allocators;
+    std::vector<std::shared_ptr<SgUctAllocator> > m_allocators;
 
     /** Not implemented.
         Cannot be copied because allocators contain pointers to elements.
@@ -1168,7 +1167,7 @@ private:
     /** Stack of child iterators.
         The elements are owned by the stack (shared_ptr is only used because
         auto_ptr should not be used with standard containers) */
-    std::stack<boost::shared_ptr<SgUctChildIterator> > m_stack;
+    std::stack<std::shared_ptr<SgUctChildIterator> > m_stack;
 
     /** Not implemented.
         Prevent unintended usage of operator bool() as an int.
@@ -1179,5 +1178,3 @@ private:
 };
 
 //----------------------------------------------------------------------------
-
-#endif // SG_UCTTREE_H

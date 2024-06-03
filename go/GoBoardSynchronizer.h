@@ -2,8 +2,7 @@
 /** @file GoBoardSynchronizer.h */
 //----------------------------------------------------------------------------
 
-#ifndef GO_BOARDSYNCHRONIZER_H
-#define GO_BOARDSYNCHRONIZER_H
+#pragma once
 
 #include "GoPlayerMove.h"
 
@@ -82,6 +81,3 @@ private:
 };
 
 //----------------------------------------------------------------------------
-
-#endif // GO_BOARDSYNCHRONIZER_H
-

@@ -306,7 +306,7 @@ public:
         No property object of that type can be instantiated.
         (?? useful for searching?)
         This method asserts and returns 0 if the registry is full. */
-    static SgPropID Register(SgProp* prop, const char* label,
+    static SgPropID Register(std::shared_ptr<SgProp> prop, const char* label,
                              SgPropFlags flags = 0);
 
     /** Create a property with the given property ID. */
@@ -375,7 +375,7 @@ private:
 
     static std::string s_label[SG_MAX_PROPCLASS];
 
-    static SgProp* s_prop[SG_MAX_PROPCLASS];
+    static std::shared_ptr<SgProp> s_prop[SG_MAX_PROPCLASS];
 
     /** not implemented */
     SgProp(const SgProp&);

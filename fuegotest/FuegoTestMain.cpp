@@ -62,11 +62,11 @@ void ParseOptions(int argc, char** argv)
     po::options_description desc;
     desc.add_options()
         ("config", 
-         po::value<std::string>(&g_config)->default_value(""),
+         po::value<std::string>(&g_config)->value_name("_")->default_value(""),
          "execuate GTP commands from file before starting main command loop")
         ("help", "displays this help and exit")
         ("player", 
-         po::value<std::string>(&g_player)->default_value(""),
+         po::value<std::string>(&g_player)->value_name("_")->default_value(""),
          "player (average|ladder|liberty|maxeye|minlib|no-search|random|safe")
         ("quiet", "don't print debug messages")
         ("srand", 

@@ -10,19 +10,17 @@
 #include <iostream>
 #include <memory>
 
-using namespace std;
-
 //----------------------------------------------------------------------------
 
 /** Null stream.
     This file stream will never be opened and acts as a null stream
     for SgDebug(). */
-static ofstream s_nullStream;
+static std::ofstream s_nullStream;
 
-static auto_ptr<ofstream> s_fileStream;
+static std::unique_ptr<std::ofstream> s_fileStream;
 
 
-ostream* g_debugStrPtr(&cerr);
+std::ostream* g_debugStrPtr(&std::cerr);
 
 std::ostream& SgDebug()
 {
@@ -45,13 +43,13 @@ std::ostream& SgWarning()
 
 void SgDebugToWindow()
 {
-    g_debugStrPtr = &cerr;
+    g_debugStrPtr = &std::cerr;
 }
 
 void SgDebugToFile(const char* filename)
 {
     if (s_fileStream.get() == 0)
-        s_fileStream.reset(new ofstream(filename, ios::app));
+        s_fileStream.reset(new std::ofstream(filename, std::ios::app));
     g_debugStrPtr = s_fileStream.get();
 }
 
@@ -60,9 +58,9 @@ void SgDebugToNull()
     g_debugStrPtr = &s_nullStream;
 }
 
-ostream* SgSwapDebugStr(ostream* newStr)
+std::ostream* SgSwapDebugStr(std::ostream* newStr)
 {
-    ostream* t = g_debugStrPtr;
+    std::ostream* t = g_debugStrPtr;
     g_debugStrPtr = newStr;
     return t;
 }
@@ -70,7 +68,7 @@ ostream* SgSwapDebugStr(ostream* newStr)
 //----------------------------------------------------------------------------
 
 SgDebugToNewFile::SgDebugToNewFile(const char* filename)
-    : m_old(SgSwapDebugStr(new ofstream(filename, ios::app)))
+    : m_old(SgSwapDebugStr(new std::ofstream(filename, std::ios::app)))
 { }
 
 SgDebugToNewFile::SgDebugToNewFile()
@@ -79,14 +77,14 @@ SgDebugToNewFile::SgDebugToNewFile()
 
 void SgDebugToNewFile::SetFile(const char* filename)
 {
-    m_old = SgSwapDebugStr(new ofstream(filename, ios::app));
+    m_old = SgSwapDebugStr(new std::ofstream(filename, std::ios::app));
 }
 
 SgDebugToNewFile::~SgDebugToNewFile()
 {
     if (m_old)
     {
-        ostream* t = SgSwapDebugStr(m_old);
+        std::ostream* t = SgSwapDebugStr(m_old);
         delete t;
     }
 }

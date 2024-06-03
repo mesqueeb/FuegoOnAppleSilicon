@@ -7,13 +7,11 @@
     and so on. */
 //----------------------------------------------------------------------------
 
-#ifndef GO_BOARD_H
-#define GO_BOARD_H
+#pragma once
 
 #include <bitset>
 #include <cstring>
 #include <stdint.h>
-#include <boost/static_assert.hpp>
 #include "GoPlayerMove.h"
 #include "GoRules.h"
 #include "GoSetup.h"
@@ -781,7 +779,7 @@ private:
 
     State m_state;
 
-    std::auto_ptr<Snapshot> m_snapshot;
+    std::unique_ptr<Snapshot> m_snapshot;
 
     /** See CountPlay */
     uint64_t m_countPlay;
@@ -1788,6 +1786,3 @@ inline int GoBoard::Up(SgPoint p) const
 }
 
 //----------------------------------------------------------------------------
-
-#endif // GO_BOARD_H
-

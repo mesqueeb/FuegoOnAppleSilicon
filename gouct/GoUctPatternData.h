@@ -4,8 +4,7 @@
 */
 //----------------------------------------------------------------------------
 
-#ifndef GOUCT_PATTERNDATA_H
-#define GOUCT_PATTERNDATA_H
+#pragma once
 
 #include "SgBWArray.h"
 
@@ -14,7 +13,7 @@ namespace GoUctPatternData {
 typedef struct
 {
     int m_code;
-    float m_value;
+    double m_value;
 } PatternTableEntry;
 
 typedef struct
@@ -32,5 +31,3 @@ typedef struct
 } PatternData;
 
 } // namespace GoUctPatternData
-
-#endif // GOUCT_PATTERNDATA_H

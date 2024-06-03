@@ -44,6 +44,9 @@ typedef GoNb4Iterator<GoUctBoard> GoUctNbIterator;
     (as long as they use only the functionality shared by both board classes) */
 class GoUctBoard
 {
+    
+    
+
 public:
     /** Marker that can be used in client code.
         This marker is never used by this class, it is intended for external
@@ -55,7 +58,13 @@ public:
         conflicting way. */
     mutable SgMarker m_userMarker;
 
+    // sizeof(GoUctBoard) is to big to be allocated on stack (~ 1mb)
     explicit GoUctBoard(const GoBoard& bd);
+
+    inline static std::unique_ptr<GoUctBoard> create(const GoBoard& bd) { return std::make_unique<GoUctBoard>(bd); }
+
+    GoUctBoard(const GoUctBoard&) = delete;
+    GoUctBoard& operator=(const GoUctBoard&) = delete;
 
     ~GoUctBoard();
 
@@ -353,11 +362,7 @@ private:
 
     SgArray<bool,SG_MAXPOINT> m_isBorder;
 
-    /** Not implemented. */
-    GoUctBoard(const GoUctBoard&);
 
-    /** Not implemented. */
-    GoUctBoard& operator=(const GoUctBoard&);
 
     void AddLibToAdjBlocks(SgPoint p, SgBlackWhite c);
 

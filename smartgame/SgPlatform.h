@@ -2,36 +2,35 @@
 /** @file SgPlatform.h */
 //----------------------------------------------------------------------------
 
-#ifndef SG_PLATFORM_H
-#define SG_PLATFORM_H
+#pragma once
 
-#include <boost/filesystem/path.hpp>
 #include <cstddef>
+#include <filesystem>
 
 //----------------------------------------------------------------------------
 
 /** Get information about the current computer. */
 namespace SgPlatform
 {
+    namespace fs = std::filesystem;
+
     /** @see SetProgramDir */
-    const boost::filesystem::path& GetProgramDir();
+    const fs::path& GetProgramDir();
 
     /** @see SetTopSourceDir */
-    const boost::filesystem::path& GetTopSourceDir();
+    const fs::path& GetTopSourceDir();
 
     /** Set the program directory. Should be called by main(). */
-    void SetProgramDir(const boost::filesystem::path& dir);
+    void SetProgramDir(const fs::path& dir);
 
     /** Set the top-level source directory (fuego). */
-    void SetTopSourceDir(const boost::filesystem::path& dir);
+    void SetTopSourceDir(const fs::path& dir);
 
     /** Get total amount of memory available on the system.
         @return The total memory in bytes or 0 if the memory cannot be
         determined. */
-    std::size_t TotalMemory();
+    size_t TotalMemory();
 
 }
 
 //----------------------------------------------------------------------------
-
-#endif // SG_PLATFORM_H

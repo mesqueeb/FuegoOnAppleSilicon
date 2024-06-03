@@ -70,7 +70,7 @@ void SgRandom::SetSeed(int seed)
     SgDebug() << "SgRandom::SetSeed: " << GetGlobalData().m_seed << '\n';
     for_each(GetGlobalData().m_allGenerators.begin(),
              GetGlobalData().m_allGenerators.end(),
-             std::mem_fun(&SgRandom::SetSeed));
+             [](SgRandom* prnd) { prnd->SetSeed(); });
     srand(GetGlobalData().m_seed);
 }
 

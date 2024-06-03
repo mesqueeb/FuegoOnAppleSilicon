@@ -6,8 +6,7 @@
     It always needs to be the first header file included by any .cpp file. */
 //----------------------------------------------------------------------------
 
-#ifndef SG_SYSTEM_H
-#define SG_SYSTEM_H
+#pragma once
 
 //----------------------------------------------------------------------------
 // Used by GNU Autotools
@@ -167,5 +166,3 @@ inline void SgSynchronizeThreadMemory()
 
 #endif
 }
-
-#endif // SG_SYSTEM_H

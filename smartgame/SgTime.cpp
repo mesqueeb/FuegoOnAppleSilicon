@@ -19,13 +19,8 @@
 #include <sys/times.h>
 #include <unistd.h>
 #endif
-#include <boost/date_time/posix_time/posix_time.hpp>
+#include <chrono>
 #include "SgException.h"
-
-using namespace std;
-using boost::posix_time::microsec_clock;
-using boost::posix_time::ptime;
-using boost::posix_time::time_duration;
 
 //----------------------------------------------------------------------------
 
@@ -35,7 +30,7 @@ SgTimeMode g_defaultMode = SG_TIME_REAL;
 
 bool g_isInitialized = false;
 
-ptime g_start;
+std::chrono::steady_clock::time_point g_start;
 
 #if ! WIN32
 clock_t g_ticksPerSecond;
@@ -52,7 +47,8 @@ void Init()
     g_ticksPerSecond = static_cast<clock_t>(ticksPerSecond);
     g_ticksPerMinute = 60 * g_ticksPerSecond;
 #endif
-    g_start = microsec_clock::universal_time();
+    g_start = std::chrono::steady_clock::now();
+    //g_start = microsec_clock::universal_time();
     g_isInitialized = true;
 }
 
@@ -60,18 +56,18 @@ void Init()
 
 //----------------------------------------------------------------------------
 
-string SgTime::Format(double time, bool minsAndSecs)
+std::string SgTime::Format(double time, bool minsAndSecs)
 {
-    ostringstream out;
+    std::ostringstream out;
     if (minsAndSecs)
     {
         int mins = static_cast<int>(time / 60);
         int secs = static_cast<int>(time - mins * 60);
-        out << setw(2) << mins << ':' << setw(2) << setfill('0') 
+        out << std::setw(2) << mins << ':' << std::setw(2) << std::setfill('0')
             << secs;
     }
     else
-        out << setprecision(2) << fixed << time;
+        out << std::setprecision(2) << std::fixed << time;
     return out.str();
 }
 
@@ -126,8 +122,8 @@ double SgTime::Get(SgTimeMode mode)
         }
     case SG_TIME_REAL:
         {
-            time_duration diff = microsec_clock::universal_time() - g_start;
-            return double(diff.total_nanoseconds()) * 1e-9;
+            auto diff = std::chrono::steady_clock::now() - g_start;
+            return double(std::chrono::duration_cast<std::chrono::nanoseconds>(diff).count()) * 1e-9;
         }
     case SG_TIME_NONE:
         {
@@ -150,14 +146,14 @@ void SgTime::SetDefaultMode(SgTimeMode mode)
     g_defaultMode = mode;
 }
 
-string SgTime::TodaysDate()
+std::string SgTime::TodaysDate()
 {
     time_t systime = time(0);
     struct tm* currtime = localtime(&systime);
     const int BUF_SIZE = 14;
     char buf[BUF_SIZE];
     strftime(buf, BUF_SIZE - 1, "%Y-%m-%d", currtime);
-    return string(buf);
+    return std::string(buf);
 }
 
 //----------------------------------------------------------------------------

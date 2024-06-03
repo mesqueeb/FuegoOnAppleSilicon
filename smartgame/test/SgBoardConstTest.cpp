@@ -6,7 +6,7 @@
 #include "SgSystem.h"
 
 #include <sstream>
-#include <boost/test/auto_unit_test.hpp>
+#include <boost/test/unit_test.hpp>
 #include "SgBoardConst.h"
 
 using namespace std;

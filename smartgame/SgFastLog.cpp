@@ -28,7 +28,7 @@ BOOST_STATIC_ASSERT(numeric_limits<float>::is_iec559);
 SgFastLog::SgFastLog(int mantissaBits)
     : m_mantissaBitsDiff(MAX_MANTISSA_BITS - mantissaBits)
 {
-    m_lookupTable = new float[1 << mantissaBits];
+    m_lookupTable = new float[(int)(1 << mantissaBits)];
     IntFloat x;
     x.m_int = 0x3F800000;
     int incr = (1 << m_mantissaBitsDiff);

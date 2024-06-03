@@ -2,8 +2,7 @@
 /** @file GoUctBookBuilder.h */
 //----------------------------------------------------------------------------
 
-#ifndef GOBOOKBUILDER_H
-#define GOBOOKBUILDER_H
+#pragma once
 
 #include <cmath>
 #include <iostream>
@@ -44,23 +43,23 @@ public:
     /** Number of workers to use during leaf expansion. Each worker
         may use a multi-threaded search. Should speed up the expansion
         of leaf states by a factor of (very close to) NumWorkers(). */
-    std::size_t NumWorkers() const;
+    size_t NumWorkers() const;
 
     /** See NumWorkers() */
-    void SetNumWorkers(std::size_t num);
+    void SetNumWorkers(size_t num);
 
     /** Number of threads to use for each search */
-    std::size_t NumThreadsPerWorker() const;
+    size_t NumThreadsPerWorker() const;
 
     /** See NumThreadsPerWorker() */
-    void SetNumThreadsPerWorker(std::size_t num);
+    void SetNumThreadsPerWorker(size_t num);
 
     /** Maximum amount of memory to use for the search.  The memory
         will be divided equally among all the workers. */
-    std::size_t MaxMemory() const;
+    size_t MaxMemory() const;
 
     /** See MaxMemory */
-    void SetMaxMemory(std::size_t memory);
+    void SetMaxMemory(size_t memory);
 
     /** Number of games to play when evaluation a state. */
     SgUctValue NumGamesPerEvaluation() const;
@@ -99,7 +98,7 @@ protected:
 
     void EnsureRootExists();
 
-    bool GenerateMoves(std::size_t count, std::vector<SgMove>& moves, 
+    bool GenerateMoves(size_t count, std::vector<SgMove>& moves, 
                        float& value);
 
     void GetAllLegalMoves(std::vector<SgMove>& moves);
@@ -129,12 +128,12 @@ private:
     class Worker
     {
     public:
-        Worker(std::size_t id, PLAYER& player);
+        Worker(size_t id, PLAYER& player);
 
         float operator()(const SgMove& move);
 
     private:
-        std::size_t m_id;
+        size_t m_id;
         
         PLAYER* m_player;
     };
@@ -149,13 +148,13 @@ private:
     std::set<SgHashCode> m_visited;
 
     /** See MaxMemory() */
-    std::size_t m_maxMemory;
+    size_t m_maxMemory;
 
     /** See NumWorkers() */
-    std::size_t m_numWorkers;
+    size_t m_numWorkers;
 
     /** See NumThreadsPerWorker() */
-    std::size_t m_numThreadsPerWorker;
+    size_t m_numThreadsPerWorker;
 
     /** See NumGamesPerEvaluation. */
     SgUctValue m_numGamesPerEvaluation;
@@ -163,19 +162,19 @@ private:
     /** See NumGamesForSort() */
     SgUctValue m_numGamesPerSort;
 
-    std::size_t m_numEvals;
+    size_t m_numEvals;
 
-    std::size_t m_numWidenings;
+    size_t m_numWidenings;
 
-    std::size_t m_valueUpdates;
+    size_t m_valueUpdates;
 
-    std::size_t m_priorityUpdates;
+    size_t m_priorityUpdates;
 
-    std::size_t m_internalNodes;
+    size_t m_internalNodes;
 
-    std::size_t m_leafNodes;
+    size_t m_leafNodes;
 
-    std::size_t m_terminalNodes;
+    size_t m_terminalNodes;
 
     /** Players for each thread. */
     std::vector<PLAYER*> m_players;
@@ -193,37 +192,37 @@ private:
 //----------------------------------------------------------------------------
 
 template<class PLAYER>
-inline std::size_t GoUctBookBuilder<PLAYER>::NumWorkers() const
+inline size_t GoUctBookBuilder<PLAYER>::NumWorkers() const
 {
     return m_numWorkers;
 }
 
 template<class PLAYER>
-inline void GoUctBookBuilder<PLAYER>::SetNumWorkers(std::size_t num)
+inline void GoUctBookBuilder<PLAYER>::SetNumWorkers(size_t num)
 {
     m_numWorkers = num;
 }
 
 template<class PLAYER>
-inline std::size_t GoUctBookBuilder<PLAYER>::MaxMemory() const
+inline size_t GoUctBookBuilder<PLAYER>::MaxMemory() const
 {
     return m_maxMemory;
 }
 
 template<class PLAYER>
-inline void GoUctBookBuilder<PLAYER>::SetMaxMemory(std::size_t memory)
+inline void GoUctBookBuilder<PLAYER>::SetMaxMemory(size_t memory)
 {
     m_maxMemory = memory;
 }
 
 template<class PLAYER>
-inline std::size_t GoUctBookBuilder<PLAYER>::NumThreadsPerWorker() const
+inline size_t GoUctBookBuilder<PLAYER>::NumThreadsPerWorker() const
 {
     return m_numThreadsPerWorker;
 }
 
 template<class PLAYER>
-inline void GoUctBookBuilder<PLAYER>::SetNumThreadsPerWorker(std::size_t num)
+inline void GoUctBookBuilder<PLAYER>::SetNumThreadsPerWorker(size_t num)
 {
     m_numThreadsPerWorker = num;
 }
@@ -281,7 +280,7 @@ template<class PLAYER>
 void GoUctBookBuilder<PLAYER>::CreateWorkers()
 {
     PrintMessage("GoUctBookBuilder::CreateWorkers()\n");
-    for (std::size_t i = 0; i < m_numWorkers; ++i)
+    for (size_t i = 0; i < m_numWorkers; ++i)
     {
         PLAYER* newPlayer = new PLAYER(m_state.Board());
 
@@ -309,7 +308,7 @@ template<class PLAYER>
 void GoUctBookBuilder<PLAYER>::DestroyWorkers()
 {
     PrintMessage("GoUctBookBuilder::DestroyWorkers()\n");
-    for (std::size_t i = 0; i < m_numWorkers; ++i)
+    for (size_t i = 0; i < m_numWorkers; ++i)
         delete m_players[i];
     delete m_threadedWorker;
     m_workers.clear();
@@ -331,7 +330,7 @@ void GoUctBookBuilder<PLAYER>::Fini()
 //----------------------------------------------------------------------------
 
 template<class PLAYER>
-GoUctBookBuilder<PLAYER>::Worker::Worker(std::size_t id, PLAYER& player)
+GoUctBookBuilder<PLAYER>::Worker::Worker(size_t id, PLAYER& player)
 
     : m_id(id), 
       m_player(&player)
@@ -451,7 +450,7 @@ void GoUctBookBuilder<PLAYER>::EnsureRootExists()
 
 /** Computes an ordered set of moves to consider. */
 template<class PLAYER>
-bool GoUctBookBuilder<PLAYER>::GenerateMoves(std::size_t count, 
+bool GoUctBookBuilder<PLAYER>::GenerateMoves(size_t count, 
                                              std::vector<SgMove>& moves,
                                              float& value)
 {
@@ -481,7 +480,7 @@ bool GoUctBookBuilder<PLAYER>::GenerateMoves(std::size_t count,
     }
     // Sort moves based on count of this search. 
     std::stable_sort(ordered.begin(), ordered.end());
-    for (std::size_t i = 0; i < ordered.size(); ++i)
+    for (size_t i = 0; i < ordered.size(); ++i)
         moves.push_back(ordered[i].second);
     SgDebug() << '\n';
     return false;
@@ -490,7 +489,7 @@ bool GoUctBookBuilder<PLAYER>::GenerateMoves(std::size_t count,
 template<class PLAYER>
 void GoUctBookBuilder<PLAYER>::BeforeEvaluateChildren()
 {
-    for (std::size_t i = 0; i < m_numWorkers; ++i)
+    for (size_t i = 0; i < m_numWorkers; ++i)
         m_players[i]->SetMaxGames(m_numGamesPerEvaluation);
 }
 
@@ -500,7 +499,7 @@ void GoUctBookBuilder<PLAYER>
                    std::vector<std::pair<SgMove, float> >& scores)
 {
     SgDebug() << "Evaluating children:";
-    for (std::size_t i = 0; i < childrenToDo.size(); ++i)
+    for (size_t i = 0; i < childrenToDo.size(); ++i)
         SgDebug() << ' ' << SgWritePoint(childrenToDo[i]);
     SgDebug() << '\n';
     m_threadedWorker->DoWork(childrenToDo, scores);
@@ -537,5 +536,3 @@ bool GoUctBookBuilder<PLAYER>::HasBeenVisited()
 }
 
 //----------------------------------------------------------------------------
-
-#endif // GOBOOKBUILDER_HPP

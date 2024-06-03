@@ -5,7 +5,7 @@
 
 #include "SgSystem.h"
 
-#include <boost/test/auto_unit_test.hpp>
+#include <boost/test/unit_test.hpp>
 #include "GoBoard.h"
 #include "GoBoardSynchronizer.h"
 #include "SgWrite.h"

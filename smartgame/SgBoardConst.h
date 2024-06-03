@@ -3,10 +3,9 @@
     Constant data for a given board size. */
 //----------------------------------------------------------------------------
 
-#ifndef SG_BOARDCONST_H
-#define SG_BOARDCONST_H
+#pragma once
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "SgArray.h"
 #include "SgNbIterator.h"
 #include "SgPoint.h"
@@ -144,10 +143,10 @@ private:
         int m_side[2][2 * (SG_NS + SG_WE) + 1];
     };
 
-    typedef SgArray<boost::shared_ptr<BoardConstImpl>,SG_MAX_SIZE + 1>
+    typedef SgArray<std::shared_ptr<BoardConstImpl>,SG_MAX_SIZE + 1>
         BoardConstImplArray;
 
-    boost::shared_ptr<BoardConstImpl> m_const;
+    std::shared_ptr<BoardConstImpl> m_const;
 
     void Create(SgGrid size);
 
@@ -344,5 +343,3 @@ inline SgNbIterator::SgNbIterator(const SgBoardConst& boardConst, SgPoint p)
 { }
 
 //----------------------------------------------------------------------------
-
-#endif // SG_BOARDCONST_H
