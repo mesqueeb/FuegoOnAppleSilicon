@@ -62,7 +62,7 @@ string TimeModeToString(SgTimeMode mode)
 //----------------------------------------------------------------------------
 
 SgGtpCommands::SgGtpCommands(GtpEngine& engine, const char* programPath)
-    : m_programPath(programPath),
+    : m_programPath(programPath ? programPath : ""),
       m_engine(engine)
 { }
 
