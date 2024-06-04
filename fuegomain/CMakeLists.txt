@@ -15,4 +15,4 @@ add_executable(${EXE_NAME} ${EXE_SOURCES})
 
 target_link_libraries(${EXE_NAME} fuego_gouct)
 
-add_framework(${EXE_NAME} boost_program_options ${BOOST_HOME})
+#add_framework(${EXE_NAME} boost_program_options ${BOOST_HOME})
