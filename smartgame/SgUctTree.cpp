@@ -11,7 +11,6 @@
 #include "SgTimer.h"
 
 using boost::format;
-using boost::shared_ptr;
 
 //----------------------------------------------------------------------------
 

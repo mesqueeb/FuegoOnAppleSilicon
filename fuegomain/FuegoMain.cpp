@@ -14,12 +14,14 @@
 #include <boost/program_options/variables_map.hpp>
 #include <boost/program_options/parsers.hpp>
 
-#include "FuegoMainEngine.h"
+#include "FuegoEngine.hpp"
+
+//#include "FuegoMainEngine.h"
 #include "FuegoMainUtil.h"
-#include "GoInit.h"
+//#include "GoInit.h"
 #include "SgDebug.h"
 #include "SgException.h"
-#include "SgInit.h"
+//#include "SgInit.h"
 #include "SgPlatform.h"
 
 namespace fs = std::filesystem;
@@ -32,23 +34,11 @@ namespace {
 /** @name Settings from command line options */
 // @{
 
-/** Use opening book */
-bool g_useBook = true;
+
 
 /** Allow handicap games */
-bool g_allowHandicap = true;
 
 bool g_quiet = false;
-
-int g_fixedBoardSize;
-
-int g_maxGames;
-
-std::string g_config;
-
-const char* g_programPath;
-
-int g_srand;
 
 std::vector<std::string> g_inputFiles;
 
@@ -80,25 +70,25 @@ void Help(po::options_description& desc, std::ostream& out)
     exit(0);
 }
 
-void ParseOptions(int argc, char** argv)
+void ParseOptions(fuego_engine_configuration& cfg, int argc, char** argv)
 {
     po::options_description normalOptions("Options");
     normalOptions.add_options()
         ("config", 
-            po::value<std::string>(&g_config)->value_name("_")->default_value(""),
+            po::value<std::string>(&cfg.configPath)->value_name("_")->default_value(""),
          "execute GTP commands from file before starting main command loop")
         ("help", "Displays this help and exit")
         ("maxgames", 
-         po::value<int>(&g_maxGames)->default_value(-1),
+         po::value<int>(&cfg.maxGames)->default_value(-1),
          "make clear_board fail after n invocations")
         ("nobook", "don't automatically load opening book")
         ("nohandicap", "don't support handicap commands")
         ("quiet", "don't print debug messages")
         ("srand", 
-         po::value<int>(&g_srand)->default_value(0),
+         po::value<int>(&cfg.srand)->default_value(0),
          "set random seed (-1:none, 0:time(0))")
         ("size", 
-         po::value<int>(&g_fixedBoardSize)->default_value(0),
+         po::value<int>(&cfg.fixedBoardSize)->default_value(0),
          "initial (and fixed) board size");
     po::options_description hiddenOptions;
     hiddenOptions.add_options()
@@ -122,9 +112,9 @@ void ParseOptions(int argc, char** argv)
     if (vm.count("help"))
         Help(normalOptions, std::cout);
     if (vm.count("nobook"))
-        g_useBook = false;
+        cfg.useBook = false;
     if (vm.count("nohandicap"))
-        g_allowHandicap = false;
+        cfg.allowHandicap = false;
     if (vm.count("quiet"))
         g_quiet = true;
 }
@@ -145,14 +135,15 @@ void PrintStartupMessage()
 
 int main(int argc, char** argv)
 {
+    fuego_engine_configuration engine_cfg;
     if (argc > 0 && argv != 0)
     {
-        g_programPath = argv[0];
+        engine_cfg.programPath = argv[0];
         SgPlatform::SetProgramDir(GetProgramDir(argv[0]));
         SgPlatform::SetTopSourceDir(GetTopSourceDir());
         try
         {
-            ParseOptions(argc, argv);
+            ParseOptions(engine_cfg, argc, argv);
         }
         catch (const SgException& e)
         {
@@ -164,19 +155,10 @@ int main(int argc, char** argv)
         SgDebugToNull();
     try
     {
-        SgInit();
-        GoInit();
         PrintStartupMessage();
-        SgRandom::SetSeed(g_srand);
-        FuegoMainEngine engine(g_fixedBoardSize, g_programPath, ! g_allowHandicap);
-        GoGtpAssertionHandler assertionHandler(engine);
-        if (g_maxGames >= 0)
-            engine.SetMaxClearBoard(g_maxGames);
-        if (g_useBook)
-            FuegoMainUtil::LoadBook(engine.Book(), 
-            					    SgPlatform::GetProgramDir());
-        if (g_config != "")
-            engine.ExecuteFile(g_config);
+
+        FuegoEngine feng{ engine_cfg };
+
         if (! g_inputFiles.empty())
         {
             for (size_t i = 0; i < g_inputFiles.size(); i++)
@@ -188,14 +170,14 @@ int main(int argc, char** argv)
                     				  % file);
                 GtpInputStream in(fin);
                 GtpOutputStream out(std::cout);
-                engine.MainLoop(in, out);
+                feng.engine().MainLoop(in, out);
             }
         }
         else
         {
             GtpInputStream in(std::cin);
             GtpOutputStream out(std::cout);
-            engine.MainLoop(in, out);
+            feng.engine().MainLoop(in, out);
         }
     }
     catch (const GtpFailure& e)
@@ -212,4 +194,3 @@ int main(int argc, char** argv)
 }
 
 //----------------------------------------------------------------------------
-

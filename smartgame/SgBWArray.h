@@ -6,7 +6,6 @@
 #ifndef SG_BWARRAY_H
 #define SG_BWARRAY_H
 
-#include <boost/static_assert.hpp>
 #include "SgBlackWhite.h"
 
 //----------------------------------------------------------------------------
@@ -41,8 +40,8 @@ public:
     const T& operator[](SgBlackWhite color) const;
 
 private:
-    BOOST_STATIC_ASSERT(SG_BLACK == 0);
-    BOOST_STATIC_ASSERT(SG_WHITE == 1);
+    static_assert(SG_BLACK == 0);
+    static_assert(SG_WHITE == 1);
 
     T m_array[2];
 };

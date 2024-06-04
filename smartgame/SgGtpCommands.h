@@ -69,7 +69,7 @@ public:
     void Register(GtpEngine& engine);
 
 private:
-    const char* m_programPath;
+    std::string m_programPath;
 
     GtpEngine& m_engine;
 

@@ -629,7 +629,7 @@ public:
     std::string ExecuteCommand(const std::string& cmd,
                                std::ostream& log = std::cerr);
 
-    std::pair<bool, std::string> ExecuteCommand(std::string_view cmdline);
+    std::pair<bool, std::string> ExecuteCommand(std::string_view cmdline) noexcept;
 
     /** Run the main command loop.
         Reads lines from input stream, calls the corresponding command

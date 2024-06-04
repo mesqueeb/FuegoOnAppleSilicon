@@ -675,19 +675,25 @@ void GtpEngine::CmdVersion(GtpCommand& cmd)
     cmd.CheckArgNone();
 }
 
-std::pair<bool, std::string> GtpEngine::ExecuteCommand(std::string_view cmdline)
+std::pair<bool, std::string> GtpEngine::ExecuteCommand(std::string_view cmdline) noexcept
 {
     using namespace std::string_view_literals;
 
-    if (!IsCommandLine(std::string{cmdline}))
-        return { false, (std::ostringstream{} << "Bad command: "sv << cmdline).str() };
-    GtpCommand cmd;
-    cmd.Init(cmdline);
+    try {
+        if (!IsCommandLine(std::string{cmdline}))
+            return { false, (std::ostringstream{} << "Bad command: "sv << cmdline).str() };
+        GtpCommand cmd;
+        cmd.Init(cmdline);
     
-    std::ostringstream rss;
-    GtpOutputStream gtpLog(rss);
-    bool status = HandleCommand(cmd, gtpLog);
-    return { status, cmd.Response() };
+        std::ostringstream rss;
+        GtpOutputStream gtpLog(rss);
+        bool status = HandleCommand(cmd, gtpLog);
+        return { status, cmd.Response() };
+    } catch (std::exception const& e) {
+        return { false, e.what() };
+    } catch (...) {
+        return { false, "fatal error, unknown exception" };
+    }
 }
 
 std::string GtpEngine::ExecuteCommand(const std::string& cmdline, std::ostream& log)
