@@ -1,0 +1,421 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		116269412C0F89BA00774D32 /* RealityKitContent in Frameworks */ = {isa = PBXBuildFile; productRef = 116269402C0F89BA00774D32 /* RealityKitContent */; };
+		116269432C0F89BA00774D32 /* FuegoIteropSampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116269422C0F89BA00774D32 /* FuegoIteropSampleApp.swift */; };
+		116269452C0F89BA00774D32 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116269442C0F89BA00774D32 /* ContentView.swift */; };
+		116269472C0F89BB00774D32 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 116269462C0F89BB00774D32 /* Assets.xcassets */; };
+		1162694A2C0F89BB00774D32 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 116269492C0F89BB00774D32 /* Preview Assets.xcassets */; };
+		116269532C0F89E100774D32 /* fuego.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 116269522C0F89E100774D32 /* fuego.xcframework */; };
+		116269542C0F89E100774D32 /* fuego.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 116269522C0F89E100774D32 /* fuego.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1162695B2C0F8C1400774D32 /* FuegoBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1162695A2C0F8C1400774D32 /* FuegoBridge.swift */; };
+		1162695E2C0F980F00774D32 /* book.dat in Resources */ = {isa = PBXBuildFile; fileRef = 1162695D2C0F980F00774D32 /* book.dat */; };
+		116269602C0F9D4100774D32 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1162695F2C0F9CF000774D32 /* libc++.tbd */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		116269552C0F89E100774D32 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				116269542C0F89E100774D32 /* fuego.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		1162693B2C0F89BA00774D32 /* FuegoIteropSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FuegoIteropSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1162693F2C0F89BA00774D32 /* RealityKitContent */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = RealityKitContent; sourceTree = "<group>"; };
+		116269422C0F89BA00774D32 /* FuegoIteropSampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FuegoIteropSampleApp.swift; sourceTree = "<group>"; };
+		116269442C0F89BA00774D32 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		116269462C0F89BB00774D32 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		116269492C0F89BB00774D32 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		1162694B2C0F89BB00774D32 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		116269522C0F89E100774D32 /* fuego.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = fuego.xcframework; path = ../../build/fuego.xcframework; sourceTree = "<group>"; };
+		116269562C0F8A5500774D32 /* FuegoIteropSample-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FuegoIteropSample-Bridging-Header.h"; sourceTree = "<group>"; };
+		1162695A2C0F8C1400774D32 /* FuegoBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FuegoBridge.swift; sourceTree = "<group>"; };
+		1162695D2C0F980F00774D32 /* book.dat */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = book.dat; path = ../../../../book/book.dat; sourceTree = "<group>"; };
+		1162695F2C0F9CF000774D32 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		116269382C0F89BA00774D32 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				116269602C0F9D4100774D32 /* libc++.tbd in Frameworks */,
+				116269532C0F89E100774D32 /* fuego.xcframework in Frameworks */,
+				116269412C0F89BA00774D32 /* RealityKitContent in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		116269322C0F89BA00774D32 = {
+			isa = PBXGroup;
+			children = (
+				1162693D2C0F89BA00774D32 /* FuegoIteropSample */,
+				1162693E2C0F89BA00774D32 /* Packages */,
+				1162693C2C0F89BA00774D32 /* Products */,
+				116269512C0F89E100774D32 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		1162693C2C0F89BA00774D32 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1162693B2C0F89BA00774D32 /* FuegoIteropSample.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1162693D2C0F89BA00774D32 /* FuegoIteropSample */ = {
+			isa = PBXGroup;
+			children = (
+				1162695C2C0F97E100774D32 /* resources */,
+				116269422C0F89BA00774D32 /* FuegoIteropSampleApp.swift */,
+				116269442C0F89BA00774D32 /* ContentView.swift */,
+				116269462C0F89BB00774D32 /* Assets.xcassets */,
+				1162694B2C0F89BB00774D32 /* Info.plist */,
+				116269482C0F89BB00774D32 /* Preview Content */,
+				116269562C0F8A5500774D32 /* FuegoIteropSample-Bridging-Header.h */,
+				1162695A2C0F8C1400774D32 /* FuegoBridge.swift */,
+			);
+			path = FuegoIteropSample;
+			sourceTree = "<group>";
+		};
+		1162693E2C0F89BA00774D32 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				1162693F2C0F89BA00774D32 /* RealityKitContent */,
+			);
+			path = Packages;
+			sourceTree = "<group>";
+		};
+		116269482C0F89BB00774D32 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				116269492C0F89BB00774D32 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		116269512C0F89E100774D32 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1162695F2C0F9CF000774D32 /* libc++.tbd */,
+				116269522C0F89E100774D32 /* fuego.xcframework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		1162695C2C0F97E100774D32 /* resources */ = {
+			isa = PBXGroup;
+			children = (
+				1162695D2C0F980F00774D32 /* book.dat */,
+			);
+			path = resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1162693A2C0F89BA00774D32 /* FuegoIteropSample */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1162694E2C0F89BB00774D32 /* Build configuration list for PBXNativeTarget "FuegoIteropSample" */;
+			buildPhases = (
+				116269372C0F89BA00774D32 /* Sources */,
+				116269382C0F89BA00774D32 /* Frameworks */,
+				116269392C0F89BA00774D32 /* Resources */,
+				116269552C0F89E100774D32 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FuegoIteropSample;
+			packageProductDependencies = (
+				116269402C0F89BA00774D32 /* RealityKitContent */,
+			);
+			productName = FuegoIteropSample;
+			productReference = 1162693B2C0F89BA00774D32 /* FuegoIteropSample.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		116269332C0F89BA00774D32 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1540;
+				LastUpgradeCheck = 1540;
+				TargetAttributes = {
+					1162693A2C0F89BA00774D32 = {
+						CreatedOnToolsVersion = 15.4;
+						LastSwiftMigration = 1540;
+					};
+				};
+			};
+			buildConfigurationList = 116269362C0F89BA00774D32 /* Build configuration list for PBXProject "FuegoIteropSample" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 116269322C0F89BA00774D32;
+			productRefGroup = 1162693C2C0F89BA00774D32 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1162693A2C0F89BA00774D32 /* FuegoIteropSample */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		116269392C0F89BA00774D32 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1162695E2C0F980F00774D32 /* book.dat in Resources */,
+				1162694A2C0F89BB00774D32 /* Preview Assets.xcassets in Resources */,
+				116269472C0F89BB00774D32 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		116269372C0F89BA00774D32 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				116269452C0F89BA00774D32 /* ContentView.swift in Sources */,
+				116269432C0F89BA00774D32 /* FuegoIteropSampleApp.swift in Sources */,
+				1162695B2C0F8C1400774D32 /* FuegoBridge.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		1162694C2C0F89BB00774D32 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = xros;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				XROS_DEPLOYMENT_TARGET = 1.2;
+			};
+			name = Debug;
+		};
+		1162694D2C0F89BB00774D32 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = xros;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+				XROS_DEPLOYMENT_TARGET = 1.2;
+			};
+			name = Release;
+		};
+		1162694F2C0F89BB00774D32 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"FuegoIteropSample/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "$(TARGET_NAME)/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = mesqueeb.FuegoIteropSample;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "xros xrsimulator";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "FuegoIteropSample/FuegoIteropSample-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+			};
+			name = Debug;
+		};
+		116269502C0F89BB00774D32 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"FuegoIteropSample/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "$(TARGET_NAME)/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = mesqueeb.FuegoIteropSample;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "xros xrsimulator";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "FuegoIteropSample/FuegoIteropSample-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		116269362C0F89BA00774D32 /* Build configuration list for PBXProject "FuegoIteropSample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1162694C2C0F89BB00774D32 /* Debug */,
+				1162694D2C0F89BB00774D32 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1162694E2C0F89BB00774D32 /* Build configuration list for PBXNativeTarget "FuegoIteropSample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1162694F2C0F89BB00774D32 /* Debug */,
+				116269502C0F89BB00774D32 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		116269402C0F89BA00774D32 /* RealityKitContent */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = RealityKitContent;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 116269332C0F89BA00774D32 /* Project object */;
+}

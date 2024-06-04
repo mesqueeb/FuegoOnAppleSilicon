@@ -44,12 +44,12 @@ private:
 
 extern "C" {
 
-struct result_descriptor {
+struct fuego_result_descriptor {
     void* result;
     int success;
 };
 
-result_descriptor create_engine(
+fuego_result_descriptor fuego_create_engine(
     const char* program_path,
     const char* config_path,
     int srand,
@@ -58,9 +58,9 @@ result_descriptor create_engine(
     int use_book,
     int allow_handicap);
 
-void free_string(void* cookie);
-void free_engine(void* cookie);
+void fuego_free_string(void* cookie);
+void fuego_free_engine(void* cookie);
 
-result_descriptor process_command(void* cookie, const char* cmd, size_t cmdlen);
+fuego_result_descriptor fuego_process_command(void* cookie, const char* cmd, size_t cmdlen);
 
 }

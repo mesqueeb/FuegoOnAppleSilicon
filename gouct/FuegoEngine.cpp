@@ -186,10 +186,12 @@ std::pair<bool, std::string> FuegoEngine::ProcessCommand(std::string_view comman
 }
 
 #include <cstring>
-
+#if !WIN32
+#   define _strdup strdup
+#endif
 extern "C" {
 
-result_descriptor create_engine(
+fuego_result_descriptor fuego_create_engine(
     const char* program_path,
     const char* config_path,
     int srand,
@@ -220,18 +222,18 @@ result_descriptor create_engine(
     }
 }
 
-void free_string(void* cookie)
+void fuego_free_string(void* cookie)
 {
     free(cookie);
 }
 
-void free_engine(void* cookie)
+void fuego_free_engine(void* cookie)
 {
     FuegoEngine * peng = reinterpret_cast<FuegoEngine*>(cookie);
     delete peng;
 }
 
-result_descriptor process_command(void* cookie, const char* cmd, size_t cmdlen)
+fuego_result_descriptor fuego_process_command(void* cookie, const char* cmd, size_t cmdlen)
 {
     FuegoEngine* peng = reinterpret_cast<FuegoEngine*>(cookie);
     try {
