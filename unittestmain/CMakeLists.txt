@@ -78,7 +78,34 @@ set (MODULE_SOURCES
         ../unittestmain/UnitTestMain.cpp
 )
 
+function(instrument_test_regisrar result test_name file_name)
+    #message("    TEST_NAME: ${test_name}")    
+    set(${result} "boost::unit_test::ut_detail::auto_test_unit_registrar(boost::unit_test::make_test_case(&${test_name}_invoker, \"${test_name}\", \"${file_name}\", 0), boost::unit_test::decorator::collector_t::instance());\n" PARENT_SCOPE)
+    #set(RES "boost::unit_test::")
+    #message("    resultX: ${RES}") 
+endfunction()
+
 if (DEFINED FUEGO_LIBRARY)
+
+foreach(ITEM ${MODULE_SOURCES})
+    message("FILE: ${ITEM}")
+    file(READ ${ITEM} FILE_CONTENTS)
+    string(REGEX MATCHALL "[ \t]*BOOST_AUTO_TEST_CASE[^\r\n]+[ \t\r\n]*" DECL_LINES "${FILE_CONTENTS}")
+    foreach(DECL_LINE ${DECL_LINES})
+        string(REGEX MATCH "[ \t]*BOOST_AUTO_TEST_CASE[\(][ \t]*([a-zA-Z0-9_]+)" VAR "${DECL_LINE}")
+        #message("FOUND TEST ${CMAKE_MATCH_1}")
+        instrument_test_regisrar("RESULT" ${CMAKE_MATCH_1} ${ITEM})
+        set (TEST_LIST "${TEST_LIST}    ${RESULT}")
+        set (FWD_TEST_DECLS "${FWD_TEST_DECLS} void ${CMAKE_MATCH_1}_invoker();\n")
+    endforeach()
+endforeach()
+
+configure_file (
+    "all_tests_registrar.cpp.in"
+    "all_tests_registrar.cpp"
+)
+
+set (MODULE_SOURCES ${MODULE_SOURCES} ${CMAKE_CURRENT_BINARY_DIR}/all_tests_registrar.cpp)
     add_library(${MODULE_NAME} STATIC ${MODULE_SOURCES})
     add_definitions(-DFUEGO_LIBRARY)
 else()
