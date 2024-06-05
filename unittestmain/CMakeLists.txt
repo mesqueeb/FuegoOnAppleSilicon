@@ -83,7 +83,7 @@ function(instrument_test_regisrar result test_name file_name)
     #set(${result} "boost::unit_test::ut_detail::auto_test_unit_registrar(boost::unit_test::make_test_case(&${test_name}_invoker, \"${test_name}\", \"${file_name}\", 0), boost::unit_test::decorator::collector_t::instance());\n" PARENT_SCOPE)
 endfunction()
 
-if (DEFINED FUEGO_LIBRARY)
+if (FUEGO_LIBRARY)
 
     foreach(ITEM ${TEST_SOURCES})
         #message("FILE: ${ITEM}")
