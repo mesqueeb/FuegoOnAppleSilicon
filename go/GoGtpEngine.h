@@ -483,7 +483,7 @@ class GoGtpAssertionHandler
     : public SgAssertionHandler
 {
 public:
-    GoGtpAssertionHandler(const GoGtpEngine& engine);
+    GoGtpAssertionHandler(const GoGtpEngine& engine) noexcept;
 
     void Run();
 

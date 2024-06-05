@@ -1687,7 +1687,7 @@ const SgMpiSynchronizerHandle GoGtpEngine::MpiSynchronizer() const
 
 //----------------------------------------------------------------------------
 
-GoGtpAssertionHandler::GoGtpAssertionHandler(const GoGtpEngine& engine)
+GoGtpAssertionHandler::GoGtpAssertionHandler(const GoGtpEngine& engine) noexcept
     : m_engine(engine)
 { }
 

@@ -156,7 +156,7 @@ FuegoEngine::FuegoEngine(fuego_engine_configuration const& cfg)
         try {
             SgRandom::SetSeed(cfg.srand);
             impl_ = std::make_unique<FuegoEngineImpl>(cfg);
-            assertionHandler_.emplace(*impl_);
+            assertionHandler_.emplace(*impl_); // noexcept
         } catch (...) {
             GoFini();
             throw;
@@ -170,6 +170,7 @@ FuegoEngine::FuegoEngine(fuego_engine_configuration const& cfg)
 FuegoEngine::~FuegoEngine()
 {
     assertionHandler_ = std::nullopt;
+    impl_.reset();
     try {
         GoFini();
         SgFini();
@@ -214,7 +215,6 @@ fuego_result_descriptor fuego_create_engine(
         return { peng, 0 };
     } catch (std::exception const& e) {
         if (peng) delete peng;
-        std::string_view errmsg = e.what();
         return { _strdup(e.what()), 1 };
     } catch (...) {
         if (peng) delete peng;
@@ -240,7 +240,6 @@ fuego_result_descriptor fuego_process_command(void* cookie, const char* cmd, siz
         auto [suc, result] = peng->ProcessCommand(std::string_view{ cmd, cmdlen });
         return { _strdup(result.c_str()), suc ? 0 : 1 };
     } catch (std::exception const& e) {
-        std::string_view errmsg = e.what();
         return { _strdup(e.what()), 1 };
     } catch (...) {
         return { _strdup("fatal error, unknown exception"), 1 };
