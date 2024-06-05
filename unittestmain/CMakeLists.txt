@@ -4,9 +4,9 @@ include_directories(../go)
 include_directories(../gouct)
 include_directories(../simpleplayers)
 
-set (EXE_NAME fuego_unittest)
+set (MODULE_NAME fuego_unittest)
 
-set (EXE_SOURCES
+set (MODULE_SOURCES
         ../go/test/GoBoardTest.cpp
         ../go/test/GoBoardSynchronizerTest.cpp
         ../go/test/GoBoardUpdaterTest.cpp
@@ -78,10 +78,15 @@ set (EXE_SOURCES
         ../unittestmain/UnitTestMain.cpp
 )
 
-add_executable(${EXE_NAME} ${EXE_SOURCES})
+if (DEFINED FUEGO_LIBRARY)
+    add_library(${MODULE_NAME} STATIC ${MODULE_SOURCES})
+    add_definitions(-DFUEGO_LIBRARY)
+else()
+    add_executable(${MODULE_NAME} ${MODULE_SOURCES})
+endif()
 
-target_link_libraries(${EXE_NAME} fuego_gouct)
-target_link_libraries(${EXE_NAME} fuego_simpleplayers)
+target_link_libraries(${MODULE_NAME} fuego_gouct)
+target_link_libraries(${MODULE_NAME} fuego_simpleplayers)
 
 #used included
 #add_framework(${EXE_NAME} boost_unit_test_framework ${BOOST_HOME})
