@@ -1,0 +1,5 @@
+@FWD_TEST_DECLS@
+void all_tests_registrar()
+{
+@TEST_LIST@
+}

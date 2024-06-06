@@ -6,7 +6,7 @@
 #include "SgBookBuilder.h"
 
 #include <sstream>
-#include <boost/numeric/conversion/bounds.hpp>
+//#include <boost/numeric/conversion/bounds.hpp>
 #include "SgDebug.h"
 #include "SgPoint.h"
 #include "SgTimer.h"
@@ -365,7 +365,7 @@ void SgBookBuilder::UpdateValue(SgBookNode& node,
                                 const std::vector<SgMove>& legal)
 {
     bool hasChild = false;
-    float bestValue = boost::numeric::bounds<float>::lowest();
+    float bestValue = std::numeric_limits<float>::lowest();
     for (std::size_t i = 0; i < legal.size(); ++i)
     {
     PlayMove(legal[i]);
@@ -427,7 +427,7 @@ float SgBookBuilder::ComputePriority(const SgBookNode& parent,
 SgMove SgBookBuilder::UpdatePriority(SgBookNode& node)
 {
     bool hasChild = false;
-    float bestPriority = boost::numeric::bounds<float>::highest();
+    float bestPriority = (std::numeric_limits<float>::max)();
     SgMove bestChild = SG_NULLMOVE;
     std::vector<SgMove> legal;
     GetAllLegalMoves(legal);

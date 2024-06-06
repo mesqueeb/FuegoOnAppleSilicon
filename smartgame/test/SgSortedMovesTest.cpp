@@ -6,7 +6,7 @@
 #include "SgSystem.h"
 
 #include <limits>
-#include <boost/test/auto_unit_test.hpp>
+#include <boost/test/unit_test.hpp>
 #include "SgSortedMoves.h"
 
 using std::numeric_limits;

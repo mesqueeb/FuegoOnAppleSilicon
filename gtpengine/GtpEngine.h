@@ -21,8 +21,7 @@
     into a response with error status. */
 //----------------------------------------------------------------------------
 
-#ifndef GTPENGINE_H
-#define GTPENGINE_H
+#pragma once
 
 #include <cstddef>
 #include <iostream>
@@ -169,7 +168,7 @@ public:
 
     /** Construct with a command line.
         @see Init() */
-    GtpCommand(const std::string& line);
+    GtpCommand(std::string_view line);
 
     /** Conversion to output stream.
         Returns reference to response stream. */
@@ -257,7 +256,7 @@ public:
         be a comment line.
         It will be split into the optional numeric command ID, the command
         name, and arguments. */
-    void Init(const std::string& line);
+    void Init(std::string_view line);
 
     /** Get argument line.
         Get all arguments as a line.
@@ -391,7 +390,7 @@ GtpCommand& operator<<(GtpCommand& cmd, TYPE& type)
 inline GtpCommand::GtpCommand()
 { }
 
-inline GtpCommand::GtpCommand(const std::string& line)
+inline GtpCommand::GtpCommand(std::string_view line)
 {
     Init(line);
 }
@@ -630,6 +629,8 @@ public:
     std::string ExecuteCommand(const std::string& cmd,
                                std::ostream& log = std::cerr);
 
+    std::pair<bool, std::string> ExecuteCommand(std::string_view cmdline) noexcept;
+
     /** Run the main command loop.
         Reads lines from input stream, calls the corresponding command
         handler and writes the response to the output stream.
@@ -753,5 +754,3 @@ void GtpEngine::Register(const std::string& command,
 }
 
 //----------------------------------------------------------------------------
-
-#endif // GTPENGINE_H

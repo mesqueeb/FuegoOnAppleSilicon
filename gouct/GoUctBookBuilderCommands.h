@@ -2,8 +2,7 @@
 /** @file GoUctBookBuilderCommands.h */
 //----------------------------------------------------------------------------
 
-#ifndef GOUCT_BOOKBUILDERCOMMANDS_H
-#define GOUCT_BOOKBUILDERCOMMANDS_H
+#pragma once
 
 #include <string>
 #include <typeinfo>
@@ -34,7 +33,7 @@ public:
         PLAYER.
         @param book */
     GoUctBookBuilderCommands(const GoBoard& bd, GoPlayer*& player,
-                             boost::scoped_ptr<GoAutoBook>& book);
+                             std::unique_ptr<GoAutoBook>& book);
 
     void AddGoGuiAnalyzeCommands(GtpCommand& cmd);
 
@@ -90,7 +89,7 @@ private:
 
     GoPlayer*& m_player;
 
-    boost::scoped_ptr<GoAutoBook>& m_book;
+    std::unique_ptr<GoAutoBook>& m_book;
 
     GoUctBookBuilder<PLAYER> m_bookBuilder;
 
@@ -114,7 +113,7 @@ private:
 template<class PLAYER>
 GoUctBookBuilderCommands<PLAYER>
 ::GoUctBookBuilderCommands(const GoBoard& bd, GoPlayer*& player,
-                           boost::scoped_ptr<GoAutoBook>& book)
+                           std::unique_ptr<GoAutoBook>& book)
 : m_bd(bd),
     m_player(player),
     m_book(book),
@@ -193,7 +192,7 @@ void GoUctBookBuilderCommands<PLAYER>::Register(GtpEngine& e)
 template<class PLAYER>
 void GoUctBookBuilderCommands<PLAYER>::
 Register(GtpEngine& engine, const std::string& command,
-         typename GtpCallback<GoUctBookBuilderCommands>::Method method)
+         typename GtpCallback<GoUctBookBuilderCommands<PLAYER>>::Method method)
 {
     engine.Register(command, 
                     new GtpCallback<GoUctBookBuilderCommands>(this, method));
@@ -726,5 +725,3 @@ void GoUctBookBuilderCommands<PLAYER>::CmdMainLine(GtpCommand& cmd)
 }
 
 //----------------------------------------------------------------------------
-
-#endif // GOUCT_BOOKBUILDERCOMMANDS_H

@@ -19,7 +19,7 @@ bool s_isGoInitialized = false;
 /** Register Go-game specific properties. */
 void RegisterGoProps()
 {
-    SgProp* moveProp = new SgPropMove(0);
+    auto moveProp = std::make_shared<SgPropMove>(0);
     SG_PROP_MOVE_BLACK =
         SgProp::Register(moveProp, "B",
                          SG_PROPCLASS_MOVE + SG_PROPCLASS_BLACK);

@@ -2,12 +2,11 @@
 /** @file SgMpiSynchronizer.h */
 //----------------------------------------------------------------------------
 
-#ifndef SG_MPISYNCHRONIZER_H
-#define SG_MPISYNCHRONIZER_H
+#pragma once
 
 #include <iostream>
 #include <string>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "SgMove.h"
 #include "SgUctValue.h"
 
@@ -71,7 +70,7 @@ public:
     virtual bool CheckAbort() = 0;
 };
 
-typedef boost::shared_ptr<SgMpiSynchronizer> SgMpiSynchronizerHandle;
+using SgMpiSynchronizerHandle = std::shared_ptr<SgMpiSynchronizer>;
 
 //----------------------------------------------------------------------------
 
@@ -130,5 +129,3 @@ public:
 #include "SgUctSearch.h"
 
 //----------------------------------------------------------------------------
-
-#endif // SG_MPISYNCHRONIZER_H

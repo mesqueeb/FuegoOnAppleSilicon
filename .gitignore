@@ -1,9 +1,11 @@
-boost/ios/
-boost/iphone-build/
-boost/iphonesim-build/
+/**/.DS_Store
+boost/
+cmake-build-*
+xcframework
 build.log
 fuego-on-ios.xcodeproj/xcuserdata/
 fuego-on-ios.xcodeproj/project.xcworkspace/
 build/
 DerivedData/
 ios/
+windows/build.cmd

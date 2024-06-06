@@ -6,20 +6,20 @@
 #include "SgSystem.h"
 #include "FuegoMainUtil.h"
 
-#include <boost/filesystem.hpp>
 #include <fstream>
 #include <sstream>
+#include <filesystem>
 #include "GoBook.h"
 #include "SgDebug.h"
 #include "SgStringUtil.h"
 
-using namespace boost::filesystem;
+namespace fs = std::filesystem;
 
 //----------------------------------------------------------------------------
 
 namespace {
 
-bool LoadBookFile(GoBook& book, const path& file)
+bool LoadBookFile(GoBook& book, const fs::path& file)
 {
     std::string nativeFile = SgStringUtil::GetNativeFileName(file);
     SgDebug() << "Loading opening book from '" << nativeFile << "'... ";
@@ -47,7 +47,7 @@ bool LoadBookFile(GoBook& book, const path& file)
 //----------------------------------------------------------------------------
 
 void FuegoMainUtil::LoadBook(GoBook& book,
-                             const boost::filesystem::path& programDir)
+                             const fs::path& programDir)
 {
     const std::string fileName = "book.dat";
     #ifdef ABS_TOP_SRCDIR

@@ -22,10 +22,10 @@ public:
 
     ~FuegoMainEngine();
 
-    void CmdAnalyzeCommands(GtpCommand& cmd);
+    void CmdAnalyzeCommands(GtpCommand& cmd) override;
     void CmdLicense(GtpCommand& cmd);
-    void CmdName(GtpCommand& cmd);
-    void CmdVersion(GtpCommand& cmd);
+    void CmdName(GtpCommand& cmd) override;
+    void CmdVersion(GtpCommand& cmd) override;
 
 private:
     GoUctCommands m_uctCommands;

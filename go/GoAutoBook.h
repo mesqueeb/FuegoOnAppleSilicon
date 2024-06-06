@@ -2,8 +2,7 @@
 /** @file GoAutoBook.h */
 //----------------------------------------------------------------------------
 
-#ifndef GOAUTOBOOK_H
-#define GOAUTOBOOK_H
+#pragma once
 
 #include <cmath>
 #include <iostream>
@@ -188,5 +187,3 @@ inline void GoAutoBook::AddDisabledLines(const std::set<SgHashCode>& disabled)
 }
 
 //----------------------------------------------------------------------------
-
-#endif // GOAUTOBOOK_H

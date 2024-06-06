@@ -5,7 +5,7 @@
 
 #include "SgSystem.h"
 
-#include <boost/test/auto_unit_test.hpp>
+#include <boost/test/unit_test.hpp>
 #include "GoUctBoard.h"
 
 using SgPointUtil::Pt;
@@ -19,7 +19,8 @@ namespace {
 BOOST_AUTO_TEST_CASE(GoUctBoardTest_GetLastMove)
 {
     GoBoard board(9);
-    GoUctBoard bd(board);
+    auto pbd = GoUctBoard::create(board);
+    GoUctBoard& bd = *pbd;
     BOOST_CHECK_EQUAL(bd.GetLastMove(), SG_NULLMOVE);
     BOOST_CHECK_EQUAL(bd.Get2ndLastMove(), SG_NULLMOVE);
     bd.Play(Pt(1, 1));
@@ -41,7 +42,8 @@ BOOST_AUTO_TEST_CASE(GoUctBoardTest_IsLibertyOfBlock)
     setup.AddWhite(Pt(2, 1));
     setup.AddBlack(Pt(2, 2));
     GoBoard board(9, setup);
-    GoUctBoard bd(board);
+    auto pbd = GoUctBoard::create(board);
+    GoUctBoard& bd = *pbd;
     BOOST_CHECK(bd.IsLibertyOfBlock(Pt(1, 1), bd.Anchor(Pt(1, 2))));
     BOOST_CHECK(bd.IsLibertyOfBlock(Pt(1, 1), bd.Anchor(Pt(2, 1))));
     BOOST_CHECK(! bd.IsLibertyOfBlock(Pt(1, 1), bd.Anchor(Pt(2, 2))));

@@ -3,12 +3,10 @@
     Defines the floating point type used in SgUctSearch */
 //----------------------------------------------------------------------------
 
-#ifndef SG_UCTVALUE_H
-#define SG_UCTVALUE_H
+#pragma once
 
 #include <cmath>
 #include <limits>
-#include <boost/static_assert.hpp>
 #include "SgStatistics.h"
 #include "SgStatisticsVlt.h"
 
@@ -30,7 +28,7 @@ typedef SG_UCT_VALUE_TYPE SgUctValue;
 typedef double SgUctValue;
 #endif
 
-BOOST_STATIC_ASSERT(! std::numeric_limits<SgUctValue>::is_integer);
+static_assert(! std::numeric_limits<SgUctValue>::is_integer);
 
 typedef SgStatisticsBase<SgUctValue,SgUctValue> SgUctStatistics;
 
@@ -53,12 +51,10 @@ inline bool IsPrecise(T val)
 {
     const int radix = std::numeric_limits<T>::radix;
     const int digits = std::numeric_limits<T>::digits;
-    const T max = std::pow(T(radix), digits) - 1;
+    const T max = (T)std::pow(T(radix), digits) - 1;
     return val <= max;
 }
 
 }
 
 //----------------------------------------------------------------------------
-
-#endif // SG_UCTVALUE_H

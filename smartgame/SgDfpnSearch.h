@@ -2,8 +2,7 @@
 /** @file SgDfpnSearch.h */
 //----------------------------------------------------------------------------
 
-#ifndef SG_DFPN_SEARCH_H
-#define SG_DFPN_SEARCH_H
+#pragma once
 
 #include "SgBoardColor.h"
 #include "SgHashTable.h"
@@ -13,7 +12,6 @@
 
 #include <limits>
 #include <ostream>
-#include <boost/scoped_ptr.hpp>
 
 typedef std::vector<SgMove> PointSequence;
 
@@ -596,5 +594,3 @@ inline float DfpnSolver::WideningFactor() const
 }
 
 //----------------------------------------------------------------------------
-
-#endif // SG_DFPN_SEARCH_H

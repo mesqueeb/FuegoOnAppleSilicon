@@ -7,8 +7,8 @@
 
 #include <sstream>
 #include <vector>
-#include <boost/test/auto_unit_test.hpp>
-#include <boost/test/floating_point_comparison.hpp>
+#include <boost/test/unit_test.hpp>
+#include <boost/test/tools/floating_point_comparison.hpp>
 #include "SgDebug.h"
 #include "SgUctSearch.h"
 #include "SgUctTreeUtil.h"
@@ -253,7 +253,7 @@ class TestThreadStateFactory
 public:
     TestThreadStateFactory(const vector<TestNode>& nodes);
 
-    SgUctThreadState* Create(unsigned int threadId, const SgUctSearch& search);
+    std::unique_ptr<SgUctThreadState> Create(unsigned int threadId, const SgUctSearch& search);
 
 private:
     const vector<TestNode>& m_nodes;
@@ -263,11 +263,11 @@ TestThreadStateFactory::TestThreadStateFactory(const vector<TestNode>& nodes)
     : m_nodes(nodes)
 { }
 
-SgUctThreadState* TestThreadStateFactory::Create(unsigned int threadId,
+std::unique_ptr<SgUctThreadState> TestThreadStateFactory::Create(unsigned int threadId,
                                                  const SgUctSearch& search)
 {
     SG_UNUSED(search);
-    return new TestThreadState(threadId, m_nodes);
+    return std::make_unique<TestThreadState>(threadId, m_nodes);
 }
 
 //----------------------------------------------------------------------------

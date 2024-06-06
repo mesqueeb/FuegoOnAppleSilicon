@@ -6,27 +6,25 @@
 #include "SgSystem.h"
 
 #include <iostream>
-#include <boost/foreach.hpp>
+#include <filesystem>
+
 #include <boost/format.hpp>
-#include <boost/filesystem/path.hpp>
-#include <boost/filesystem.hpp>
 #include <boost/program_options/options_description.hpp>
 #include <boost/program_options/cmdline.hpp>
 #include <boost/program_options/variables_map.hpp>
 #include <boost/program_options/parsers.hpp>
-#include <boost/utility.hpp>
-#include "FuegoMainEngine.h"
+
+#include "FuegoEngine.hpp"
+
+//#include "FuegoMainEngine.h"
 #include "FuegoMainUtil.h"
-#include "GoInit.h"
+//#include "GoInit.h"
 #include "SgDebug.h"
 #include "SgException.h"
-#include "SgInit.h"
+//#include "SgInit.h"
 #include "SgPlatform.h"
 
-using boost::filesystem::path;
-using std::ostream;
-using std::string;
-using std::vector;
+namespace fs = std::filesystem;
 namespace po = boost::program_options;
 
 //----------------------------------------------------------------------------
@@ -36,85 +34,65 @@ namespace {
 /** @name Settings from command line options */
 // @{
 
-/** Use opening book */
-bool g_useBook = true;
+
 
 /** Allow handicap games */
-bool g_allowHandicap = true;
 
 bool g_quiet = false;
 
-int g_fixedBoardSize;
-
-int g_maxGames;
-
-string g_config;
-
-const char* g_programPath;
-
-int g_srand;
-
-vector<string> g_inputFiles;
+std::vector<std::string> g_inputFiles;
 
 // @} // @name
 
 /** Get program directory from program path.
     @param programPath Program path taken from @c argv[0] in
     @c main. According to ANSI C, this can be @c 0. */
-path GetProgramDir(const char* programPath)
+fs::path GetProgramDir(const char* programPath)
 {
-    if (programPath == 0)
+    if (!programPath)
         return "";
-    # if defined(BOOST_FILESYSTEM_VERSION)
-        SG_ASSERT (  BOOST_FILESYSTEM_VERSION == 2
-                  || BOOST_FILESYSTEM_VERSION == 3);
-    #endif
 
-    #if (defined(BOOST_FILESYSTEM_VERSION) && (BOOST_FILESYSTEM_VERSION == 3))
-        return path(programPath).branch_path();
-    #else
-        return path(programPath, boost::filesystem::native).branch_path();
-    #endif	
+    return fs::path(programPath).parent_path();
 }
 
-path GetTopSourceDir()
+fs::path GetTopSourceDir()
 {
     #ifdef ABS_TOP_SRCDIR
-        return path(ABS_TOP_SRCDIR);
+        return fs::path(ABS_TOP_SRCDIR);
     #else
         return "";
     #endif
 }
 
-void Help(po::options_description& desc, ostream& out)
+void Help(po::options_description& desc, std::ostream& out)
 {
     out << "Usage: fuego [options] [input files]\n" << desc << "\n";
     exit(0);
 }
 
-void ParseOptions(int argc, char** argv)
+void ParseOptions(fuego_engine_configuration& cfg, int argc, char** argv)
 {
     po::options_description normalOptions("Options");
     normalOptions.add_options()
         ("config", 
-         po::value<std::string>(&g_config)->default_value(""),
+            po::value<std::string>(&cfg.configPath)->value_name("_")->default_value(""),
          "execute GTP commands from file before starting main command loop")
         ("help", "Displays this help and exit")
         ("maxgames", 
-         po::value<int>(&g_maxGames)->default_value(-1),
+         po::value<int>(&cfg.maxGames)->default_value(-1),
          "make clear_board fail after n invocations")
         ("nobook", "don't automatically load opening book")
         ("nohandicap", "don't support handicap commands")
         ("quiet", "don't print debug messages")
         ("srand", 
-         po::value<int>(&g_srand)->default_value(0),
+         po::value<int>(&cfg.srand)->default_value(0),
          "set random seed (-1:none, 0:time(0))")
         ("size", 
-         po::value<int>(&g_fixedBoardSize)->default_value(0),
+         po::value<int>(&cfg.fixedBoardSize)->default_value(0),
          "initial (and fixed) board size");
     po::options_description hiddenOptions;
     hiddenOptions.add_options()
-        ("input-file", po::value<vector<string> >(&g_inputFiles),
+        ("input-file", po::value<std::vector<std::string> >(&g_inputFiles),
          "input file");
     po::options_description allOptions;
     allOptions.add(normalOptions).add(hiddenOptions);
@@ -134,9 +112,9 @@ void ParseOptions(int argc, char** argv)
     if (vm.count("help"))
         Help(normalOptions, std::cout);
     if (vm.count("nobook"))
-        g_useBook = false;
+        cfg.useBook = false;
     if (vm.count("nohandicap"))
-        g_allowHandicap = false;
+        cfg.allowHandicap = false;
     if (vm.count("quiet"))
         g_quiet = true;
 }
@@ -157,14 +135,15 @@ void PrintStartupMessage()
 
 int main(int argc, char** argv)
 {
+    fuego_engine_configuration engine_cfg;
     if (argc > 0 && argv != 0)
     {
-        g_programPath = argv[0];
+        engine_cfg.programPath = argv[0];
         SgPlatform::SetProgramDir(GetProgramDir(argv[0]));
         SgPlatform::SetTopSourceDir(GetTopSourceDir());
         try
         {
-            ParseOptions(argc, argv);
+            ParseOptions(engine_cfg, argc, argv);
         }
         catch (const SgException& e)
         {
@@ -176,38 +155,29 @@ int main(int argc, char** argv)
         SgDebugToNull();
     try
     {
-        SgInit();
-        GoInit();
         PrintStartupMessage();
-        SgRandom::SetSeed(g_srand);
-        FuegoMainEngine engine(g_fixedBoardSize, g_programPath, ! g_allowHandicap);
-        GoGtpAssertionHandler assertionHandler(engine);
-        if (g_maxGames >= 0)
-            engine.SetMaxClearBoard(g_maxGames);
-        if (g_useBook)
-            FuegoMainUtil::LoadBook(engine.Book(), 
-            					    SgPlatform::GetProgramDir());
-        if (g_config != "")
-            engine.ExecuteFile(g_config);
+
+        FuegoEngine feng{ engine_cfg };
+
         if (! g_inputFiles.empty())
         {
             for (size_t i = 0; i < g_inputFiles.size(); i++)
             {
-                string file = g_inputFiles[i];
+                std::string file = g_inputFiles[i];
                 std::ifstream fin(file.c_str());
                 if (! fin)
                     throw SgException(boost::format("Error file '%1%'") 
                     				  % file);
                 GtpInputStream in(fin);
                 GtpOutputStream out(std::cout);
-                engine.MainLoop(in, out);
+                feng.engine().MainLoop(in, out);
             }
         }
         else
         {
             GtpInputStream in(std::cin);
             GtpOutputStream out(std::cout);
-            engine.MainLoop(in, out);
+            feng.engine().MainLoop(in, out);
         }
     }
     catch (const GtpFailure& e)
@@ -224,4 +194,3 @@ int main(int argc, char** argv)
 }
 
 //----------------------------------------------------------------------------
-

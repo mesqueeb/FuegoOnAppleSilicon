@@ -40,6 +40,9 @@ public:
         Add(val) */
     SgStatisticsVltBase(VALUE val, COUNT count);
 
+    SgStatisticsVltBase(SgStatisticsVltBase const&);
+    SgStatisticsVltBase & operator=(SgStatisticsVltBase const& rhs);
+
     void Add(VALUE val);
 
     void Remove(VALUE val);
@@ -80,10 +83,24 @@ public:
     void LoadFromText(std::istream& in);
 
 private:
-    volatile COUNT m_count;
+    std::atomic<COUNT> m_count;
 
-    volatile VALUE m_mean;
+    std::atomic<VALUE> m_mean;
 };
+
+template<typename VALUE, typename COUNT>
+SgStatisticsVltBase<VALUE,COUNT>::SgStatisticsVltBase(SgStatisticsVltBase const& rhs)
+    : m_count{rhs.m_count.load()}
+    , m_mean{rhs.m_mean.load()}
+{}
+
+template<typename VALUE, typename COUNT>
+SgStatisticsVltBase<VALUE,COUNT> & SgStatisticsVltBase<VALUE,COUNT>::operator=(SgStatisticsVltBase const& rhs)
+{
+    m_count.store(rhs.m_count.load());
+    m_mean.store(rhs.m_mean.load());
+    return *this;
+}
 
 template<typename VALUE, typename COUNT>
 inline SgStatisticsVltBase<VALUE,COUNT>::SgStatisticsVltBase()
@@ -108,8 +125,8 @@ void SgStatisticsVltBase<VALUE,COUNT>::Add(VALUE val)
     SG_ASSERT(! std::numeric_limits<COUNT>::is_exact
               || count > 0); // overflow
     val -= m_mean;
-    m_mean +=  val / VALUE(count);
-    m_count = count;
+    m_mean.store(m_mean.load() +  val / VALUE(count));
+    m_count.store(count);
 }
 
 template<typename VALUE, typename COUNT>
@@ -122,8 +139,8 @@ void SgStatisticsVltBase<VALUE,COUNT>::Remove(VALUE val)
     if (count > 1) 
     {
         --count;
-        m_mean += (m_mean - val) / VALUE(count);
-        m_count = count;
+        m_mean.store(m_mean.load() + (m_mean - val) / VALUE(count));
+        m_count.store(count);
     }
     else
         Clear();
@@ -139,8 +156,8 @@ void SgStatisticsVltBase<VALUE,COUNT>::Remove(VALUE val, COUNT n)
     if (count > n) 
     {
         count -= n;
-        m_mean += VALUE(n) * (m_mean - val) / VALUE(count);
-        m_count = count;
+        m_mean.store(m_mean.load() + VALUE(n) * (m_mean - val) / VALUE(count));
+        m_count.store(count);
     }
     else
         Clear();
@@ -157,8 +174,8 @@ void SgStatisticsVltBase<VALUE,COUNT>::Add(VALUE val, COUNT n)
     SG_ASSERT(! std::numeric_limits<COUNT>::is_exact
               || count > 0); // overflow
     val -= m_mean;
-    m_mean +=  VALUE(n) * val / VALUE(count);
-    m_count = count;
+    m_mean.store( m_mean.load() + VALUE(n) * val / VALUE(count));
+    m_count.store(count);
 }
 
 template<typename VALUE, typename COUNT>

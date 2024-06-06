@@ -62,7 +62,7 @@ string TimeModeToString(SgTimeMode mode)
 //----------------------------------------------------------------------------
 
 SgGtpCommands::SgGtpCommands(GtpEngine& engine, const char* programPath)
-    : m_programPath(programPath),
+    : m_programPath(programPath ? programPath : ""),
       m_engine(engine)
 { }
 
@@ -156,15 +156,14 @@ void SgGtpCommands::CmdDebugger(GtpCommand& cmd)
     throw GtpFailure("command not implemented on iOS");
 #else
     string type = cmd.Arg();
-    const char* path = m_programPath;
-    if (path == 0)
+    if (m_programPath.empty())
         throw GtpFailure("location of executable unknown");
     pid_t pid = getpid();
     ostringstream s;
     if (type == "gdb_kde")
-        s << "konsole -e gdb " << path << ' ' << pid << " &";
+        s << "konsole -e gdb " << m_programPath << ' ' << pid << " &";
     else if (type == "gdb_gnome")
-        s << "gnome-terminal -e 'gdb " << path << ' ' << pid << "' &";
+        s << "gnome-terminal -e 'gdb " << m_programPath << ' ' << pid << "' &";
     else
         throw GtpFailure() << "unknown debugger: " << type;
     SgDebug() << "Executing: " << s.str() << '\n';

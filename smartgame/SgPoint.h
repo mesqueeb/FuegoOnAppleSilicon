@@ -68,7 +68,7 @@
 #include <cstdlib>
 #include <iosfwd>
 #include <string>
-#include <boost/static_assert.hpp>
+
 #include "SgArray.h"
 #include "SgMove.h"
 #include "SgUtil.h"

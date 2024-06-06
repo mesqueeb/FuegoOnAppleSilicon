@@ -3,8 +3,7 @@
     General utility GTP commands. */
 //----------------------------------------------------------------------------
 
-#ifndef SG_GTPCOMMANDS_H
-#define SG_GTPCOMMANDS_H
+#pragma once
 
 #include "GtpEngine.h"
 
@@ -70,7 +69,7 @@ public:
     void Register(GtpEngine& engine);
 
 private:
-    const char* m_programPath;
+    std::string m_programPath;
 
     GtpEngine& m_engine;
 
@@ -79,5 +78,3 @@ private:
 };
 
 //----------------------------------------------------------------------------
-
-#endif // SG_GTPCOMMANDS_H

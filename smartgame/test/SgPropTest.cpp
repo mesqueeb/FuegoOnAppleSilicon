@@ -6,7 +6,7 @@
 #include "SgSystem.h"
 
 #include <sstream>
-#include <boost/test/auto_unit_test.hpp>
+#include <boost/test/unit_test.hpp>
 #include "SgProp.h"
 
 using namespace std;
@@ -141,7 +141,7 @@ BOOST_AUTO_TEST_CASE(SgPropMoveTest_FromString_HexAll)
 /** Test SgProp::Player() and SgProp::IsPlayer() */
 BOOST_AUTO_TEST_CASE(SgPropMoveTest_Player)
 {
-    auto_ptr<SgProp> prop;
+    std::unique_ptr<SgProp> prop;
     prop.reset(SgProp::CreateProperty(SgProp::GetIDOfLabel("PB")));
     BOOST_CHECK_EQUAL(SG_BLACK, prop->Player());
     BOOST_CHECK(prop->IsPlayer(SG_BLACK));

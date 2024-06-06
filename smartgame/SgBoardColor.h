@@ -8,7 +8,6 @@
 
 #include <climits>
 #include "SgBlackWhite.h"
-#include <boost/static_assert.hpp>
 
 //----------------------------------------------------------------------------
 
@@ -21,9 +20,9 @@ const int SG_BORDER = 3;
 //----------------------------------------------------------------------------
 
 // SgEBWIterator and maybe other code relies on that
-BOOST_STATIC_ASSERT(SG_BLACK == 0);
-BOOST_STATIC_ASSERT(SG_WHITE == 1);
-BOOST_STATIC_ASSERT(SG_EMPTY == 2);
+static_assert(SG_BLACK == 0);
+static_assert(SG_WHITE == 1);
+static_assert(SG_EMPTY == 2);
 
 //----------------------------------------------------------------------------
 

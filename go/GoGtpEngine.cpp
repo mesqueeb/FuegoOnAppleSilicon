@@ -13,8 +13,7 @@
 #include <iomanip>
 #include <limits>
 #include <time.h>
-#include <boost/filesystem/operations.hpp>
-#include <boost/filesystem.hpp>
+
 #include "GoBoardRestorer.h"
 #include "GoEyeUtil.h"
 #include "GoGtpCommandUtil.h"
@@ -33,16 +32,13 @@
 #include "SgWrite.h"
 
 #if GTPENGINE_PONDER
-#include <boost/thread/thread.hpp>
-#include <boost/thread/xtime.hpp>
+#   include <thread>
 #endif
 
-using boost::filesystem::exists;
-using boost::filesystem::path;
-using boost::filesystem::remove;
+namespace fs = std::filesystem;
+
 using SgPointUtil::Pt;
 using std::flush;
-using std::string;
 
 //----------------------------------------------------------------------------
 
@@ -50,7 +46,7 @@ namespace {
 
 GoRules::KoRule KoRuleArg(GtpCommand& cmd, size_t number)
 {
-    string arg = cmd.ArgToLower(number);
+    std::string arg = cmd.ArgToLower(number);
     if (arg == "simple")
         return GoRules::SIMPLEKO;
     if (arg == "superko")
@@ -60,7 +56,7 @@ GoRules::KoRule KoRuleArg(GtpCommand& cmd, size_t number)
     throw GtpFailure() << "unknown ko rule \"" << arg << '"';
 }
 
-string KoRuleToString(GoRules::KoRule rule)
+std::string KoRuleToString(GoRules::KoRule rule)
 {
     switch (rule)
     {
@@ -83,7 +79,7 @@ string KoRuleToString(GoRules::KoRule rule)
 GoGtpEngine::GoGtpEngine(int fixedBoardSize, const char* programPath,
                          bool noPlayer, bool noHandicap)
     : m_player(0),
-      m_autoBook(0),
+      m_autoBook{},
       m_noPlayer(noPlayer),
       m_acceptIllegal(false),
       m_autoSave(false),
@@ -162,7 +158,7 @@ GoGtpEngine::GoGtpEngine(int fixedBoardSize, const char* programPath,
     }
 }
 
-GoGtpEngine::~GoGtpEngine()
+GoGtpEngine::~GoGtpEngine() noexcept
 {
     delete m_player;
 }
@@ -176,7 +172,7 @@ void GoGtpEngine::AddStatistics(const std::string& key,
                                 const std::string& value)
 {
     SG_ASSERT(m_statisticsValues.size() == m_statisticsSlots.size());
-    if (value.find('\t') != string::npos)
+    if (value.find('\t') != std::string::npos)
         throw SgException("GoGtpEngine::AddStatistics: value contains tab: '"
                           + value + "'");
     for (size_t i = 0; i < m_statisticsSlots.size(); ++i)
@@ -246,13 +242,13 @@ void GoGtpEngine::CheckBoardEmpty() const
     @param checkOnlyOccupied Only check if point is empty (accepts moves that
     are illegal, because of the ko or suicide rules used)
     @throws GtpFailure if not legal. */
-void GoGtpEngine::CheckLegal(string message, SgBlackWhite color, SgPoint move,
+void GoGtpEngine::CheckLegal(std::string message, SgBlackWhite color, SgPoint move,
                              bool checkOnlyOccupied)
 {
     GoModBoard modBoard(Board());
     GoBoard& bd = modBoard.Board();
     bool illegal = false;
-    string reason = "";
+    std::string reason = "";
     if (move != SG_PASS)
     {
         if (bd.Occupied(move))
@@ -384,19 +380,8 @@ void GoGtpEngine::CmdClearBoard(GtpCommand& cmd)
     CheckMaxClearBoard();
     if (! m_sentinelFile.empty() && exists(m_sentinelFile))
     {
-        # if defined(BOOST_FILESYSTEM_VERSION)
-           SG_ASSERT (  BOOST_FILESYSTEM_VERSION == 2
-                     || BOOST_FILESYSTEM_VERSION == 3);
-        #endif
-
-        #if (defined (BOOST_FILESYSTEM_VERSION) \
-             && (BOOST_FILESYSTEM_VERSION == 3))
-           throw GtpFailure() << "Detected sentinel file '"
+        throw GtpFailure() << "Detected sentinel file '"
                            << m_sentinelFile.string() << "'";
-        #else              
-           throw GtpFailure() << "Detected sentinel file '"
-                           << m_sentinelFile.native_file_string() << "'";
-        #endif
     }
     if (Board().MoveNumber() > 0)
         GameFinished();
@@ -445,7 +430,7 @@ void GoGtpEngine::CmdFixedHandicap(GtpCommand& cmd)
 void GoGtpEngine::CmdGameOver(GtpCommand& cmd)
 {
     cmd.CheckNuArg(1);
-    string result = cmd.Arg(0);
+    std::string result = cmd.Arg(0);
     m_game.UpdateResult(result);
     m_isPonderPosition = false;
     AutoSave();
@@ -456,7 +441,7 @@ void GoGtpEngine::CmdGenMove(GtpCommand& cmd)
 {
     cmd.CheckNuArg(1);
     SgBlackWhite color = BlackWhiteArg(cmd, 0);
-    std::auto_ptr<SgDebugToString> debugStrToString;
+    std::unique_ptr<SgDebugToString> debugStrToString;
     if (m_debugToComment)
         debugStrToString.reset(new SgDebugToString(true));
     SgPoint move = GenMove(color, false);
@@ -666,7 +651,7 @@ void GoGtpEngine::CmdListStones(GtpCommand& cmd)
 void GoGtpEngine::CmdLoadSgf(GtpCommand& cmd)
 {
     cmd.CheckNuArgLessEqual(2);
-    string fileName = cmd.Arg(0);
+    std::string fileName = cmd.Arg(0);
     int moveNumber = -1;
     if (cmd.NuArg() == 2)
         moveNumber = cmd.ArgMin<int>(1, 1);
@@ -731,7 +716,7 @@ void GoGtpEngine::CmdParam(GtpCommand& cmd)
     }
     else if (cmd.NuArg() >= 1 && cmd.NuArg() <= 2)
     {
-        string name = cmd.Arg(0);
+        std::string name = cmd.Arg(0);
         if (name == "accept_illegal")
             m_acceptIllegal = cmd.Arg<bool>(1);
         else if (name == "debug_to_comment")
@@ -740,7 +725,7 @@ void GoGtpEngine::CmdParam(GtpCommand& cmd)
             m_useBook = cmd.Arg<bool>(1);
         else if (name == "auto_save")
         {
-            string prefix = cmd.RemainingLine(0);
+            std::string prefix = cmd.RemainingLine(0);
             if (prefix == "")
                 m_autoSave = false;
             else
@@ -794,7 +779,7 @@ void GoGtpEngine::CmdParamRules(GtpCommand& cmd)
     else if (cmd.NuArg() == 2)
     {
         GoRules r = Board().Rules();
-        string name = cmd.Arg(0);
+        std::string name = cmd.Arg(0);
         if (name == "allow_suicide")
         {
             r.SetAllowSuicide(cmd.Arg<bool>(1));
@@ -863,7 +848,7 @@ void GoGtpEngine::CmdParamTimecontrol(GtpCommand& cmd)
     }
     else if (cmd.NuArg() == 2)
     {
-        string name = cmd.Arg(0);
+        std::string name = cmd.Arg(0);
         if (name == "fast_open_factor")
             c->SetFastOpenFactor(cmd.Arg<double>(1));
         else if (name == "fast_open_moves")
@@ -1073,7 +1058,7 @@ void GoGtpEngine::CmdRegGenMoveToPlay(GtpCommand& cmd)
 void GoGtpEngine::CmdRules(GtpCommand& cmd)
 {
     cmd.CheckNuArg(1);
-    string arg = cmd.Arg(0);
+    std::string arg = cmd.Arg(0);
     try
     {
         SetNamedRules(arg);
@@ -1104,7 +1089,7 @@ void GoGtpEngine::CmdSaveSgf(GtpCommand& cmd)
 void GoGtpEngine::CmdSentinelFile(GtpCommand& cmd)
 {
     cmd.CheckNuArg(1);
-    path sentinelFile = path(cmd.Arg(0));
+    fs::path sentinelFile = fs::path(cmd.Arg(0));
     if (! sentinelFile.empty())
         try
         {
@@ -1137,8 +1122,8 @@ void GoGtpEngine::CmdSetFreeHandicap(GtpCommand& cmd)
     - result */
 void GoGtpEngine::CmdSetInfo(GtpCommand& cmd)
 {
-    string key = cmd.Arg(0);
-    string value = cmd.RemainingLine(0);
+    std::string key = cmd.Arg(0);
+    std::string value = cmd.RemainingLine(0);
     if (key == "game_name")
         m_game.UpdateGameName(value);
     else if (key == "player_black")
@@ -1272,7 +1257,7 @@ void GoGtpEngine::CheckMoveStackOverflow() const
 
 std::vector<std::string> GoGtpEngine::CreateStatisticsSlots()
 {
-    return vector<string>();
+    return {};
 }
 
 SgBlackWhite GoGtpEngine::BlackWhiteArg(const GtpCommand& cmd,
@@ -1400,18 +1385,15 @@ void GoGtpEngine::InitStatistics()
     m_statisticsSlots.push_back("MOVE");
     m_statisticsSlots.push_back("TIME");
     m_statisticsSlots.push_back("BOOK");
-    vector<string> slots = CreateStatisticsSlots();
-    for (vector<string>::const_iterator i = slots.begin(); i != slots.end();
-         ++i)
-    {
-        if (i->find('\t') != string::npos)
+    for (std::string const& val : CreateStatisticsSlots()) {
+        if (val.find('\t') != std::string::npos)
             throw SgException("GoGtpEngine::InitStatistics: statistics slot"
-                              " contains tab: '" + (*i) + "'");
-        if (find(m_statisticsSlots.begin(), m_statisticsSlots.end(), *i)
+                              " contains tab: '" + val + "'");
+        if (find(m_statisticsSlots.begin(), m_statisticsSlots.end(), val)
             != m_statisticsSlots.end())
             throw SgException("GoGtpEngine::InitStatistics: duplicate"
-                              " statistics slot '" + (*i) + "'");
-        m_statisticsSlots.push_back(*i);
+                              " statistics slot '" + val + "'");
+        m_statisticsSlots.emplace_back(val);
     }
     if (MpiSynchronizer()->IsRootProcess())
     {
@@ -1571,7 +1553,7 @@ void GoGtpEngine::SetPlayer(GoPlayer* player)
     InitStatistics();
 }
 
-void GoGtpEngine::SetNamedRules(const string& namedRules)
+void GoGtpEngine::SetNamedRules(const std::string& namedRules)
 {
     m_defaultRules.SetNamedRules(namedRules);
     m_game.SetRulesGlobal(m_defaultRules);
@@ -1584,7 +1566,7 @@ void GoGtpEngine::StartStatistics()
     m_statisticsValues.resize(m_statisticsSlots.size(), "-");
 }
 
-SgPoint GoGtpEngine::StoneArg(const GtpCommand& cmd, std::size_t number) const
+SgPoint GoGtpEngine::StoneArg(const GtpCommand& cmd, size_t number) const
 {
     return GoGtpCommandUtil::StoneArg(cmd, number, Board());
 }
@@ -1610,7 +1592,7 @@ void GoGtpEngine::WriteBoardInfo(GtpCommand& cmd, const GoBoard& bd)
     cmd.CheckNuArgLessEqual(1);
     if (cmd.NuArg() == 1)
     {
-        string arg = cmd.Arg(0);
+        std::string arg = cmd.Arg(0);
         if (arg == "countplay")
             cmd << bd.CountPlay();
         else
@@ -1647,12 +1629,6 @@ void GoGtpEngine::Ponder()
         return;
     // Call GoPlayer::Ponder() after 0.2 seconds delay to avoid calls in very
     // short intervals between received commands
-    boost::xtime time;
-    #if BOOST_VERSION >= 105000
-        boost::xtime_get(&time, boost::TIME_UTC_);
-    #else
-         boost::xtime_get(&time, boost::TIME_UTC);
-    #endif
     bool aborted = false;
     for (int i = 0; i < 200; ++i)
     {
@@ -1661,8 +1637,7 @@ void GoGtpEngine::Ponder()
             aborted = true;
             break;
         }
-        time.nsec += 1000000; // 1 msec
-        boost::thread::sleep(time);
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
     m_mpiSynchronizer->SynchronizeUserAbort(aborted);
     if (! aborted)
@@ -1712,7 +1687,7 @@ const SgMpiSynchronizerHandle GoGtpEngine::MpiSynchronizer() const
 
 //----------------------------------------------------------------------------
 
-GoGtpAssertionHandler::GoGtpAssertionHandler(const GoGtpEngine& engine)
+GoGtpAssertionHandler::GoGtpAssertionHandler(const GoGtpEngine& engine) noexcept
     : m_engine(engine)
 { }
 

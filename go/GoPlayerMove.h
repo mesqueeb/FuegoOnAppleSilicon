@@ -2,8 +2,7 @@
 /** @file GoPlayerMove.h */
 //----------------------------------------------------------------------------
 
-#ifndef GO_PLAYERMOVE_H
-#define GO_PLAYERMOVE_H
+#pragma once
 
 #include <iosfwd>
 #include "SgBlackWhite.h"
@@ -83,5 +82,3 @@ inline SgBlackWhite GoPlayerMove::Color() const
 std::ostream& operator<<(std::ostream& out, GoPlayerMove mv);
 
 //----------------------------------------------------------------------------
-
-#endif // GO_PLAYERMOVE_H

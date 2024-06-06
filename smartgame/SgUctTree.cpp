@@ -11,7 +11,6 @@
 #include "SgTimer.h"
 
 using boost::format;
-using boost::shared_ptr;
 
 //----------------------------------------------------------------------------
 
@@ -160,14 +159,14 @@ void SgUctTree::CheckConsistency() const
 {
     for (SgUctTreeIterator it(*this); it; ++it)
         if (! Contains(*it))
-            ThrowConsistencyError(str(format("! Contains(%1%)") % &(*it)));
+            ThrowConsistencyError(str(boost::format("! Contains(%1%)") % &(*it)));
 }
 
 void SgUctTree::Clear()
 {
     for (size_t i = 0; i < NuAllocators(); ++i)
         Allocator(i).Clear();
-    m_root = SgUctNode(SG_NULLMOVE);
+    m_root = SG_NULLMOVE;
 }
 
 /** Check if node is in tree.
@@ -305,8 +304,7 @@ void SgUctTree::CreateAllocators(std::size_t nuThreads)
     m_allocators.clear();
     for (size_t i = 0; i < nuThreads; ++i)
     {
-        boost::shared_ptr<SgUctAllocator> allocator(new SgUctAllocator());
-        m_allocators.push_back(allocator);
+        m_allocators.emplace_back(std::make_shared<SgUctAllocator>());
     }
 }
 
@@ -436,7 +434,8 @@ void SgUctTree::Swap(SgUctTree& tree)
 {
     SG_ASSERT(MaxNodes() == tree.MaxNodes());
     SG_ASSERT(NuAllocators() == tree.NuAllocators());
-    std::swap(m_root, tree.m_root);
+    using std::swap;
+    swap(m_root, tree.m_root);
     for (size_t i = 0; i < NuAllocators(); ++i)
         Allocator(i).Swap(tree.Allocator(i));
 }
@@ -464,7 +463,7 @@ void SgUctTreeIterator::operator++()
     if (m_current->HasChildren())
     {
         SgUctChildIterator* it = new SgUctChildIterator(m_tree, *m_current);
-        m_stack.push(shared_ptr<SgUctChildIterator>(it));
+        m_stack.push(std::shared_ptr<SgUctChildIterator>(it));
         m_current = &(**it);
         return;
     }

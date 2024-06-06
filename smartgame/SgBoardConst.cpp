@@ -185,8 +185,7 @@ void SgBoardConst::Create(SgGrid size)
 {
     SG_ASSERT_GRIDRANGE(size);
     if (! s_const[size])
-        s_const[size] =
-            boost::shared_ptr<BoardConstImpl>(new BoardConstImpl(size));
+        s_const[size] = std::make_shared<BoardConstImpl>(size);
     m_const = s_const[size];
     SG_ASSERT(m_const);
 }

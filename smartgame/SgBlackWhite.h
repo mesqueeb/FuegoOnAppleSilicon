@@ -6,8 +6,6 @@
 #ifndef SG_BLACKWHITE_H
 #define SG_BLACKWHITE_H
 
-#include <boost/static_assert.hpp>
-
 //----------------------------------------------------------------------------
 
 /** Black stone, black player. */
@@ -17,7 +15,7 @@ const int SG_BLACK = 0;
 const int SG_WHITE = 1;
 
 // must be consecutive for color for-loops
-BOOST_STATIC_ASSERT(SG_BLACK + 1 == SG_WHITE);
+static_assert(SG_BLACK + 1 == SG_WHITE);
 
 /** SG_BLACK or SG_WHITE */
 typedef int SgBlackWhite;

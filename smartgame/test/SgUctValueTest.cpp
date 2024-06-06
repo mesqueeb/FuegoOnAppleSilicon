@@ -5,7 +5,7 @@
 
 #include "SgSystem.h"
 
-#include <boost/test/auto_unit_test.hpp>
+#include <boost/test/unit_test.hpp>
 #include "SgUctValue.h"
 
 using namespace std;
@@ -33,7 +33,7 @@ BOOST_AUTO_TEST_CASE(SgUctValueTest_IsPrecise)
         BOOST_CHECK(! IsPrecise<float>(numeric_limits<float>::max()));
         const int radix = std::numeric_limits<float>::radix;
         const int digits = std::numeric_limits<float>::digits;
-        float count = pow(float(radix), digits) - 1;
+        float count = (float)pow(float(radix), digits) - 1;
         BOOST_CHECK(IsPrecise<float>(count));
         ++count;
         BOOST_CHECK(! IsPrecise<float>(count));

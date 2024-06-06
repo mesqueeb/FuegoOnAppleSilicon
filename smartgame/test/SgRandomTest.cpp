@@ -5,7 +5,7 @@
 
 #include "SgSystem.h"
 
-#include <boost/test/auto_unit_test.hpp>
+#include <boost/test/unit_test.hpp>
 #include "SgRandom.h"
 
 //----------------------------------------------------------------------------
@@ -31,7 +31,7 @@ BOOST_AUTO_TEST_CASE(SgRandomTestFloat)
 	for (int i=0; i < 1000; ++i)
     {
         int bound = r.Int(1000) + 1;
-        f = r.Float(bound);
+        f = r.Float(static_cast<float>(bound));
         BOOST_CHECK_GE(f, 0.);
         BOOST_CHECK_LT(f, bound);
     }

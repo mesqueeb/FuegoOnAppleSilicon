@@ -5,8 +5,8 @@
 
 #include "SgSystem.h"
 
-#include <boost/test/auto_unit_test.hpp>
-#include <boost/test/floating_point_comparison.hpp>
+#include <boost/test/unit_test.hpp>
+#include <boost/test/tools/floating_point_comparison.hpp>
 #include "GoBoard.h"
 #include "GoSetupUtil.h"
 #include "GoUctAdditiveKnowledgeMultiple.h"
@@ -65,7 +65,7 @@ void Knowledge2::ProcessPosition(std::vector<SgUctMoveInfo>& moves)
 
 //----------------------------------------------------------------------------
 
-void Init(std::vector<SgUctMoveInfo>& moves, const GoBoard& bd)
+void GoUctAdditiveKnowledgeMultipleTestInit(std::vector<SgUctMoveInfo>& moves, const GoBoard& bd)
 {
     moves.clear();
     SG_ASSERT(moves.size() == 0);
@@ -97,60 +97,60 @@ BOOST_AUTO_TEST_CASE(GoUctAdditiveKnowledgeMultipleTest_ProcessPosition)
 {
     GoBoard bd(9);
     std::vector<SgUctMoveInfo> moves;
-    Init(moves, bd);
+    GoUctAdditiveKnowledgeMultipleTestInit(moves, bd);
     TestType(bd, moves, COMBINE_MULTIPLY, 1);
     BOOST_CHECK_EQUAL(moves[0].m_predictorValue, 5.0);
     BOOST_CHECK_EQUAL(moves[1].m_predictorValue, 2.0);
     BOOST_CHECK_EQUAL(moves[2].m_predictorValue, 1.0);
-    Init(moves, bd);
+    GoUctAdditiveKnowledgeMultipleTestInit(moves, bd);
     TestType(bd, moves, COMBINE_MULTIPLY, 2);
     BOOST_CHECK_EQUAL(moves[0].m_predictorValue, 5.0);
     BOOST_CHECK_EQUAL(moves[1].m_predictorValue, 6.0);
     BOOST_CHECK_EQUAL(moves[2].m_predictorValue, 10.0);
     BOOST_CHECK_EQUAL(moves[3].m_predictorValue, 1.0);
     
-    Init(moves, bd);
+    GoUctAdditiveKnowledgeMultipleTestInit(moves, bd);
     TestType(bd, moves, COMBINE_GEOMETRIC_MEAN, 1);
     BOOST_CHECK_CLOSE(moves[0].m_predictorValue, 5.0, 1e-5f);
     BOOST_CHECK_CLOSE(moves[1].m_predictorValue, 2.0, 1e-5f);
     BOOST_CHECK_CLOSE(moves[2].m_predictorValue, 1.0, 1e-5f);
-    Init(moves, bd);
+    GoUctAdditiveKnowledgeMultipleTestInit(moves, bd);
     TestType(bd, moves, COMBINE_GEOMETRIC_MEAN, 2);
     BOOST_CHECK_CLOSE(moves[0].m_predictorValue, sqrt(5.0),  1e-5f);
     BOOST_CHECK_CLOSE(moves[1].m_predictorValue, sqrt(6.0),  1e-5f);
     BOOST_CHECK_CLOSE(moves[2].m_predictorValue, sqrt(10.0), 1e-5f);
     BOOST_CHECK_CLOSE(moves[3].m_predictorValue, sqrt(1.0),  1e-5f);
 
-    Init(moves, bd);
+    GoUctAdditiveKnowledgeMultipleTestInit(moves, bd);
     TestType(bd, moves, COMBINE_ADD, 1);
     BOOST_CHECK_CLOSE(moves[0].m_predictorValue, 5.0, 1e-5f);
     BOOST_CHECK_CLOSE(moves[1].m_predictorValue, 2.0, 1e-5f);
     BOOST_CHECK_CLOSE(moves[2].m_predictorValue, 0.0, 1e-5f);
-    Init(moves, bd);
+    GoUctAdditiveKnowledgeMultipleTestInit(moves, bd);
     TestType(bd, moves, COMBINE_ADD, 2);
     BOOST_CHECK_CLOSE(moves[0].m_predictorValue, 5.0,  1e-5f);
     BOOST_CHECK_CLOSE(moves[1].m_predictorValue, 5.0,  1e-5f);
     BOOST_CHECK_CLOSE(moves[2].m_predictorValue, 10.0, 1e-5f);
     BOOST_CHECK_CLOSE(moves[3].m_predictorValue, 0.0,  1e-5f);
     
-    Init(moves, bd);
+    GoUctAdditiveKnowledgeMultipleTestInit(moves, bd);
     TestType(bd, moves, COMBINE_AVERAGE, 1);
     BOOST_CHECK_CLOSE(moves[0].m_predictorValue, 5.0, 1e-5f);
     BOOST_CHECK_CLOSE(moves[1].m_predictorValue, 2.0, 1e-5f);
     BOOST_CHECK_CLOSE(moves[2].m_predictorValue, 0.0, 1e-5f);
-    Init(moves, bd);
+    GoUctAdditiveKnowledgeMultipleTestInit(moves, bd);
     TestType(bd, moves, COMBINE_AVERAGE, 2);
     BOOST_CHECK_CLOSE(moves[0].m_predictorValue, 5.0/2,  1e-5f);
     BOOST_CHECK_CLOSE(moves[1].m_predictorValue, 5.0/2,  1e-5f);
     BOOST_CHECK_CLOSE(moves[2].m_predictorValue, 10.0/2, 1e-5f);
     BOOST_CHECK_CLOSE(moves[3].m_predictorValue, 0.0,  1e-5f);
 
-    Init(moves, bd);
+    GoUctAdditiveKnowledgeMultipleTestInit(moves, bd);
     TestType(bd, moves, COMBINE_MAX, 1);
     BOOST_CHECK_CLOSE(moves[0].m_predictorValue, 5.0, 1e-5f);
     BOOST_CHECK_CLOSE(moves[1].m_predictorValue, 2.0, 1e-5f);
     BOOST_CHECK_CLOSE(moves[2].m_predictorValue, 0.0, 1e-5f);
-    Init(moves, bd);
+    GoUctAdditiveKnowledgeMultipleTestInit(moves, bd);
     TestType(bd, moves, COMBINE_MAX, 2);
     BOOST_CHECK_CLOSE(moves[0].m_predictorValue, 5.0,  1e-5f);
     BOOST_CHECK_CLOSE(moves[1].m_predictorValue, 3.0,  1e-5f);

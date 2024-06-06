@@ -1,0 +1,63 @@
+cmake_minimum_required (VERSION 3.12)
+project (FuegoOnAppleSilicon)
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
+set(APPLESYSTYPES macos-arm64 macos-arm64_x86_64)
+
+function(add_framework target framework fpath)
+    if(APPLE)
+        foreach(SYSTYPE ${APPLESYSTYPES})
+            set (SEARCHPATH ${fpath}/frameworks/${framework}.xcframework/${SYSTYPE})
+            #message("looking for ${framework} in ${SEARCHPATH}")
+
+            set(found found-NOTFOUND)
+            set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY NEVER)
+            find_library(found ${framework} PATHS ${SEARCHPATH} NO_DEFAULT_PATH)
+            set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
+
+            if(NOT ${found} STREQUAL "found-NOTFOUND")
+                message("Found ${framework} framework ${found}")
+                break()
+            endif()
+        endforeach()
+        if(${found} STREQUAL "found-NOTFOUND")
+            message(FATAL_ERROR "ERROR: ${framework} not found (${SEARCHPATH})")
+        else()
+            target_link_libraries(${target} ${found})
+        endif()
+    endif()
+endfunction()
+
+if (NOT DEFINED BOOST_HOME)
+    set (BOOST_HOME "${CMAKE_CURRENT_LIST_DIR}/boost")
+endif()
+
+if (DEFINED BOOST_INCLUDE)
+    message("Boost include path: ${BOOST_INCLUDE}")
+    include_directories(${BOOST_INCLUDE})
+else()
+    include_directories("${BOOST_HOME}/include")
+endif()
+
+if (DEFINED BOOST_LIB)
+    link_directories(${BOOST_LIB})
+elseif(NOT APPLE)
+    link_directories("${BOOST_HOME}/lib")
+endif()
+
+if (DEFINED CXX_FLAGS)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CXX_FLAGS}")
+endif()
+
+message("CMAKE_CXX_FLAGS: ${CMAKE_CXX_FLAGS}")
+
+add_subdirectory(gtpengine)
+add_subdirectory(smartgame)
+add_subdirectory(go)
+add_subdirectory(gouct)
+add_subdirectory(fuegomain)
+add_subdirectory(simpleplayers)
+add_subdirectory(fuegotest)
+add_subdirectory(unittestmain)
