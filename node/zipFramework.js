@@ -10,7 +10,7 @@ const { version } = require('../package.json')
 const nextVersion = semver.inc(version, 'patch')
 const frameworkPath = join(process.cwd(), './build/fuego.xcframework')
 const zipFilename = `Fuego-${nextVersion}.xcframework.zip`
-const zipPath = join(process.cwd(), zipFilename)
+const zipPath = join(process.cwd(), `./build/${zipFilename}`)
 const packageSwiftPath = join(process.cwd(), 'Package.swift')
 
 execSync(`zip -r ${zipPath} ${frameworkPath}`, { stdio: 'inherit' })
