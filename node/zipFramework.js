@@ -68,3 +68,4 @@ await replaceRegex({
 // Commit changes
 execSync(`git add .`, { stdio: 'inherit' })
 execSync(`git commit -m "chore: Prep version ${nextVersion}"`, { stdio: 'inherit' })
+execSync(`open ${zipPath}`)
