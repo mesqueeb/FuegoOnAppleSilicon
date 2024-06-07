@@ -20,13 +20,18 @@ let package = Package(
   targets: [
     .binaryTarget(
       name: "FuegoXCFramework",
-      url: "https://github.com/mesqueeb/FuegoOnAppleSilicon/releases/download/v0.1.1/Fuego-0.1.1.xcframework.zip",
+      url: "https://github.com/mesqueeb/FuegoOnAppleSilicon/releases/download/v0.1.2/Fuego-0.1.2.xcframework.zip",
       checksum: "0c0b2bbe2102a2680d253e2c2a468968f4316014636173b7fb8175a79fe28a7e"
     ),
     .target(
-      name: "FuegoOnAppleSilicon",
+      name: "FuegoCBridge",
       dependencies: ["FuegoXCFramework"],
-      path: "FuegoOnAppleSilicon"
+      path: "FuegoOnAppleSilicon/CBridge"
+    )
+    .target(
+      name: "FuegoOnAppleSilicon",
+      dependencies: ["FuegoXCFramework", "FuegoCBridge"],
+      path: "FuegoOnAppleSilicon/SwiftBridge"
     )
   ]
 )
