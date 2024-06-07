@@ -4,11 +4,17 @@ import { join, basename } from 'node:path'
 import { createRequire } from 'node:module'
 import semver from 'semver'
 import { replaceRegex } from 'replace-regex'
+import select from'@inquirer/select'
 
 const require = createRequire(import.meta.url)
 const { version } = require('../package.json')
 
-const nextVersion = semver.inc(version, 'patch')
+const bump = await select({
+  message: 'Select the version bump:',
+  choices: ['patch','minor', 'major'].map((value) => ({ name: value, value })),
+})
+
+const nextVersion = semver.inc(version, bump)
 const frameworkPath = join(process.cwd(), './build/Fuego.xcframework')
 const zipFilename = `Fuego-${nextVersion}.xcframework.zip`
 const zipPath = join(process.cwd(), `./build/${zipFilename}`)
@@ -65,7 +71,8 @@ await replaceRegex({
   to: `from: "${nextVersion}"`,
 })
 
-// Commit changes
 execSync(`git add .`, { stdio: 'inherit' })
-execSync(`git commit -m "chore: Prep version ${nextVersion}"`, { stdio: 'inherit' })
+execSync(`git commit -m "chore: 🎉 Release version ${nextVersion}"`, { stdio: 'inherit' })
+
+execSync(`np ${bump} --no-cleanup --no-tests --no-publish`)
 execSync(`open ${zipPath}`)

@@ -3,15 +3,14 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "bump": "np --no-cleanup --no-tests --no-publish",
     "build": "./build-xcframework.sh",
-    "release": "npm run zip-framework && npm run bump",
-    "zip-framework": "node ./node/zipFramework.js"
+    "release": "node ./node/release.js"
   },
   "engines": {
     "node": ">=20"
   },
   "devDependencies": {
+    "@inquirer/select": "^2.3.5",
     "np": "^10.0.5",
     "replace-regex": "^0.0.3",
     "semver": "^7.6.2"
