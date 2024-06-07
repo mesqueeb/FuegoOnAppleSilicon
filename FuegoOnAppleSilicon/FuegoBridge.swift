@@ -1,19 +1,12 @@
 import Foundation
 
 public enum FuegoBridgeError: Error {
-  case alreadyStarted
   case notStarted
   case unableToStart(String)
   case commandError(String)
 }
 
-public class FuegoBridge {
-  public var srand: Int = 0
-  public var fixedBoardSize: Int = 0
-  public var maxGames: Int = -1
-  public var useBook: Bool = true
-  public var allowHandicap: Bool = true
-  
+public actor FuegoBridge {
   private var cookie: UnsafeMutableRawPointer?
   
   public init() {}
@@ -22,19 +15,33 @@ public class FuegoBridge {
     stopEngine()
   }
   
-  public func startEngine() throws {
-    guard cookie == nil else {
-      throw FuegoBridgeError.alreadyStarted
-    }
-    let result = fuego_create_engine(nil, nil, Int32(srand), Int32(fixedBoardSize), Int32(maxGames), useBook ? 1 : 0, allowHandicap ? 1 : 0)
+  public func startEngine(
+    srand: Int = 0,
+    fixedBoardSize: Int = 0,
+    maxGames: Int = -1,
+    useBook: Bool = true,
+    allowHandicap: Bool = true
+  ) throws {
+    guard cookie == nil else { return }
+    let result = fuego_create_engine(
+      nil,
+      nil,
+      Int32(srand),
+      Int32(fixedBoardSize),
+      Int32(maxGames),
+      useBook ? 1 : 0,
+      allowHandicap ? 1 : 0
+    )
+    
     if result.success == 0 {
       cookie = result.result
-    } else {
-      defer {
-        fuego_free_string(result.result)
-      }
-      throw FuegoBridgeError.unableToStart(handleCString(result.result) ?? "Unknown error")
+      return
     }
+    
+    defer {
+      fuego_free_string(result.result)
+    }
+    throw FuegoBridgeError.unableToStart(handleCString(result.result) ?? "Unknown error")
   }
   
   public func stopEngine() {
@@ -43,10 +50,9 @@ public class FuegoBridge {
     self.cookie = nil
   }
   
-  public func submitCommand(_ command: String, _ completionHandler: (String?, Error?) -> Void) {
+  public func submitCommand(_ command: String) throws -> String? {
     guard let cookie else {
-      completionHandler(nil, FuegoBridgeError.notStarted)
-      return
+      throw FuegoBridgeError.notStarted
     }
     let count = command.utf8.count
 
@@ -57,13 +63,13 @@ public class FuegoBridge {
       fuego_free_string(result.result)
     }
     if result.success == 0 {
-      completionHandler(handleCString(result.result), nil)
+      return handleCString(result.result)
     } else {
-      completionHandler(nil, FuegoBridgeError.commandError(handleCString(result.result) ?? "Unknown error"))
+      throw FuegoBridgeError.commandError(handleCString(result.result) ?? "Unknown error")
     }
   }
   
-  func handleCString(_ str: UnsafeRawPointer?) -> String? {
+  private func handleCString(_ str: UnsafeRawPointer?) -> String? {
     if let ptr = str {
       let chararr = ptr.assumingMemoryBound(to: CChar.self)
       return String(cString: chararr, encoding: String.Encoding.utf8)

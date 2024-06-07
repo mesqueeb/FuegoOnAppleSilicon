@@ -49,12 +49,14 @@ struct ContentView: View {
     
   // current implementation using a callback function:
   func submitCommand() {
-    guard let fuegoBridge else { return }
-    sentCommands.append(inputText.lowercased())
-    fuegoBridge.submitCommand(inputText.lowercased()) { response, error in
-      if let response {
-        handleResponse(response)
-      } else if let error {
+    Task.detached {
+      guard let fuegoBridge else { return }
+      sentCommands.append(inputText.lowercased())
+      do {
+        if let response = try await fuegoBridge.submitCommand(inputText.lowercased()) {
+          handleResponse(response)
+        }
+      } catch {
         fuegoResponse = "error"
         fuegoError = "\(error)" // error.localizedDescription
       }
@@ -89,7 +91,7 @@ struct ContentView: View {
         fuegoBridge = FuegoBridge()
         print("AI connecting...")
         do {
-          try fuegoBridge!.startEngine()
+          try await fuegoBridge!.startEngine()
           print("AI connected")
         } catch {
           print("AI didn't connect, error: \(error)")
@@ -98,7 +100,9 @@ struct ContentView: View {
       }
     }
     .onDisappear {
-      fuegoBridge?.stopEngine()
+      Task {
+        await fuegoBridge?.stopEngine()
+      }
     }
   }
 }
