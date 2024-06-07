@@ -68,8 +68,8 @@ writeFileSync(packageSwiftPath, packageSwiftContent)
 
 await replaceRegex({ 
   files: 'README.md',
-  from: /\d+\.\d+\.\d+/g,
-  to: nextVersion,
+  from: /from: "\d+\.\d+\.\d+"/g,
+  to: `from: "${nextVersion}"`,
 })
 
 // Commit changes
