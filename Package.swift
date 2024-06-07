@@ -22,7 +22,7 @@ let package = Package(
     // Targets can depend on other targets in this package and products from dependencies.
     .binaryTarget(
       name: "FuegoXCFramework",
-      url: "https://github.com/mesqueeb/FuegoOnAppleSilicon/releases/download/v0.0.2/Fuego-0.0.2.xcframework.zip",
+      url: "https://github.com/mesqueeb/FuegoOnAppleSilicon/releases/download/v0.0.3/fuego.xcframework.zip",
       checksum: "6be4700f14ae84c8f80a3c9595b3e849d76d428a49270236db384ecec71d6480"
     ),
     .target(
