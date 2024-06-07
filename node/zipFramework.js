@@ -48,14 +48,9 @@ let package = Package(
       checksum: "${zipChecksum}"
     ),
     .target(
-      name: "FuegoCBridge",
-      dependencies: ["FuegoXCFramework"],
-      path: "FuegoOnAppleSilicon/CBridge"
-    ),
-    .target(
       name: "FuegoOnAppleSilicon",
-      dependencies: ["FuegoCBridge", "FuegoXCFramework"],
-      path: "FuegoOnAppleSilicon/SwiftBridge"
+      dependencies: ["FuegoXCFramework"],
+      path: "FuegoOnAppleSilicon"
     )
   ]
 )

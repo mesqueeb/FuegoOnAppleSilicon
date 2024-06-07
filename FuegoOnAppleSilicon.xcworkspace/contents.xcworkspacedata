@@ -13844,27 +13844,15 @@
    <Group
       location = "group:FuegoOnAppleSilicon"
       name = "FuegoOnAppleSilicon">
-      <Group
-         location = "group:SwiftBridge"
-         name = "SwiftBridge">
-         <FileRef
-            location = "group:FuegoBridge.swift">
-         </FileRef>
-      </Group>
-      <Group
-         location = "group:CBridge"
-         name = "CBridge">
-         <FileRef
-            location = "group:FuegoBridge.cpp">
-         </FileRef>
-         <Group
-            location = "group:include"
-            name = "include">
-            <FileRef
-               location = "group:FuegoBridge.hpp">
-            </FileRef>
-         </Group>
-      </Group>
+      <FileRef
+         location = "group:FuegoBridge.swift">
+      </FileRef>
+      <FileRef
+         location = "group:FuegoBridge.cpp">
+      </FileRef>
+      <FileRef
+         location = "group:FuegoBridge.hpp">
+      </FileRef>
    </Group>
    <Group
       location = "group:node"

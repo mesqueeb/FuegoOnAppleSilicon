@@ -1,5 +1,4 @@
 import Foundation
-import FuegoCBridge
 
 public enum FuegoBridgeError: Error {
   case alreadyStarted
@@ -44,7 +43,7 @@ public class FuegoBridge {
     self.cookie = nil
   }
   
-  public func submitCommand(_ command: String, completionHandler: (String?, Error?) -> Void) {
+  public func submitCommand(_ command: String, _ completionHandler: (String?, Error?) -> Void) {
     guard let cookie else {
       completionHandler(nil, FuegoBridgeError.notStarted)
       return
