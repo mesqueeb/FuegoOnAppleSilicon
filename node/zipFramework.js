@@ -1,6 +1,6 @@
 import { execSync } from 'node:child_process'
 import { writeFileSync } from 'node:fs'
-import { join } from 'node:path'
+import { join, basename } from 'node:path'
 import { createRequire } from 'node:module'
 import semver from 'semver'
 
@@ -13,7 +13,11 @@ const zipFilename = `Fuego-${nextVersion}.xcframework.zip`
 const zipPath = join(process.cwd(), `./build/${zipFilename}`)
 const packageSwiftPath = join(process.cwd(), 'Package.swift')
 
-execSync(`zip -r ${zipPath} ${frameworkPath}`, { stdio: 'inherit' })
+// Change directory to the build folder to create the zip
+const buildDir = join(process.cwd(), './build')
+const frameworkName = basename(frameworkPath)
+
+execSync(`cd ${buildDir} && zip -r ${zipFilename} ${frameworkName}`, { stdio: 'inherit' })
 
 const zipChecksum = execSync(`swift package compute-checksum ${zipPath}`).toString().trim()
 
