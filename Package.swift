@@ -18,26 +18,15 @@ let package = Package(
     ),
   ],
   targets: [
-    // Targets are the basic building blocks of a package, defining a module or a test suite.
-    // Targets can depend on other targets in this package and products from dependencies.
     .binaryTarget(
-      name: "Fuego",
-      url: "https://github.com/mesqueeb/FuegoOnAppleSilicon/releases/download/v0.0.5/Fuego.xcframework.zip",
-      checksum: "f443e963a9dbd7febc7ddc6159c3133a374e900b7b08f0c17275025b6242c084"
-    ),
-    .target(
-      name: "FuegoCBridge",
-      dependencies: ["Fuego"],
-      path: "FuegoOnAppleSilicon/CBridge"
-    ),
-    .target(
-      name: "FuegoSwiftBridge",
-      dependencies: ["FuegoCBridge", "Fuego"],
-      path: "FuegoOnAppleSilicon/SwiftBridge"
+      name: "FuegoXCFramework",
+      url: "https://github.com/mesqueeb/FuegoOnAppleSilicon/releases/download/v0.0.6/Fuego-0.0.6.xcframework.zip",
+      checksum: "0c0b2bbe2102a2680d253e2c2a468968f4316014636173b7fb8175a79fe28a7e"
     ),
     .target(
       name: "FuegoOnAppleSilicon",
-      dependencies: ["FuegoSwiftBridge", "FuegoCBridge", "Fuego"],
-    ),
+      dependencies: ["FuegoXCFramework"],
+      path: "FuegoOnAppleSilicon"
+    )
   ]
 )
