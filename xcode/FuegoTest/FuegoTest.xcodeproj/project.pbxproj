@@ -12,10 +12,10 @@
 		1162698F2C107B6300774D32 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1162698E2C107B6300774D32 /* ContentView.swift */; };
 		116269912C107B6400774D32 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 116269902C107B6400774D32 /* Assets.xcassets */; };
 		116269942C107B6400774D32 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 116269932C107B6400774D32 /* Preview Assets.xcassets */; };
-		1162699D2C107B8400774D32 /* fuego.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1162699C2C107B8400774D32 /* fuego.xcframework */; };
-		1162699E2C107B8400774D32 /* fuego.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1162699C2C107B8400774D32 /* fuego.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		116269A12C107B9600774D32 /* fuego_test.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 116269A02C107B9500774D32 /* fuego_test.xcframework */; };
-		116269A22C107B9600774D32 /* fuego_test.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 116269A02C107B9500774D32 /* fuego_test.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1162699D2C107B8400774D32 /* Fuego.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1162699C2C107B8400774D32 /* Fuego.xcframework */; };
+		1162699E2C107B8400774D32 /* Fuego.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1162699C2C107B8400774D32 /* Fuego.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		116269A12C107B9600774D32 /* FuegoTest.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 116269A02C107B9500774D32 /* FuegoTest.xcframework */; };
+		116269A22C107B9600774D32 /* FuegoTest.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 116269A02C107B9500774D32 /* FuegoTest.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		116269A42C107BA900774D32 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 116269A32C107BA000774D32 /* libc++.tbd */; };
 /* End PBXBuildFile section */
 
@@ -26,8 +26,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				116269A22C107B9600774D32 /* fuego_test.xcframework in Embed Frameworks */,
-				1162699E2C107B8400774D32 /* fuego.xcframework in Embed Frameworks */,
+				116269A22C107B9600774D32 /* FuegoTest.xcframework in Embed Frameworks */,
+				1162699E2C107B8400774D32 /* Fuego.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -42,8 +42,8 @@
 		116269902C107B6400774D32 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		116269932C107B6400774D32 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		116269952C107B6400774D32 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1162699C2C107B8400774D32 /* fuego.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = fuego.xcframework; path = ../../build/fuego.xcframework; sourceTree = "<group>"; };
-		116269A02C107B9500774D32 /* fuego_test.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = fuego_test.xcframework; path = ../../build/fuego_test.xcframework; sourceTree = "<group>"; };
+		1162699C2C107B8400774D32 /* Fuego.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Fuego.xcframework; path = ../../build/Fuego.xcframework; sourceTree = "<group>"; };
+		116269A02C107B9500774D32 /* FuegoTest.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = FuegoTest.xcframework; path = ../../build/FuegoTest.xcframework; sourceTree = "<group>"; };
 		116269A32C107BA000774D32 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		116269A52C107C0100774D32 /* FuegoTest-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FuegoTest-Bridging-Header.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -53,8 +53,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				116269A12C107B9600774D32 /* fuego_test.xcframework in Frameworks */,
-				1162699D2C107B8400774D32 /* fuego.xcframework in Frameworks */,
+				116269A12C107B9600774D32 /* FuegoTest.xcframework in Frameworks */,
+				1162699D2C107B8400774D32 /* Fuego.xcframework in Frameworks */,
 				116269A42C107BA900774D32 /* libc++.tbd in Frameworks */,
 				1162698B2C107B6300774D32 /* RealityKitContent in Frameworks */,
 			);
@@ -114,8 +114,8 @@
 			isa = PBXGroup;
 			children = (
 				116269A32C107BA000774D32 /* libc++.tbd */,
-				116269A02C107B9500774D32 /* fuego_test.xcframework */,
-				1162699C2C107B8400774D32 /* fuego.xcframework */,
+				116269A02C107B9500774D32 /* FuegoTest.xcframework */,
+				1162699C2C107B8400774D32 /* Fuego.xcframework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

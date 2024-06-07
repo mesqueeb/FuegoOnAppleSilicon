@@ -3296,8 +3296,8 @@
          </Group>
       </Group>
       <Group
-         location = "group:fuego.xcframework"
-         name = "fuego.xcframework">
+         location = "group:Fuego.xcframework"
+         name = "Fuego.xcframework">
          <Group
             location = "group:macos-arm64_x86_64"
             name = "macos-arm64_x86_64">
@@ -13799,8 +13799,8 @@
          </Group>
       </Group>
       <Group
-         location = "group:fuego_test.xcframework"
-         name = "fuego_test.xcframework">
+         location = "group:FuegoTest.xcframework"
+         name = "FuegoTest.xcframework">
          <Group
             location = "group:macos-arm64_x86_64"
             name = "macos-arm64_x86_64">

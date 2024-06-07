@@ -12,8 +12,8 @@
 		116269452C0F89BA00774D32 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116269442C0F89BA00774D32 /* ContentView.swift */; };
 		116269472C0F89BB00774D32 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 116269462C0F89BB00774D32 /* Assets.xcassets */; };
 		1162694A2C0F89BB00774D32 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 116269492C0F89BB00774D32 /* Preview Assets.xcassets */; };
-		116269532C0F89E100774D32 /* fuego.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 116269522C0F89E100774D32 /* fuego.xcframework */; };
-		116269542C0F89E100774D32 /* fuego.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 116269522C0F89E100774D32 /* fuego.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		116269532C0F89E100774D32 /* Fuego.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 116269522C0F89E100774D32 /* Fuego.xcframework */; };
+		116269542C0F89E100774D32 /* Fuego.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 116269522C0F89E100774D32 /* Fuego.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1162695B2C0F8C1400774D32 /* FuegoBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1162695A2C0F8C1400774D32 /* FuegoBridge.swift */; };
 		116269602C0F9D4100774D32 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1162695F2C0F9CF000774D32 /* libc++.tbd */; };
 		F7277AEA2C1297FD000960F5 /* book.dat in Resources */ = {isa = PBXBuildFile; fileRef = F7277AE92C1297FD000960F5 /* book.dat */; };
@@ -26,7 +26,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				116269542C0F89E100774D32 /* fuego.xcframework in Embed Frameworks */,
+				116269542C0F89E100774D32 /* Fuego.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -41,7 +41,7 @@
 		116269462C0F89BB00774D32 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		116269492C0F89BB00774D32 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		1162694B2C0F89BB00774D32 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		116269522C0F89E100774D32 /* fuego.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = fuego.xcframework; path = ../../build/fuego.xcframework; sourceTree = "<group>"; };
+		116269522C0F89E100774D32 /* Fuego.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Fuego.xcframework; path = ../../build/Fuego.xcframework; sourceTree = "<group>"; };
 		116269562C0F8A5500774D32 /* FuegoIteropSample-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FuegoIteropSample-Bridging-Header.h"; sourceTree = "<group>"; };
 		1162695A2C0F8C1400774D32 /* FuegoBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FuegoBridge.swift; sourceTree = "<group>"; };
 		1162695F2C0F9CF000774D32 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
@@ -54,7 +54,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				116269602C0F9D4100774D32 /* libc++.tbd in Frameworks */,
-				116269532C0F89E100774D32 /* fuego.xcframework in Frameworks */,
+				116269532C0F89E100774D32 /* Fuego.xcframework in Frameworks */,
 				116269412C0F89BA00774D32 /* RealityKitContent in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -115,7 +115,7 @@
 			isa = PBXGroup;
 			children = (
 				1162695F2C0F9CF000774D32 /* libc++.tbd */,
-				116269522C0F89E100774D32 /* fuego.xcframework */,
+				116269522C0F89E100774D32 /* Fuego.xcframework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
