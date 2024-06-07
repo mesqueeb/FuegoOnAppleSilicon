@@ -14,13 +14,13 @@ let package = Package(
     // Products define the executables and libraries a package produces, making them visible to other packages.
     .library(
       name: "FuegoOnAppleSilicon",
-      targets: ["FuegoOnAppleSilicon"]
+      targets: ["FuegoOnAppleSilicon", "FuegoCBridge"]
     ),
   ],
   targets: [
     .binaryTarget(
       name: "FuegoXCFramework",
-      url: "https://github.com/mesqueeb/FuegoOnAppleSilicon/releases/download/v0.1.5/Fuego-0.1.5.xcframework.zip",
+      url: "https://github.com/mesqueeb/FuegoOnAppleSilicon/releases/download/v0.1.6/Fuego-0.1.6.xcframework.zip",
       checksum: "0c0b2bbe2102a2680d253e2c2a468968f4316014636173b7fb8175a79fe28a7e"
     ),
     .target(
