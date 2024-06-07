@@ -15,8 +15,8 @@
 		116269532C0F89E100774D32 /* fuego.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 116269522C0F89E100774D32 /* fuego.xcframework */; };
 		116269542C0F89E100774D32 /* fuego.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 116269522C0F89E100774D32 /* fuego.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1162695B2C0F8C1400774D32 /* FuegoBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1162695A2C0F8C1400774D32 /* FuegoBridge.swift */; };
-		1162695E2C0F980F00774D32 /* book.dat in Resources */ = {isa = PBXBuildFile; fileRef = 1162695D2C0F980F00774D32 /* book.dat */; };
 		116269602C0F9D4100774D32 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1162695F2C0F9CF000774D32 /* libc++.tbd */; };
+		F7277AEA2C1297FD000960F5 /* book.dat in Resources */ = {isa = PBXBuildFile; fileRef = F7277AE92C1297FD000960F5 /* book.dat */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -44,8 +44,8 @@
 		116269522C0F89E100774D32 /* fuego.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = fuego.xcframework; path = ../../build/fuego.xcframework; sourceTree = "<group>"; };
 		116269562C0F8A5500774D32 /* FuegoIteropSample-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FuegoIteropSample-Bridging-Header.h"; sourceTree = "<group>"; };
 		1162695A2C0F8C1400774D32 /* FuegoBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FuegoBridge.swift; sourceTree = "<group>"; };
-		1162695D2C0F980F00774D32 /* book.dat */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = book.dat; path = ../../../../book/book.dat; sourceTree = "<group>"; };
 		1162695F2C0F9CF000774D32 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		F7277AE92C1297FD000960F5 /* book.dat */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = book.dat; path = ../../../../book/book.dat; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,7 +83,7 @@
 		1162693D2C0F89BA00774D32 /* FuegoIteropSample */ = {
 			isa = PBXGroup;
 			children = (
-				1162695C2C0F97E100774D32 /* resources */,
+				F7277AE82C1297C9000960F5 /* resources */,
 				116269422C0F89BA00774D32 /* FuegoIteropSampleApp.swift */,
 				116269442C0F89BA00774D32 /* ContentView.swift */,
 				116269462C0F89BB00774D32 /* Assets.xcassets */,
@@ -120,10 +120,10 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		1162695C2C0F97E100774D32 /* resources */ = {
+		F7277AE82C1297C9000960F5 /* resources */ = {
 			isa = PBXGroup;
 			children = (
-				1162695D2C0F980F00774D32 /* book.dat */,
+				F7277AE92C1297FD000960F5 /* book.dat */,
 			);
 			path = resources;
 			sourceTree = "<group>";
@@ -191,7 +191,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1162695E2C0F980F00774D32 /* book.dat in Resources */,
+				F7277AEA2C1297FD000960F5 /* book.dat in Resources */,
 				1162694A2C0F89BB00774D32 /* Preview Assets.xcassets in Resources */,
 				116269472C0F89BB00774D32 /* Assets.xcassets in Resources */,
 			);

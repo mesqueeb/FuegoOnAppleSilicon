@@ -1,13 +1,6 @@
-//
-//  ContentView.swift
-//  FuegoIteropSample
-//
-//  Created by Alexander Pototskiy on 04.06.24.
-//
-
-import SwiftUI
 import RealityKit
 import RealityKitContent
+import SwiftUI
 
 let testCommands = [
   "boardsize 19",
@@ -22,99 +15,96 @@ let testCommands = [
 ]
 
 struct ContentView: View {
-    @State private var sentCommands: [String] = []
-    @State private var testCommandIndex: Int = 0
-    @State private var inputText: String = testCommands[0]
-    @State private var fuegoResponse: String = ""
-    @State private var fuegoError: String = ""
+  @State private var sentCommands: [String] = []
+  @State private var testCommandIndex: Int = 0
+  @State private var inputText: String = testCommands[0]
+  @State private var fuegoResponse: String = ""
+  @State private var fuegoError: String = ""
     
-    @State var fuegoBridge: FuegoBridge? = nil
+  @State var fuegoBridge: FuegoBridge? = nil
 
-    init() {
-        guard let bundleBookUrl = Bundle.main.url(forResource: "book", withExtension: "dat") else {
-                fatalError("can't retrieve bundle path")
-        }
-        
-        // Just example. Much better to copy book into working dir
-        let bookDir = bundleBookUrl.deletingLastPathComponent()
-        if !FileManager.default.changeCurrentDirectoryPath(bookDir.path) {
-            fatalError("can't set book directory directory")
-        }
+  init() {
+    guard let bundleBookUrl = Bundle.main.url(forResource: "book", withExtension: "dat") else {
+      fatalError("can't retrieve bundle path")
     }
-    
-    func handleResponse(_ response: String) {
-        print("response →", response)
-        fuegoResponse = response
         
-        testCommandIndex += 1
-        if testCommandIndex == testCommands.count {
-            inputText = ""
-        } else {
-            inputText = testCommands[testCommandIndex]
-        }
-        
-        fuegoError = ""
+    // Just example. Much better to copy book into working dir
+    let bookDir = bundleBookUrl.deletingLastPathComponent()
+    if !FileManager.default.changeCurrentDirectoryPath(bookDir.path) {
+      fatalError("can't set book directory directory")
     }
+  }
     
-    // current implementation using a callback function:
-    func submitCommand() {
+  func handleResponse(_ response: String) {
+    print("response →", response)
+    fuegoResponse = response
         
-        guard let fuegoBridge else { return }
-        sentCommands.append(inputText.lowercased())
-        fuegoBridge.submitCommand(inputText.lowercased()) { response, error in
-            if let response {
-                handleResponse(response)
-            } else if let error {
-                fuegoResponse = "error"
-                fuegoError = "\(error)" //error.localizedDescription
-            }
-        }
+    testCommandIndex += 1
+    if testCommandIndex == testCommands.count {
+      inputText = ""
+    } else {
+      inputText = testCommands[testCommandIndex]
     }
+        
+    fuegoError = ""
+  }
     
-    var body: some View {
-        VStack(spacing: 16) {
-            TextField("Enter text here", text: $inputText)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
-            
-            Button("Submit") { submitCommand() }
-                .padding()
-                .foregroundColor(.white)
-                .background(Color.blue)
-                .cornerRadius(10)
-            
-            VStack {
-                ForEach(sentCommands, id: \.self) { command in
-                    Text(command).font(.caption)
-                }
-            }
-            
-            Text("Fuego Response: \(fuegoResponse)")
-            
-            Text("Error: \(fuegoError)")
-        }
+  // current implementation using a callback function:
+  func submitCommand() {
+    guard let fuegoBridge else { return }
+    sentCommands.append(inputText.lowercased())
+    fuegoBridge.submitCommand(inputText.lowercased()) { response, error in
+      if let response {
+        handleResponse(response)
+      } else if let error {
+        fuegoResponse = "error"
+        fuegoError = "\(error)" // error.localizedDescription
+      }
+    }
+  }
+    
+  var body: some View {
+    VStack(spacing: 16) {
+      TextField("Enter text here", text: $inputText)
+        .textFieldStyle(RoundedBorderTextFieldStyle())
         .padding()
-        .task {
-            if fuegoBridge == nil {
-                fuegoBridge = FuegoBridge()
-                print("AI connecting...")
-                do {
-                    try fuegoBridge!.startEngine()
-                    print("AI connected")
-                } catch {
-                    print("AI didn't connect, error: \(error)")
-                    fuegoError = "\(error)"
-                }
-                
-            }
+            
+      Button("Submit") { submitCommand() }
+        .padding()
+        .foregroundColor(.white)
+        .background(Color.blue)
+        .cornerRadius(10)
+            
+      VStack {
+        ForEach(sentCommands, id: \.self) { command in
+          Text(command).font(.caption)
         }
-        .onDisappear {
-            fuegoBridge?.stopEngine()
-        }
+      }
+            
+      Text("Fuego Response: \(fuegoResponse)")
+            
+      Text("Error: \(fuegoError)")
     }
+    .padding()
+    .task {
+      if fuegoBridge == nil {
+        fuegoBridge = FuegoBridge()
+        print("AI connecting...")
+        do {
+          try fuegoBridge!.startEngine()
+          print("AI connected")
+        } catch {
+          print("AI didn't connect, error: \(error)")
+          fuegoError = "\(error)"
+        }
+      }
+    }
+    .onDisappear {
+      fuegoBridge?.stopEngine()
+    }
+  }
 }
 
-
 #Preview(windowStyle: .automatic) {
-    ContentView()
+  ContentView()
 }
