@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "bump": "np --no-cleanup --no-tests --no-publish",
+    "build": "./build-xcframework.sh",
     "release": "npm run zip-framework && npm run bump",
     "zip-framework": "node ./node/zipFramework.js"
   },
