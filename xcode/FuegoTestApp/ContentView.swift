@@ -1,5 +1,3 @@
-import RealityKit
-import RealityKitContent
 import SwiftUI
 
 let testCommands = [
@@ -103,8 +101,4 @@ struct ContentView: View {
       fuegoBridge?.stopEngine()
     }
   }
-}
-
-#Preview(windowStyle: .automatic) {
-  ContentView()
 }

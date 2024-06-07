@@ -1,8 +1,7 @@
 {
-  "images" : [
+  "colors" : [
     {
-      "idiom" : "vision",
-      "scale" : "2x"
+      "idiom" : "universal"
     }
   ],
   "info" : {
