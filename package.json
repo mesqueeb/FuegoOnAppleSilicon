@@ -13,6 +13,7 @@
   },
   "devDependencies": {
     "np": "^10.0.5",
+    "replace-regex": "^0.0.3",
     "semver": "^7.6.2"
   },
   "funding": "https://github.com/sponsors/mesqueeb",

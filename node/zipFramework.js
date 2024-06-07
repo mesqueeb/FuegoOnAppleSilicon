@@ -3,6 +3,7 @@ import { writeFileSync } from 'node:fs'
 import { join, basename } from 'node:path'
 import { createRequire } from 'node:module'
 import semver from 'semver'
+import { replaceRegex } from 'replace-regex'
 
 const require = createRequire(import.meta.url)
 const { version } = require('../package.json')
@@ -64,6 +65,12 @@ let package = Package(
 
 // Write the updated Package.swift
 writeFileSync(packageSwiftPath, packageSwiftContent)
+
+await replaceRegex({ 
+  files: 'README.md',
+  from: /\d+\.\d+\.\d+/g,
+  to: nextVersion,
+})
 
 // Commit changes
 execSync(`git add .`, { stdio: 'inherit' })
