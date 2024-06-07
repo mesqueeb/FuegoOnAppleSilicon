@@ -13873,7 +13873,7 @@
       location = "group:node"
       name = "node">
       <FileRef
-         location = "group:zipFramework.js">
+         location = "group:release.js">
       </FileRef>
    </Group>
    <FileRef

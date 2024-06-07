@@ -58,8 +58,7 @@ let package = Package(
     .target(
       name: "FuegoCBridge",
       dependencies: ["FuegoXCFramework"],
-      path: "FuegoOnAppleSilicon/CBridge",
-      publicHeadersPath: "FuegoOnAppleSilicon/CBridge/include"
+      path: "FuegoOnAppleSilicon/CBridge"
     ),
     .target(
       name: "FuegoOnAppleSilicon",
