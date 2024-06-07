@@ -2,6 +2,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "release-no-zip": "np",
     "release": "npm run zip-framework && np",
     "zip-framework": "node ./node/zipFramework.js"
   },
