@@ -1,4 +1,5 @@
 import Foundation
+import FuegoCBridge
 
 public enum FuegoBridgeError: Error {
   case notStarted

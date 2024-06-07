@@ -46,7 +46,7 @@ let package = Package(
     // Products define the executables and libraries a package produces, making them visible to other packages.
     .library(
       name: "FuegoOnAppleSilicon",
-      targets: ["FuegoOnAppleSilicon", "FuegoCBridge", "FuegoXCFramework"]
+      targets: ["FuegoOnAppleSilicon"]
     ),
   ],
   targets: [
@@ -60,12 +60,12 @@ let package = Package(
       dependencies: ["FuegoXCFramework"],
       path: "FuegoOnAppleSilicon/CBridge",
       publicHeadersPath: "FuegoOnAppleSilicon/CBridge/include"
-    )
+    ),
     .target(
       name: "FuegoOnAppleSilicon",
-      dependencies: ["FuegoXCFramework", "FuegoCBridge"],
+      dependencies: ["FuegoCBridge"],
       path: "FuegoOnAppleSilicon/SwiftBridge"
-    )
+    ),
   ]
 )
 `)
