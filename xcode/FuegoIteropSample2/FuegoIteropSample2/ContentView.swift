@@ -8,7 +8,7 @@
 import SwiftUI
 import RealityKit
 import RealityKitContent
-import FuegoLibrary
+import FuegoOnAppleSilicon
 
 let testCommands = [
   "boardsize 19",

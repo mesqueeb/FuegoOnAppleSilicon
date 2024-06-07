@@ -1,0 +1,14 @@
+{
+  "version": "0.0.0",
+  "scripts": {
+    "release": "npm run zip-framework && np",
+    "zip-framework": "node ./node/zipFramework.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "np": "^10.0.5",
+    "semver": "^7.6.2"
+  }
+}
