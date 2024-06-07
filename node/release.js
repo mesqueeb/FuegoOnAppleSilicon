@@ -14,21 +14,23 @@ const bump = await select({
   choices: ['patch','minor', 'major'].map((value) => ({ name: value, value })),
 })
 
+const PATH_ROOT = join(process.cwd())
+const PATH_BUILD = join(PATH_ROOT, './build')
+
 const nextVersion = semver.inc(version, bump)
-const frameworkPath = join(process.cwd(), './build/Fuego.xcframework')
+const frameworkPath = join(PATH_BUILD, './Fuego.xcframework')
 const zipFilename = `Fuego-${nextVersion}.xcframework.zip`
-const zipPath = join(process.cwd(), `./build/${zipFilename}`)
-const packageSwiftPath = join(process.cwd(), 'Package.swift')
+const zipFullPath = join(PATH_BUILD, `./${zipFilename}`)
 
 // Change directory to the build folder to create the zip
-const buildDir = join(process.cwd(), './build')
 const frameworkName = basename(frameworkPath)
 
-execSync(`cd ${buildDir} && zip -r ${zipFilename} ${frameworkName}`, { stdio: 'inherit' })
+execSync(`cd ${PATH_BUILD} && zip -r ${zipFilename} ${frameworkName}`, { stdio: 'inherit' })
 
-const zipChecksum = execSync(`swift package compute-checksum ${zipPath}`).toString().trim()
+const zipChecksum = execSync(`swift package compute-checksum ${zipFullPath}`).toString().trim()
 
-const packageSwiftContent = `
+// Write the updated Package.swift
+writeFileSync(join(PATH_ROOT, 'Package.swift'), `
 // swift-tools-version: 5.10
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 // =================================================================
@@ -66,13 +68,10 @@ let package = Package(
     )
   ]
 )
-`
-
-// Write the updated Package.swift
-writeFileSync(packageSwiftPath, packageSwiftContent)
+`)
 
 await replaceRegex({ 
-  files: 'README.md',
+  files: join(PATH_ROOT, 'README.md'),
   from: /from: "\d+\.\d+\.\d+"/g,
   to: `from: "${nextVersion}"`,
 })
@@ -81,4 +80,4 @@ execSync(`git add .`, { stdio: 'inherit' })
 execSync(`git commit -m "chore: 🎉 Release version ${nextVersion}"`, { stdio: 'inherit' })
 
 execSync(`np ${bump} --no-cleanup --no-tests --no-publish`)
-execSync(`open ${zipPath}`)
+execSync(`open ${PATH_BUILD}`)
