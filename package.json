@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "release-no-zip": "np",
-    "release": "npm run zip-framework && np",
+    "bump": "np --no-cleanup --no-tests --no-publish",
+    "release": "npm run zip-framework && npm run bump",
     "zip-framework": "node ./node/zipFramework.js"
   },
   "engines": {
