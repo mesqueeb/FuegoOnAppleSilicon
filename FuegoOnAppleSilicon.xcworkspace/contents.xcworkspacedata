@@ -13850,11 +13850,15 @@
       <Group
          location = "group:CBridge"
          name = "CBridge">
+         <Group
+            location = "group:include"
+            name = "include">
+            <FileRef
+               location = "group:FuegoBridge.hpp">
+            </FileRef>
+         </Group>
          <FileRef
             location = "group:FuegoBridge.cpp">
-         </FileRef>
-         <FileRef
-            location = "group:FuegoBridge.hpp">
          </FileRef>
       </Group>
       <Group

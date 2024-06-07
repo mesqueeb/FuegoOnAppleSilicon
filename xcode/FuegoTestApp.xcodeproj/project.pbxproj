@@ -7,14 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F71F4F102C135C7400B5D0FE /* FuegoBridge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F71F4F0B2C135C7400B5D0FE /* FuegoBridge.cpp */; };
+		F71F4F112C135C7400B5D0FE /* FuegoBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = F71F4F0D2C135C7400B5D0FE /* FuegoBridge.swift */; };
 		F7A4060D2C13418E008FBC77 /* FuegoTestAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A4060C2C13418E008FBC77 /* FuegoTestAppApp.swift */; };
 		F7A4060F2C13418E008FBC77 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A4060E2C13418E008FBC77 /* ContentView.swift */; };
 		F7A406112C13418F008FBC77 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F7A406102C13418F008FBC77 /* Assets.xcassets */; };
 		F7A406152C13418F008FBC77 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F7A406142C13418F008FBC77 /* Preview Assets.xcassets */; };
 		F7A4061D2C134233008FBC77 /* Fuego.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7A4061C2C134233008FBC77 /* Fuego.xcframework */; };
 		F7A4061E2C134233008FBC77 /* Fuego.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F7A4061C2C134233008FBC77 /* Fuego.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		F7A406402C1344D9008FBC77 /* FuegoBridge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7A4063C2C1344D9008FBC77 /* FuegoBridge.cpp */; };
-		F7A406412C1344D9008FBC77 /* FuegoBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A4063E2C1344D9008FBC77 /* FuegoBridge.swift */; };
 		F7A406442C1347D7008FBC77 /* book.dat in Resources */ = {isa = PBXBuildFile; fileRef = F7A406432C1347D6008FBC77 /* book.dat */; };
 /* End PBXBuildFile section */
 
@@ -33,6 +33,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		F71F4F092C135C7400B5D0FE /* FuegoBridge.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FuegoBridge.hpp; sourceTree = "<group>"; };
+		F71F4F0B2C135C7400B5D0FE /* FuegoBridge.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FuegoBridge.cpp; sourceTree = "<group>"; };
+		F71F4F0D2C135C7400B5D0FE /* FuegoBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FuegoBridge.swift; sourceTree = "<group>"; };
 		F7A406092C13418E008FBC77 /* FuegoTestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FuegoTestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7A4060C2C13418E008FBC77 /* FuegoTestAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FuegoTestAppApp.swift; sourceTree = "<group>"; };
 		F7A4060E2C13418E008FBC77 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -40,9 +43,6 @@
 		F7A406122C13418F008FBC77 /* FuegoTestApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FuegoTestApp.entitlements; sourceTree = "<group>"; };
 		F7A406142C13418F008FBC77 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		F7A4061C2C134233008FBC77 /* Fuego.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Fuego.xcframework; path = ../build/Fuego.xcframework; sourceTree = "<group>"; };
-		F7A4063C2C1344D9008FBC77 /* FuegoBridge.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FuegoBridge.cpp; sourceTree = "<group>"; };
-		F7A4063D2C1344D9008FBC77 /* FuegoBridge.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FuegoBridge.hpp; sourceTree = "<group>"; };
-		F7A4063E2C1344D9008FBC77 /* FuegoBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FuegoBridge.swift; sourceTree = "<group>"; };
 		F7A406422C134536008FBC77 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS17.4.sdk/usr/lib/libc++.tbd"; sourceTree = DEVELOPER_DIR; };
 		F7A406432C1347D6008FBC77 /* book.dat */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = book.dat; path = ../../book/book.dat; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -59,21 +59,39 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		F71F4F062C13583100B5D0FE /* CBridge */ = {
+		F71F4F0A2C135C7400B5D0FE /* include */ = {
 			isa = PBXGroup;
 			children = (
-				F7A4063C2C1344D9008FBC77 /* FuegoBridge.cpp */,
-				F7A4063D2C1344D9008FBC77 /* FuegoBridge.hpp */,
+				F71F4F092C135C7400B5D0FE /* FuegoBridge.hpp */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		F71F4F0C2C135C7400B5D0FE /* CBridge */ = {
+			isa = PBXGroup;
+			children = (
+				F71F4F0A2C135C7400B5D0FE /* include */,
+				F71F4F0B2C135C7400B5D0FE /* FuegoBridge.cpp */,
 			);
 			path = CBridge;
 			sourceTree = "<group>";
 		};
-		F71F4F072C13583F00B5D0FE /* SwiftBridge */ = {
+		F71F4F0E2C135C7400B5D0FE /* SwiftBridge */ = {
 			isa = PBXGroup;
 			children = (
-				F7A4063E2C1344D9008FBC77 /* FuegoBridge.swift */,
+				F71F4F0D2C135C7400B5D0FE /* FuegoBridge.swift */,
 			);
 			path = SwiftBridge;
+			sourceTree = "<group>";
+		};
+		F71F4F0F2C135C7400B5D0FE /* FuegoOnAppleSilicon */ = {
+			isa = PBXGroup;
+			children = (
+				F71F4F0C2C135C7400B5D0FE /* CBridge */,
+				F71F4F0E2C135C7400B5D0FE /* SwiftBridge */,
+			);
+			name = FuegoOnAppleSilicon;
+			path = ../../FuegoOnAppleSilicon;
 			sourceTree = "<group>";
 		};
 		F7A406002C13418E008FBC77 = {
@@ -96,7 +114,7 @@
 		F7A4060B2C13418E008FBC77 /* FuegoTestApp */ = {
 			isa = PBXGroup;
 			children = (
-				F7A4063F2C1344D9008FBC77 /* FuegoOnAppleSilicon */,
+				F71F4F0F2C135C7400B5D0FE /* FuegoOnAppleSilicon */,
 				F7A4060C2C13418E008FBC77 /* FuegoTestAppApp.swift */,
 				F7A4060E2C13418E008FBC77 /* ContentView.swift */,
 				F7A406102C13418F008FBC77 /* Assets.xcassets */,
@@ -122,16 +140,6 @@
 				F7A4061C2C134233008FBC77 /* Fuego.xcframework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		F7A4063F2C1344D9008FBC77 /* FuegoOnAppleSilicon */ = {
-			isa = PBXGroup;
-			children = (
-				F71F4F072C13583F00B5D0FE /* SwiftBridge */,
-				F71F4F062C13583100B5D0FE /* CBridge */,
-			);
-			name = FuegoOnAppleSilicon;
-			path = ../../FuegoOnAppleSilicon;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -208,8 +216,8 @@
 			files = (
 				F7A4060F2C13418E008FBC77 /* ContentView.swift in Sources */,
 				F7A4060D2C13418E008FBC77 /* FuegoTestAppApp.swift in Sources */,
-				F7A406402C1344D9008FBC77 /* FuegoBridge.cpp in Sources */,
-				F7A406412C1344D9008FBC77 /* FuegoBridge.swift in Sources */,
+				F71F4F102C135C7400B5D0FE /* FuegoBridge.cpp in Sources */,
+				F71F4F112C135C7400B5D0FE /* FuegoBridge.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -364,7 +372,7 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = ../FuegoOnAppleSilicon/CBridge/FuegoBridge.hpp;
+				SWIFT_OBJC_BRIDGING_HEADER = ../FuegoOnAppleSilicon/CBridge/include/FuegoBridge.hpp;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 			};
@@ -404,7 +412,7 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = ../FuegoOnAppleSilicon/CBridge/FuegoBridge.hpp;
+				SWIFT_OBJC_BRIDGING_HEADER = ../FuegoOnAppleSilicon/CBridge/include/FuegoBridge.hpp;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 			};
