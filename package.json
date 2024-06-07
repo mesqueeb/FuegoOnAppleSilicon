@@ -13,5 +13,12 @@
   "devDependencies": {
     "np": "^10.0.5",
     "semver": "^7.6.2"
-  }
+  },
+  "funding": "https://github.com/sponsors/mesqueeb",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mesqueeb/FuegoOnAppleSilicon.git"
+  },
+  "homepage": "https://github.com/mesqueeb/FuegoOnAppleSilicon#readme",
+  "bugs": "https://github.com/mesqueeb/FuegoOnAppleSilicon/issues"
 }
