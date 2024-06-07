@@ -10,7 +10,7 @@ const { version } = require('../package.json')
 
 const nextVersion = semver.inc(version, 'patch')
 const frameworkPath = join(process.cwd(), './build/Fuego.xcframework')
-const zipFilename = `Fuego.xcframework.zip`
+const zipFilename = `Fuego-${nextVersion}.xcframework.zip`
 const zipPath = join(process.cwd(), `./build/${zipFilename}`)
 const packageSwiftPath = join(process.cwd(), 'Package.swift')
 
@@ -38,27 +38,25 @@ let package = Package(
     // Products define the executables and libraries a package produces, making them visible to other packages.
     .library(
       name: "FuegoOnAppleSilicon",
-      targets: ["FuegoSwiftBridge", "FuegoCBridge", "Fuego"]
+      targets: ["FuegoOnAppleSilicon"]
     ),
   ],
   targets: [
-    // Targets are the basic building blocks of a package, defining a module or a test suite.
-    // Targets can depend on other targets in this package and products from dependencies.
     .binaryTarget(
-      name: "Fuego",
+      name: "FuegoXCFramework",
       url: "https://github.com/mesqueeb/FuegoOnAppleSilicon/releases/download/v${nextVersion}/${zipFilename}",
       checksum: "${zipChecksum}"
     ),
     .target(
       name: "FuegoCBridge",
-      dependencies: ["Fuego"],
+      dependencies: ["FuegoXCFramework"],
       path: "FuegoOnAppleSilicon/CBridge"
     ),
     .target(
-      name: "FuegoSwiftBridge",
-      dependencies: ["FuegoCBridge", "Fuego"],
+      name: "FuegoOnAppleSilicon",
+      dependencies: ["FuegoCBridge", "FuegoXCFramework"],
       path: "FuegoOnAppleSilicon/SwiftBridge"
-    ),
+    )
   ]
 )
 `

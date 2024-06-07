@@ -14,7 +14,7 @@ let package = Package(
     // Products define the executables and libraries a package produces, making them visible to other packages.
     .library(
       name: "FuegoOnAppleSilicon",
-      targets: ["FuegoSwiftBridge", "FuegoCBridge", "Fuego"]
+      targets: ["FuegoOnAppleSilicon"]
     ),
   ],
   targets: [
@@ -34,6 +34,10 @@ let package = Package(
       name: "FuegoSwiftBridge",
       dependencies: ["FuegoCBridge", "Fuego"],
       path: "FuegoOnAppleSilicon/SwiftBridge"
+    ),
+    .target(
+      name: "FuegoOnAppleSilicon",
+      dependencies: ["FuegoSwiftBridge", "FuegoCBridge", "Fuego"],
     ),
   ]
 )
