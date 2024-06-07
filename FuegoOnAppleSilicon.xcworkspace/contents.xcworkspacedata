@@ -13847,15 +13847,23 @@
    <Group
       location = "group:FuegoOnAppleSilicon"
       name = "FuegoOnAppleSilicon">
-      <FileRef
-         location = "group:FuegoBridge.swift">
-      </FileRef>
-      <FileRef
-         location = "group:FuegoBridge.cpp">
-      </FileRef>
-      <FileRef
-         location = "group:FuegoBridge.hpp">
-      </FileRef>
+      <Group
+         location = "group:CBridge"
+         name = "CBridge">
+         <FileRef
+            location = "group:FuegoBridge.cpp">
+         </FileRef>
+         <FileRef
+            location = "group:FuegoBridge.hpp">
+         </FileRef>
+      </Group>
+      <Group
+         location = "group:SwiftBridge"
+         name = "SwiftBridge">
+         <FileRef
+            location = "group:FuegoBridge.swift">
+         </FileRef>
+      </Group>
    </Group>
    <Group
       location = "group:node"

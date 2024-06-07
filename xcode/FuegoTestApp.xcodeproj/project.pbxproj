@@ -59,6 +59,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F71F4F062C13583100B5D0FE /* CBridge */ = {
+			isa = PBXGroup;
+			children = (
+				F7A4063C2C1344D9008FBC77 /* FuegoBridge.cpp */,
+				F7A4063D2C1344D9008FBC77 /* FuegoBridge.hpp */,
+			);
+			path = CBridge;
+			sourceTree = "<group>";
+		};
+		F71F4F072C13583F00B5D0FE /* SwiftBridge */ = {
+			isa = PBXGroup;
+			children = (
+				F7A4063E2C1344D9008FBC77 /* FuegoBridge.swift */,
+			);
+			path = SwiftBridge;
+			sourceTree = "<group>";
+		};
 		F7A406002C13418E008FBC77 = {
 			isa = PBXGroup;
 			children = (
@@ -110,9 +127,8 @@
 		F7A4063F2C1344D9008FBC77 /* FuegoOnAppleSilicon */ = {
 			isa = PBXGroup;
 			children = (
-				F7A4063C2C1344D9008FBC77 /* FuegoBridge.cpp */,
-				F7A4063D2C1344D9008FBC77 /* FuegoBridge.hpp */,
-				F7A4063E2C1344D9008FBC77 /* FuegoBridge.swift */,
+				F71F4F072C13583F00B5D0FE /* SwiftBridge */,
+				F71F4F062C13583100B5D0FE /* CBridge */,
 			);
 			name = FuegoOnAppleSilicon;
 			path = ../../FuegoOnAppleSilicon;
@@ -348,7 +364,7 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = ../FuegoOnAppleSilicon/FuegoBridge.hpp;
+				SWIFT_OBJC_BRIDGING_HEADER = ../FuegoOnAppleSilicon/CBridge/FuegoBridge.hpp;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 			};
@@ -388,7 +404,7 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = ../FuegoOnAppleSilicon/FuegoBridge.hpp;
+				SWIFT_OBJC_BRIDGING_HEADER = ../FuegoOnAppleSilicon/CBridge/FuegoBridge.hpp;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 			};
