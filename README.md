@@ -27,9 +27,9 @@ It builds upon a fork of both the original [Fuego C++ code on Source Forge](http
 ./build-xcframework.sh
 ```
 
-This script builds `gtpengine`, `smartgame`, `go` and `gouct` libraries, merges them into a single lib (per platform), and packs libs from different platforms into `./build/fuego.xcframework`.
+This script builds `gtpengine`, `smartgame`, `go` and `gouct` libraries, merges them into a single lib (per platform), and packs libs from different platforms into `./build/Fuego.xcframework`.
 
-This script also downloads Boost (before building), however, now there is no need to build Boost libraries because the Boost libraries that need to be built are no longer used for these fuego subprojects. Only `fuegomain` and `fuegotest` depend on the `boost.program_options` library that needs to be built. But they are not part of `fuego.xcframework`.
+This script also downloads Boost (before building), however, now there is no need to build Boost libraries because the Boost libraries that need to be built are no longer used for these fuego subprojects. Only `fuegomain` and `fuegotest` depend on the `boost.program_options` library that needs to be built. But they are not part of `Fuego.xcframework`.
 
 You can check this build file and enable / disable output by toggling `if true; then` to `if false; then`. Currently it is set to build:
 
