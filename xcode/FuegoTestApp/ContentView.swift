@@ -5,9 +5,13 @@ let testCommands = [
   "clear_board",
   "komi 6.5",
   "play b D4",
+  "showboard",
   "genmove w",
+  "showboard",
   "play b E4",
+  "showboard",
   "genmove w",
+  "showboard",
   // "set_free_handicap d16 q16 d4 q4",
   // "genmove w"
 ]
@@ -20,7 +24,7 @@ struct ContentView: View {
   @State private var fuegoError: String = ""
     
   @State var fuegoBridge: FuegoBridge? = nil
-
+  
   init() {
     guard let bundleBookUrl = Bundle.main.url(forResource: "book", withExtension: "dat") else {
       fatalError("can't retrieve bundle path")
@@ -31,6 +35,27 @@ struct ContentView: View {
     if !FileManager.default.changeCurrentDirectoryPath(bookDir.path) {
       fatalError("can't set book directory directory")
     }
+  }
+  
+  func startEngine() async {
+    if fuegoBridge == nil {
+      fuegoBridge = FuegoBridge()
+      print("AI connecting...")
+      do {
+        try await fuegoBridge!.startEngine()
+        print("AI connected")
+      } catch {
+        print("AI didn't connect, error: \(error)")
+        fuegoError = "\(error)"
+      }
+    }
+  }
+  
+  func stopEngine() async {
+    print("stopping AI")
+    await fuegoBridge?.stopEngine()
+    fuegoBridge = nil
+    print("stopped AI")
   }
     
   func handleResponse(_ response: String) {
@@ -65,44 +90,40 @@ struct ContentView: View {
     
   var body: some View {
     VStack(spacing: 16) {
-      TextField("Enter text here", text: $inputText)
-        .textFieldStyle(RoundedBorderTextFieldStyle())
-        .padding()
-            
-      Button("Submit") { submitCommand() }
-        .padding()
-        .foregroundColor(.white)
-        .background(Color.blue)
-        .cornerRadius(10)
-            
-      VStack {
-        ForEach(sentCommands, id: \.self) { command in
-          Text(command).font(.caption)
-        }
+      if fuegoBridge == nil {
+        Button("Start Engine") { Task { await startEngine() } }
+          .padding()
+          .foregroundColor(.white)
+          .background(Color.blue)
+          .cornerRadius(10)
       }
-            
-      Text("Fuego Response: \(fuegoResponse)")
-            
-      Text("Error: \(fuegoError)")
+      
+      if fuegoBridge != nil {
+        TextField("Enter text here", text: $inputText)
+          .textFieldStyle(RoundedBorderTextFieldStyle())
+          .padding()
+        
+        Button("Submit") { submitCommand() }
+          .padding()
+          .foregroundColor(.white)
+          .background(Color.blue)
+          .cornerRadius(10)
+        
+        VStack {
+          ForEach(sentCommands, id: \.self) { command in
+            Text(command).font(.caption)
+          }
+        }
+        
+        Text("Fuego Response: \(fuegoResponse)")
+        
+        Text("Error: \(fuegoError)")
+        
+        Button("Stop Engine") { Task { await stopEngine() } }
+          .padding()
+      }
     }
     .padding()
-    .task {
-      if fuegoBridge == nil {
-        fuegoBridge = FuegoBridge()
-        print("AI connecting...")
-        do {
-          try await fuegoBridge!.startEngine()
-          print("AI connected")
-        } catch {
-          print("AI didn't connect, error: \(error)")
-          fuegoError = "\(error)"
-        }
-      }
-    }
-    .onDisappear {
-      Task {
-        await fuegoBridge?.stopEngine()
-      }
-    }
+    .onDisappear { Task { await stopEngine() }}
   }
 }

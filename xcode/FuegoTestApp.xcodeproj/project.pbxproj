@@ -16,6 +16,7 @@
 		F7A4061D2C134233008FBC77 /* Fuego.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7A4061C2C134233008FBC77 /* Fuego.xcframework */; };
 		F7A4061E2C134233008FBC77 /* Fuego.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F7A4061C2C134233008FBC77 /* Fuego.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F7A406442C1347D7008FBC77 /* book.dat in Resources */ = {isa = PBXBuildFile; fileRef = F7A406432C1347D6008FBC77 /* book.dat */; };
+		F7F406092C136F1E000DCDAD /* FuegoCBridge in Frameworks */ = {isa = PBXBuildFile; productRef = F7F406082C136F1E000DCDAD /* FuegoCBridge */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -45,6 +46,8 @@
 		F7A4061C2C134233008FBC77 /* Fuego.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Fuego.xcframework; path = ../build/Fuego.xcframework; sourceTree = "<group>"; };
 		F7A406422C134536008FBC77 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS17.4.sdk/usr/lib/libc++.tbd"; sourceTree = DEVELOPER_DIR; };
 		F7A406432C1347D6008FBC77 /* book.dat */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = book.dat; path = ../../book/book.dat; sourceTree = "<group>"; };
+		F7F406062C136E71000DCDAD /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Package.swift; path = ../Package.swift; sourceTree = "<group>"; };
+		F7F406072C136F09000DCDAD /* FuegoCBridge */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = FuegoCBridge; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,6 +55,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F7F406092C136F1E000DCDAD /* FuegoCBridge in Frameworks */,
 				F7A4061D2C134233008FBC77 /* Fuego.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -114,6 +118,7 @@
 		F7A4060B2C13418E008FBC77 /* FuegoTestApp */ = {
 			isa = PBXGroup;
 			children = (
+				F7F406072C136F09000DCDAD /* FuegoCBridge */,
 				F71F4F0F2C135C7400B5D0FE /* FuegoOnAppleSilicon */,
 				F7A4060C2C13418E008FBC77 /* FuegoTestAppApp.swift */,
 				F7A4060E2C13418E008FBC77 /* ContentView.swift */,
@@ -136,6 +141,7 @@
 		F7A4061B2C134233008FBC77 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F7F406062C136E71000DCDAD /* Package.swift */,
 				F7A406422C134536008FBC77 /* libc++.tbd */,
 				F7A4061C2C134233008FBC77 /* Fuego.xcframework */,
 			);
@@ -159,6 +165,9 @@
 			dependencies = (
 			);
 			name = FuegoTestApp;
+			packageProductDependencies = (
+				F7F406082C136F1E000DCDAD /* FuegoCBridge */,
+			);
 			productName = FuegoTestApp;
 			productReference = F7A406092C13418E008FBC77 /* FuegoTestApp.app */;
 			productType = "com.apple.product-type.application";
@@ -344,13 +353,17 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = FuegoTestApp/FuegoTestApp.entitlements;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"FuegoTestApp/Preview Content\"";
-				DEVELOPMENT_TEAM = 8ZRM3D7KC6;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=macosx*]" = 8ZRM3D7KC6;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = FuegoTestApp;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -368,6 +381,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = mesqueeb.FuegoTestApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -384,13 +398,16 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = FuegoTestApp/FuegoTestApp.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"FuegoTestApp/Preview Content\"";
-				DEVELOPMENT_TEAM = 8ZRM3D7KC6;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = FuegoTestApp;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -408,6 +425,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = mesqueeb.FuegoTestApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -440,6 +458,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F7F406082C136F1E000DCDAD /* FuegoCBridge */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FuegoCBridge;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F7A406012C13418E008FBC77 /* Project object */;
 }
