@@ -1,0 +1,25 @@
+{
+  "name": "FuegoOnAppleSilicon",
+  "version": "0.1.7",
+  "type": "module",
+  "scripts": {
+    "build": "./build-xcframework.sh",
+    "release": "node ./node/release.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "@inquirer/select": "^2.3.5",
+    "np": "^10.0.5",
+    "replace-regex": "^0.0.3",
+    "semver": "^7.6.2"
+  },
+  "funding": "https://github.com/sponsors/mesqueeb",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mesqueeb/FuegoOnAppleSilicon.git"
+  },
+  "homepage": "https://github.com/mesqueeb/FuegoOnAppleSilicon#readme",
+  "bugs": "https://github.com/mesqueeb/FuegoOnAppleSilicon/issues"
+}

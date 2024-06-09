@@ -98,8 +98,8 @@ fi
 
 fi
 
-[ -d $HOME_DIR/build/fuego.xcframework ] && rm -rf $HOME_DIR/build/fuego.xcframework
-[ -d $HOME_DIR/build/fuego_test.xcframework ] && rm -rf $HOME_DIR/build/fuego_test.xcframework
+[ -d $HOME_DIR/build/Fuego.xcframework ] && rm -rf $HOME_DIR/build/Fuego.xcframework
+[ -d $HOME_DIR/build/FuegoTest.xcframework ] && rm -rf $HOME_DIR/build/FuegoTest.xcframework
 
-xcodebuild -create-xcframework $LIBRARIES -output "$HOME_DIR/build/fuego.xcframework"
-xcodebuild -create-xcframework $TESTLIBRARIES -output "$HOME_DIR/build/fuego_test.xcframework"
+xcodebuild -create-xcframework $LIBRARIES -output "$HOME_DIR/build/Fuego.xcframework"
+xcodebuild -create-xcframework $TESTLIBRARIES -output "$HOME_DIR/build/FuegoTest.xcframework"
