@@ -51,6 +51,7 @@ public actor FuegoBridge {
     self.cookie = nil
   }
   
+  @discardableResult
   public func submitCommand(_ command: String) throws -> String? {
     guard let cookie else {
       throw FuegoBridgeError.notStarted
