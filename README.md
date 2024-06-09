@@ -21,10 +21,6 @@ It builds upon a fork of both the original [Fuego C++ code on Source Forge](http
 
 ## Development
 
-### Running Unit Tests
-
-TODO
-
 ### Building the XCframework
 
 ```
@@ -43,10 +39,14 @@ You can check this build file and enable / disable output by toggling `if true; 
 - ios simulator arm64,x86_64
 - osx arm64,x86_64
 
+### Running Unit Tests
+
+`build-xcframework.sh` is a multipurpose build script. It also creates another `FuegoTest.xcframework` by merging the `simpleplayers` and `unittestmain` subprojects. While `unittestmain` is intended to be an executable, it's built as a static library where the `main` method is renamed to `run_unit_tests` with the same signature. So any iOS/visionOS/macOS application is able to run Fuego unit tests just by embedding this `FuegoTest.xcframework` (in addition to `Fuego.xcframework`) and calling the `run_unit_tests` method. An example of such an application is xcode\FuegoTest\FuegoTest.xcodeproj, which represents a simple SwitUI application where tests are started when a button is clicked.
+
 ## Attributions
 
 The [Fuego on iOS](https://github.com/herzbube/fuego-on-ios) repository was a source of inspiration which gave birth to this library.
 
-Modernising the C++ code and build scripts was done with the help of [Apotocki](https://github.com/apotocki).
+Modernising the C++ code and build scripts was done with the help of [Alexander Pototskiy](https://github.com/apotocki).
 
 Thank you, everybody!
