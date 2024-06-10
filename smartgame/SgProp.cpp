@@ -804,6 +804,10 @@ void SgProp::Init()
 void SgProp::Fini()
 {
     s_initialized = false;
+    for (size_t i = 0; i < s_numPropClasses; ++i) {
+        SgProp::s_prop[i].reset();
+    }
+    s_numPropClasses = 0;
 }
 
 //----------------------------------------------------------------------------
