@@ -54,7 +54,12 @@ struct ContentView: View {
   func stopEngine() async {
     print("stopping AI")
     await fuegoBridge?.stopEngine()
+    testCommandIndex = 0
     fuegoBridge = nil
+    sentCommands = []
+    inputText = testCommands[0]
+    fuegoResponse = ""
+    fuegoError = ""
     print("stopped AI")
   }
     
