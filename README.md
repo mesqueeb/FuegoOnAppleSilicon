@@ -7,17 +7,32 @@
 .package(url: "https://github.com/mesqueeb/FuegoOnAppleSilicon", from: "0.2.0")
 ```
 
-Fuego On Apple Silicon is the Fuego C++ Go engine to play and analyse Go games. Built as multi-platform XCframework for iOS and visionOS. Wrapped as a modernised Swift Package that can be included in any Swift project and can build on all Apple platforms.
+Fuego On Apple Silicon is the Fuego C++ Go engine to play and analyse Go games. Built as multi-platform XCframework for iOS, macOS and visionOS. Wrapped as a modernised Swift Package that can be included in any Swift project and can build on all Apple platforms.
 
 ## Improvements over original Fuego source code
 
 This project
-- Modernised the original C++ source code to compile with modern (20+) C++ standard and the latest (1.85) Boost version
+- Modernised the original C++ source code to compile with modern (20+) C++ standard
+- No longer requires the entire Boost library to be built, but now relies only on the Boost header libraries and is compatible with the latest Boost version (1.85)
 - Migrated to a CMake-based build system so the project can be supported with a more modern IDEs
-- Created a new [SH build script](./build-xcframework.sh) that builds XCframeworks for iOS, visionOS (xrOS), macOS, and related simulators
+- Created a new [SH build script](./build-xcframework.sh) that builds XCframeworks for iOS, macOS, visionOS (xrOS), and related simulators
 - Wrapped everything nicely into a Swift Package that includes the pre-compiled binaries, has a Swift bridge class so that it can be easily used in any Swift project
 
 It builds upon a fork of both the original [Fuego C++ code on Source Forge](http://fuego.sourceforge.net/) and the [Fuego on iOS](https://github.com/herzbube/fuego-on-ios) repository. (Fuego on iOS only compiles to iOS and relies on GNU++98 & Boost 1.75.0)
+
+## Installation Issues
+
+When installing the package via Xcode 14.x you might [run into the error:](https://stackoverflow.com/questions/76556005/swift-package-manager-failed-with-invalid-archive-returned-from-xy-which-is-req/78592676)
+
+> invalid archive returned from https://github.com/...
+
+The fix is to remove the dependency again, quit Xcode, and execute:
+
+```bash
+rm -rf $HOME/Library/Caches/org.swift.swiftpm/
+```
+
+Then re-open Xcode and it should install correctly.
 
 ## Development
 
@@ -41,7 +56,7 @@ You can check this build file and enable / disable output by toggling `if true; 
 
 ### Running Unit Tests
 
-`build-xcframework.sh` is a multipurpose build script. It also creates another `FuegoTest.xcframework` by merging the `simpleplayers` and `unittestmain` subprojects. While `unittestmain` is intended to be an executable, it's built as a static library where the `main` method is renamed to `run_unit_tests` with the same signature. So any iOS/visionOS/macOS application is able to run Fuego unit tests just by embedding this `FuegoTest.xcframework` (in addition to `Fuego.xcframework`) and calling the `run_unit_tests` method. An example of such an application is xcode\FuegoTest\FuegoTest.xcodeproj, which represents a simple SwitUI application where tests are started when a button is clicked.
+`build-xcframework.sh` is a multipurpose build script. It also creates another `FuegoTest.xcframework` by merging the `simpleplayers` and `unittestmain` subprojects. While `unittestmain` is intended to be an executable, it's built as a static library where the `main` method is renamed to `run_unit_tests` with the same signature. So any iOS/macOS/visionOS application is able to run Fuego unit tests just by embedding this `FuegoTest.xcframework` (in addition to `Fuego.xcframework`) and calling the `run_unit_tests` method. An example of such an application is xcode\FuegoTest\FuegoTest.xcodeproj, which represents a simple SwitUI application where tests are started when a button is clicked.
 
 ## Attributions
 
