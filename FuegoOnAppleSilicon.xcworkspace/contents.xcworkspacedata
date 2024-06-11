@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:Tests.xctestplan">
+   </FileRef>
+   <FileRef
       location = "group:xcode/FuegoUnitTests.xcodeproj">
    </FileRef>
    <FileRef
@@ -13870,6 +13873,12 @@
          <FileRef
             location = "group:FuegoBridge.swift">
          </FileRef>
+         <FileRef
+            location = "group:Helpers.swift">
+         </FileRef>
+         <FileRef
+            location = "group:Types.swift">
+         </FileRef>
       </Group>
    </Group>
    <Group
@@ -13877,6 +13886,13 @@
       name = "node">
       <FileRef
          location = "group:release.js">
+      </FileRef>
+   </Group>
+   <Group
+      location = "group:Tests"
+      name = "Tests">
+      <FileRef
+         location = "group:Helpers.swift">
       </FileRef>
    </Group>
    <FileRef

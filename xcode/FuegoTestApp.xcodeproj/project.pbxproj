@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		F71F4F102C135C7400B5D0FE /* FuegoBridge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F71F4F0B2C135C7400B5D0FE /* FuegoBridge.cpp */; };
 		F71F4F112C135C7400B5D0FE /* FuegoBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = F71F4F0D2C135C7400B5D0FE /* FuegoBridge.swift */; };
+		F728A26C2C1804A400C07DA2 /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = F728A26B2C1804A400C07DA2 /* Types.swift */; };
+		F728A26E2C1804E400C07DA2 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F728A26D2C1804E400C07DA2 /* Helpers.swift */; };
 		F7A4060D2C13418E008FBC77 /* FuegoTestAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A4060C2C13418E008FBC77 /* FuegoTestAppApp.swift */; };
 		F7A4060F2C13418E008FBC77 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A4060E2C13418E008FBC77 /* ContentView.swift */; };
 		F7A406112C13418F008FBC77 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F7A406102C13418F008FBC77 /* Assets.xcassets */; };
@@ -37,6 +39,8 @@
 		F71F4F092C135C7400B5D0FE /* FuegoBridge.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FuegoBridge.hpp; sourceTree = "<group>"; };
 		F71F4F0B2C135C7400B5D0FE /* FuegoBridge.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FuegoBridge.cpp; sourceTree = "<group>"; };
 		F71F4F0D2C135C7400B5D0FE /* FuegoBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FuegoBridge.swift; sourceTree = "<group>"; };
+		F728A26B2C1804A400C07DA2 /* Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
+		F728A26D2C1804E400C07DA2 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		F7A406092C13418E008FBC77 /* FuegoTestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FuegoTestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7A4060C2C13418E008FBC77 /* FuegoTestAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FuegoTestAppApp.swift; sourceTree = "<group>"; };
 		F7A4060E2C13418E008FBC77 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -84,6 +88,8 @@
 			isa = PBXGroup;
 			children = (
 				F71F4F0D2C135C7400B5D0FE /* FuegoBridge.swift */,
+				F728A26D2C1804E400C07DA2 /* Helpers.swift */,
+				F728A26B2C1804A400C07DA2 /* Types.swift */,
 			);
 			path = SwiftBridge;
 			sourceTree = "<group>";
@@ -196,6 +202,8 @@
 				Base,
 			);
 			mainGroup = F7A406002C13418E008FBC77;
+			packageReferences = (
+			);
 			productRefGroup = F7A4060A2C13418E008FBC77 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -224,8 +232,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				F7A4060F2C13418E008FBC77 /* ContentView.swift in Sources */,
+				F728A26E2C1804E400C07DA2 /* Helpers.swift in Sources */,
 				F7A4060D2C13418E008FBC77 /* FuegoTestAppApp.swift in Sources */,
 				F71F4F102C135C7400B5D0FE /* FuegoBridge.cpp in Sources */,
+				F728A26C2C1804A400C07DA2 /* Types.swift in Sources */,
 				F71F4F112C135C7400B5D0FE /* FuegoBridge.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

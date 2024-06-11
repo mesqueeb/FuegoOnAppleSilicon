@@ -65,6 +65,10 @@ let package = Package(
       dependencies: ["FuegoCBridge"],
       path: "FuegoOnAppleSilicon/SwiftBridge"
     ),
+    .testTarget(
+      name: "FuegoOnAppleSiliconTests",
+      dependencies: ["FuegoOnAppleSilicon"]
+    ),
   ]
 )
 `)
