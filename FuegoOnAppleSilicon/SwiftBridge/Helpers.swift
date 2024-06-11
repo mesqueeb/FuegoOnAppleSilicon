@@ -1,5 +1,3 @@
-import JustSugar
-
 let BOARDSIZE = 19
 
 /// `nil` when there's no stone, or the color
