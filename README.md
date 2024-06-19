@@ -65,3 +65,89 @@ The [Fuego on iOS](https://github.com/herzbube/fuego-on-ios) repository was a so
 Modernising the C++ code and build scripts was done with the help of [Alexander Pototskiy](https://github.com/apotocki).
 
 Thank you, everybody!
+
+# Original Fuego C++ README
+
+```md
+Description
+===========
+
+Fuego is a collection of C++ libraries for developing software for the
+game of Go. It includes a Go player using Monte-Carlo tree search.
+
+The initial version of the code was released by the Computer Go group at
+the University of Alberta and is based in parts on the previous projects
+Smart Game Board and Explorer.
+
+Contact
+=======
+
+Fuego project page: http://sourceforge.net/projects/fuego/
+
+Fuego Trac and Wiki: http://sourceforge.net/apps/trac/fuego/
+
+Copyright
+=========
+
+See AUTHORS for the list of copyright holders on Fuego.
+
+License
+=======
+
+Fuego is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Fuego is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with Fuego.  If not, see <http://www.gnu.org/licenses/>.
+
+Compilation
+===========
+
+See INSTALL for generic compilation instructions from GNU Automake.
+The file doc/doxygen/general/pages/autotools.cpp contains additional and
+Fuego specific documentation.
+
+Documentation
+=============
+
+The developer documentation for the libraries and applications can be
+created with Doxygen (http://www.doxygen.org). There is a makefile in
+doc/doxygen/Makefile.
+
+The user manual for the main Go player is in doc/manual/
+
+AUTHORS
+=======
+
+Fuego authors
+=============
+
+Martin Mueller
+Markus Enzenberger
+Fan Xie
+
+Previous authors
+================
+
+Anders Kierulf (original Smart Game Board code)
+
+Contributors
+============
+
+David Silver (SpDumbTactic player, improvements to SgHash)
+Xiaozhen Niu (parts of GoRegionUtil, GoSafetyUtil)
+Broderick Arneson (autobook; many enhancements)
+Richard Segal (improvements to parallel search)
+Chris Rosin (additive knowledge, Greenpeep-style patterns)
+Timothy Yau (Greenpeep-style patterns)
+Saradha Sankaran (deterministic mode; build improvements)
+Aja Huang
+Jakub Pawlewicz (better hash table; df-pn code)
+```
