@@ -1,7 +1,5 @@
 
 /// The Go Board Coordinates from A1 until T19
-///
-/// When a Coordinate is supposed to be returned but something is returned instead, it will be case `Other(String?)`
 public enum GoBoardCoordinate: String, CustomStringConvertible, Sendable {
   case A19, B19, C19, D19, E19, F19, G19, H19, J19, K19, L19, M19, N19, O19, P19, Q19, R19, S19, T19,
        A18, B18, C18, D18, E18, F18, G18, H18, J18, K18, L18, M18, N18, O18, P18, Q18, R18, S18, T18,

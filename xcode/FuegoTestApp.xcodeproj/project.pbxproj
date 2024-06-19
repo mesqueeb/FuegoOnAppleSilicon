@@ -11,7 +11,7 @@
 		F71F4F112C135C7400B5D0FE /* FuegoBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = F71F4F0D2C135C7400B5D0FE /* FuegoBridge.swift */; };
 		F728A26C2C1804A400C07DA2 /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = F728A26B2C1804A400C07DA2 /* Types.swift */; };
 		F728A26E2C1804E400C07DA2 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F728A26D2C1804E400C07DA2 /* Helpers.swift */; };
-		F7A4060D2C13418E008FBC77 /* FuegoTestAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A4060C2C13418E008FBC77 /* FuegoTestAppApp.swift */; };
+		F7A4060D2C13418E008FBC77 /* FuegoTestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A4060C2C13418E008FBC77 /* FuegoTestApp.swift */; };
 		F7A4060F2C13418E008FBC77 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A4060E2C13418E008FBC77 /* ContentView.swift */; };
 		F7A406112C13418F008FBC77 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F7A406102C13418F008FBC77 /* Assets.xcassets */; };
 		F7A406152C13418F008FBC77 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F7A406142C13418F008FBC77 /* Preview Assets.xcassets */; };
@@ -42,7 +42,7 @@
 		F728A26B2C1804A400C07DA2 /* Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
 		F728A26D2C1804E400C07DA2 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		F7A406092C13418E008FBC77 /* FuegoTestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FuegoTestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		F7A4060C2C13418E008FBC77 /* FuegoTestAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FuegoTestAppApp.swift; sourceTree = "<group>"; };
+		F7A4060C2C13418E008FBC77 /* FuegoTestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FuegoTestApp.swift; sourceTree = "<group>"; };
 		F7A4060E2C13418E008FBC77 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		F7A406102C13418F008FBC77 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F7A406122C13418F008FBC77 /* FuegoTestApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FuegoTestApp.entitlements; sourceTree = "<group>"; };
@@ -126,7 +126,7 @@
 			children = (
 				F7F406072C136F09000DCDAD /* FuegoCBridge */,
 				F71F4F0F2C135C7400B5D0FE /* FuegoOnAppleSilicon */,
-				F7A4060C2C13418E008FBC77 /* FuegoTestAppApp.swift */,
+				F7A4060C2C13418E008FBC77 /* FuegoTestApp.swift */,
 				F7A4060E2C13418E008FBC77 /* ContentView.swift */,
 				F7A406102C13418F008FBC77 /* Assets.xcassets */,
 				F7A406122C13418F008FBC77 /* FuegoTestApp.entitlements */,
@@ -233,7 +233,7 @@
 			files = (
 				F7A4060F2C13418E008FBC77 /* ContentView.swift in Sources */,
 				F728A26E2C1804E400C07DA2 /* Helpers.swift in Sources */,
-				F7A4060D2C13418E008FBC77 /* FuegoTestAppApp.swift in Sources */,
+				F7A4060D2C13418E008FBC77 /* FuegoTestApp.swift in Sources */,
 				F71F4F102C135C7400B5D0FE /* FuegoBridge.cpp in Sources */,
 				F728A26C2C1804A400C07DA2 /* Types.swift in Sources */,
 				F71F4F112C135C7400B5D0FE /* FuegoBridge.swift in Sources */,
@@ -399,6 +399,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = ../FuegoOnAppleSilicon/CBridge/include/FuegoBridge.hpp;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
+				XROS_DEPLOYMENT_TARGET = 1.2;
 			};
 			name = Debug;
 		};
@@ -443,6 +444,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = ../FuegoOnAppleSilicon/CBridge/include/FuegoBridge.hpp;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
+				XROS_DEPLOYMENT_TARGET = 1.2;
 			};
 			name = Release;
 		};
