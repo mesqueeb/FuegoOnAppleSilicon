@@ -32,7 +32,43 @@ The fix is to remove the dependency again, quit Xcode, and execute:
 rm -rf $HOME/Library/Caches/org.swift.swiftpm/
 ```
 
-Then re-open Xcode and it should install correctly.
+Then re-open Xcode, re-add the package again and it should install correctly. Sadly you'll need to do this _every time_ you need to update this package, (until Xcode fixes this issue with packages that uses binary targets).
+
+## Usage
+
+```swift
+import FuegoOnAppleSilicon
+
+let bridge = FuegoBridge()
+
+do {
+	try await bridge.startEngine()
+	
+	// You need to feed the engine GTP (Go Text Protocol) strings to be able to request moves
+	try await bridge.submitCommand("boardsize 19")
+  try await bridge.submitCommand("clear_board")
+  try await bridge.submitCommand("komi 6.5")
+  try await bridge.submitCommand("play b D16")
+	
+	if let whiteMove = try await bridge.submitCommand("genmove w") {
+		print("Fuego plays white:", whiteMove) // Eg. "Q4"
+	}
+	if let boardState = try await bridge.submitCommand("showboard") {
+		print("Fuego shows the board:", boardState)
+	}
+
+	// Stop the engine when you're done:
+	bridge.stopEngine()
+} catch {
+	print("Something went wrong... error:", error)
+}
+```
+
+The library comes with some useful types and helper functions, be sure to check out the [Swift wrapper's source code here](./FuegoOnAppleSilicon/SwiftBridge/)
+
+### Sample Project
+
+There is a sample Xcode project provided as part of the repo that you reference here: [FuegoTestApp](./xcode/FuegoTestApp/)
 
 ## Development
 
@@ -65,6 +101,10 @@ The [Fuego on iOS](https://github.com/herzbube/fuego-on-ios) repository was a so
 Modernising the C++ code and build scripts was done with the help of [Alexander Pototskiy](https://github.com/apotocki).
 
 Thank you, everybody!
+
+# Other Projects
+
+Also check out Micro-Max on Apple Silicon ♟️ at [github.com/mesqueeb/MicroMaxOnAppleSilicon](https://github.com/mesqueeb/MicroMaxOnAppleSilicon), the µ-Max Chess engine wrapped for Apple Silicon.
 
 # Original Fuego C++ README
 
