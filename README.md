@@ -104,7 +104,9 @@ Thank you, everybody!
 
 # Other Projects
 
-Also check out Micro-Max on Apple Silicon ♟️ at [github.com/mesqueeb/MicroMaxOnAppleSilicon](https://github.com/mesqueeb/MicroMaxOnAppleSilicon), the µ-Max Chess engine wrapped for Apple Silicon.
+Also check out Micro-Max on Apple Silicon ♟️, the µ-Max Chess engine wrapped for Apple Silicon.
+
+→ [github.com/mesqueeb/MicroMaxOnAppleSilicon](https://github.com/mesqueeb/MicroMaxOnAppleSilicon)
 
 # Original Fuego C++ README
 
