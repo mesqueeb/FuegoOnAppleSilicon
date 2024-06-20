@@ -42,25 +42,25 @@ import FuegoOnAppleSilicon
 let bridge = FuegoBridge()
 
 do {
-	try await bridge.startEngine()
-	
-	// You need to feed the engine GTP (Go Text Protocol) strings to be able to request moves
-	try await bridge.submitCommand("boardsize 19")
+  try await bridge.startEngine()
+  
+  // You need to feed the engine GTP (Go Text Protocol) strings to be able to request moves
+  try await bridge.submitCommand("boardsize 19")
   try await bridge.submitCommand("clear_board")
   try await bridge.submitCommand("komi 6.5")
   try await bridge.submitCommand("play b D16")
-	
-	if let whiteMove = try await bridge.submitCommand("genmove w") {
-		print("Fuego plays white:", whiteMove) // Eg. "Q4"
-	}
-	if let boardState = try await bridge.submitCommand("showboard") {
-		print("Fuego shows the board:", boardState)
-	}
+  
+  if let whiteMove = try await bridge.submitCommand("genmove w") {
+    print("Fuego plays white:", whiteMove) // Eg. "Q4"
+  }
+  if let boardState = try await bridge.submitCommand("showboard") {
+    print("Fuego shows the board:", boardState)
+  }
 
-	// Stop the engine when you're done:
-	bridge.stopEngine()
+  // Stop the engine when you're done:
+  bridge.stopEngine()
 } catch {
-	print("Something went wrong... error:", error)
+  print("Something went wrong... error:", error)
 }
 ```
 
