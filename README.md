@@ -70,6 +70,10 @@ The library comes with some useful types and helper functions, be sure to check 
 
 There is a sample Xcode project provided as part of the repo that you reference here: [FuegoTestApp](./xcode/FuegoTestApp/)
 
+### Documentation
+
+See the [documentation](https://swiftpackageindex.com/mesqueeb/FuegoOnAppleSilicon/documentation/fuegoonapplesilicon) for more info.
+
 ## Development
 
 ### Building the XCframework
