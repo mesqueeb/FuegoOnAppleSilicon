@@ -1,3 +1,4 @@
+import FuegoOnAppleSilicon
 import SwiftUI
 
 let testCommands = [
