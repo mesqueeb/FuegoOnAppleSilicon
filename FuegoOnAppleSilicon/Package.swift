@@ -23,7 +23,7 @@ let package = Package(
   targets: [
     .binaryTarget(
       name: "FuegoXCFramework",
-      url: "https://github.com/mesqueeb/FuegoOnAppleSilicon/releases/download/v0.3.2/Fuego-0.3.2.xcframework.zip",
+      url: "https://github.com/mesqueeb/FuegoOnAppleSilicon/releases/download/v0.3.3/Fuego-0.3.3.xcframework.zip",
       checksum: "94eda59dc7c819c4a9a69618d62232da410bda9b4576085ed25bce7bdc26bf2b"
     ),
     .target(
