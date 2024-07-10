@@ -4,7 +4,7 @@
 [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fmesqueeb%2FFuegoOnAppleSilicon%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/mesqueeb/FuegoOnAppleSilicon)
 
 ```
-.package(url: "https://github.com/mesqueeb/FuegoOnAppleSilicon", from: "0.3.1")
+.package(url: "https://github.com/mesqueeb/FuegoOnAppleSilicon", from: "0.3.2")
 ```
 
 Fuego On Apple Silicon is the Fuego C++ Go engine to play and analyse Go games. Built as multi-platform XCframework for iOS, macOS and visionOS. Wrapped as a modernised Swift Package that can be included in any Swift project and can build on all Apple platforms.
