@@ -13,7 +13,7 @@
 		F7F405F52C136983000DCDAD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F7F405F42C136983000DCDAD /* Preview Assets.xcassets */; };
 		F7F405FE2C136A47000DCDAD /* Fuego.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7F405FD2C136A47000DCDAD /* Fuego.xcframework */; };
 		F7F405FF2C136A48000DCDAD /* Fuego.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F7F405FD2C136A47000DCDAD /* Fuego.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		F7F406022C136A50000DCDAD /* FuegoTest.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7F406012C136A50000DCDAD /* FuegoTest.xcframework */; };
+		F7F406022C136A50000DCDAD /* FuegoTest.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7F406012C136A50000DCDAD /* FuegoTest.xcframework */; settings = {ATTRIBUTES = (Required, ); }; };
 		F7F406032C136A50000DCDAD /* FuegoTest.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F7F406012C136A50000DCDAD /* FuegoTest.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F7F406052C136B52000DCDAD /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F7F406042C136A61000DCDAD /* libc++.tbd */; };
 /* End PBXBuildFile section */
@@ -21,7 +21,7 @@
 /* Begin PBXCopyFilesBuildPhase section */
 		F7F406002C136A48000DCDAD /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 8;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
@@ -29,7 +29,7 @@
 				F7F405FF2C136A48000DCDAD /* Fuego.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
@@ -115,10 +115,10 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F7F405F82C136983000DCDAD /* Build configuration list for PBXNativeTarget "FuegoUnitTests" */;
 			buildPhases = (
+				F7F406002C136A48000DCDAD /* Embed Frameworks */,
 				F7F405E52C136982000DCDAD /* Sources */,
 				F7F405E62C136982000DCDAD /* Frameworks */,
 				F7F405E72C136982000DCDAD /* Resources */,
-				F7F406002C136A48000DCDAD /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -245,6 +245,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
 			};
 			name = Debug;
 		};
@@ -298,6 +299,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_VERSION = 6.0;
 			};
 			name = Release;
 		};
@@ -307,6 +309,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = FuegoUnitTests/FuegoUnitTests.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"FuegoUnitTests/Preview Content\"";
@@ -336,7 +339,6 @@
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "FuegoUnitTests/FuegoUnitTests-Bridging-Header.h";
-				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 			};
 			name = Debug;
@@ -347,6 +349,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = FuegoUnitTests/FuegoUnitTests.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"FuegoUnitTests/Preview Content\"";
@@ -376,7 +379,6 @@
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "FuegoUnitTests/FuegoUnitTests-Bridging-Header.h";
-				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 			};
 			name = Release;

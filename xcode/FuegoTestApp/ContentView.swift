@@ -80,7 +80,7 @@ struct ContentView: View {
     
   // current implementation using a callback function:
   func submitCommand() {
-    Task.detached {
+    Task {
       guard let fuegoBridge else { return }
       sentCommands.append(inputText.lowercased())
       do {

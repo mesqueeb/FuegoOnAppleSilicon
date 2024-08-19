@@ -1,4 +1,4 @@
-// swift-tools-version: 5.10
+// swift-tools-version: 6.0
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 // =================================================================
@@ -6,7 +6,6 @@
 // =================================================================
 
 import PackageDescription
-
 
 /// This `Package.swift` exists to be able to import the package in an Xcode project in the same repository.
 ///

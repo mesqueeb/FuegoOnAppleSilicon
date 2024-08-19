@@ -29,7 +29,7 @@ execSync(`cd ${PATH_BUILD} && zip -r ${zipFilename} ${frameworkName}`, { stdio: 
 
 const zipChecksum = execSync(`swift package compute-checksum ${zipFullPath}`).toString().trim()
 
-const manifestContent = `// swift-tools-version: 5.10
+const manifestContent = `// swift-tools-version: 6.0
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 // =================================================================

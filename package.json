@@ -3,7 +3,7 @@
   "version": "0.3.3",
   "type": "module",
   "scripts": {
-    "test": "swift test --enable-swift-testing",
+    "test": "swift test",
     "build": "./build-xcframework.sh",
     "release": "node ./node/release.js"
   },
