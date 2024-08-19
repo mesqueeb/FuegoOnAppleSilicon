@@ -7,6 +7,7 @@
 
 import PackageDescription
 
+
 /// This `Package.swift` exists to be able to import the package in an Xcode project in the same repository.
 ///
 /// Compared to the repository root `Package.swift`, everything is the same but the target paths.
@@ -22,8 +23,8 @@ let package = Package(
   targets: [
     .binaryTarget(
       name: "FuegoXCFramework",
-      url: "https://github.com/mesqueeb/FuegoOnAppleSilicon/releases/download/v0.3.3/Fuego-0.3.3.xcframework.zip",
-      checksum: "94eda59dc7c819c4a9a69618d62232da410bda9b4576085ed25bce7bdc26bf2b"
+      url: "https://github.com/mesqueeb/FuegoOnAppleSilicon/releases/download/v1.0.0/Fuego-1.0.0.xcframework.zip",
+      checksum: "d8bbdfb8a823147dae663e0bbc083fa90dc4031371e092326e6779da8efe97c3"
     ),
     .target(
       name: "FuegoCBridge",
