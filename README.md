@@ -22,11 +22,12 @@ It builds upon a fork of both the original [Fuego C++ code on Source Forge](http
 
 ## Installation Issues
 
-When installing the package via Xcode 14.x you might [run into the error:](https://stackoverflow.com/questions/76556005/swift-package-manager-failed-with-invalid-archive-returned-from-xy-which-is-req/78592676)
+When installing the package via Xcode 14.x you might run into the error:
 
 > invalid archive returned from https://github.com/...
 
-The fix is to remove the dependency again, quit Xcode, and execute:
+The fix (from [Stack Overflow](https://stackoverflow.com/questions/76556005/swift-package-manager-failed-with-invalid-archive-returned-from-xy-which-is-req/78592676)
+) is to remove the dependency, quit Xcode, and execute:
 
 ```bash
 rm -rf $HOME/Library/Caches/org.swift.swiftpm/
@@ -64,7 +65,7 @@ do {
 }
 ```
 
-The library comes with some useful types and helper functions, be sure to check out the [Swift wrapper's source code here](./FuegoOnAppleSilicon/SwiftBridge/)
+The library comes with some useful types and helper functions, be sure to check out the [Swift wrapper's source code here](./FuegoOnAppleSilicon/Sources/SwiftBridge)
 
 ### Sample Project
 
@@ -72,7 +73,7 @@ There is a sample Xcode project provided as part of the repo that you reference 
 
 ### Documentation
 
-See the [documentation](https://swiftpackageindex.com/mesqueeb/FuegoOnAppleSilicon/documentation/fuegoonapplesilicon) for more info.
+See the rendered [documentation on Swift Package Index](https://swiftpackageindex.com/mesqueeb/FuegoOnAppleSilicon/documentation/fuegoonapplesilicon) for more info.
 
 ## Development
 
