@@ -11,6 +11,9 @@
       location = "group:build">
    </FileRef>
    <FileRef
+      location = "group:FuegoOnAppleSilicon">
+   </FileRef>
+   <FileRef
       location = "group:node">
    </FileRef>
    <FileRef

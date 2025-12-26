@@ -24,7 +24,9 @@ func tileToGoBoardCoordinate(_ tile: TileIndexes) -> GoBoardCoordinate {
 func goBoardCoordinateToTileIndexes(_ coordinate: GoBoardCoordinate) -> TileIndexes {
   let ri = Int(coordinate.rawValue.dropFirst().prefix(2))! - 1
   let colChar = coordinate.rawValue.prefix(1).utf8.first!
-  let col = colChar > Character("I").utf8.first! ? Int(colChar - Character("A").utf8.first!) - 1 : Int(colChar - Character("A").utf8.first!)
+  let col =
+    colChar > Character("I").utf8.first!
+    ? Int(colChar - Character("A").utf8.first!) - 1 : Int(colChar - Character("A").utf8.first!)
   return TileIndexes(ri, col)
 }
 
@@ -66,11 +68,11 @@ func findGroup(
         group.append(contentsOf: nestedResults.group)
         if nestedResults.hasLiberty { hasLiberty = true }
       } else {
-        // black stone
+        // opponent stone - no liberty here
         continue
       }
     } else {
-      // no stone
+      // no stone - this is a liberty
       hasLiberty = true
     }
   }
@@ -79,7 +81,10 @@ func findGroup(
 }
 
 /// Given an array of Go Stones and their coordinates, determine the stones that are dead.
-public func determineDeadStones(board: [(GoStoneColor, GoBoardCoordinate)], lastStonePlaced: GoBoardCoordinate?) -> [(GoStoneColor, GoBoardCoordinate)] {
+public func determineDeadStones(
+  board: [(GoStoneColor, GoBoardCoordinate)],
+  lastStonePlaced: GoBoardCoordinate?
+) -> [(GoStoneColor, GoBoardCoordinate)] {
   // Initialize the board
   var boardState: BoardState = [:]
 

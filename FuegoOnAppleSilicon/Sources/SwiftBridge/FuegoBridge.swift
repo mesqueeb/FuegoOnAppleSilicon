@@ -90,8 +90,8 @@ public actor FuegoBridge {
 
 // MARK: - Common Commands
 
-public extension FuegoBridge {
-  func genmove(_ color: GoStoneColor) throws -> GenMoveResponse {
+extension FuegoBridge {
+  public func genmove(_ color: GoStoneColor) throws -> GenMoveResponse {
     guard let response = try self.submitCommand("genmove \(color)") else {
       return GenMoveResponse.Other(nil)
     }
@@ -101,27 +101,27 @@ public extension FuegoBridge {
     return GenMoveResponse.Coordinate(coordinate)
   }
 
-  func play(_ color: GoStoneColor, _ coordinate: GoBoardCoordinate) throws {
+  public func play(_ color: GoStoneColor, _ coordinate: GoBoardCoordinate) throws {
     try self.submitCommand("play \(color) \(coordinate.rawValue)")
   }
 
   /// Use this to clear the Go board
-  func clearboard() throws {
+  public func clearboard() throws {
     try self.submitCommand("clear_board")
   }
 
   /// Eg. boardsize(19)
-  func boardsize(_ size: Int) throws {
+  public func boardsize(_ size: Int) throws {
     try self.submitCommand("boardsize \(size)")
   }
 
   /// Eg. komi(6.5)
-  func komi(_ value: Float) throws {
+  public func komi(_ value: Float) throws {
     try self.submitCommand("komi \(value)")
   }
 
   /// Use this to clear the Go board
-  func showboard() throws -> String? {
+  public func showboard() throws -> String? {
     return try self.submitCommand("showboard")
   }
 }
