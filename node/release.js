@@ -1,31 +1,33 @@
-import { execSync } from 'node:child_process'
-import { writeFileSync } from 'node:fs'
-import { join, basename } from 'node:path'
-import { createRequire } from 'node:module'
-import semver from 'semver'
-import { replaceRegex } from 'replace-regex'
-import select from'@inquirer/select'
+import select from "@inquirer/select"
+import { execSync } from "node:child_process"
+import { writeFileSync } from "node:fs"
+import { createRequire } from "node:module"
+import { join, basename } from "node:path"
+import { replaceRegex } from "replace-regex"
+import semver from "semver"
 
 const require = createRequire(import.meta.url)
-const { version } = require('../package.json')
+const { version } = require("../package.json")
 
 const bump = await select({
-  message: 'Select the version bump:',
-  choices: ['patch','minor', 'major'].map((value) => ({ name: value, value })),
+  message: "Select the version bump:",
+  choices: ["patch", "minor", "major"].map((value) => ({ name: value, value })),
 })
 
 const PATH_ROOT = join(process.cwd())
-const PATH_BUILD = join(PATH_ROOT, './build')
+const PATH_BUILD = join(PATH_ROOT, "./build")
 
 const nextVersion = semver.inc(version, bump)
-const frameworkPath = join(PATH_BUILD, './Fuego.xcframework')
+const frameworkPath = join(PATH_BUILD, "./Fuego.xcframework")
 const zipFilename = `Fuego-${nextVersion}.xcframework.zip`
 const zipFullPath = join(PATH_BUILD, `./${zipFilename}`)
 
 // Change directory to the build folder to create the zip
 const frameworkName = basename(frameworkPath)
 
-execSync(`cd ${PATH_BUILD} && zip -r ${zipFilename} ${frameworkName}`, { stdio: 'inherit' })
+execSync(`cd ${PATH_BUILD} && zip -r ${zipFilename} ${frameworkName}`, {
+  stdio: "inherit",
+})
 
 const zipChecksum = execSync(`swift package compute-checksum ${zipFullPath}`).toString().trim()
 
@@ -73,26 +75,32 @@ let package = Package(
 `
 
 // Write the updated Package.swift
-writeFileSync(join(PATH_ROOT, 'Package.swift'), manifestContent)
+writeFileSync(join(PATH_ROOT, "Package.swift"), manifestContent)
 writeFileSync(
-  join(PATH_ROOT, '/FuegoOnAppleSilicon/Package.swift'),
-  manifestContent
-    .replaceAll('path: "FuegoOnAppleSilicon/', 'path: "')
-    .replace('let package = Package(', `
+  join(PATH_ROOT, "/FuegoOnAppleSilicon/Package.swift"),
+  manifestContent.replaceAll('path: "FuegoOnAppleSilicon/', 'path: "').replace(
+    "let package = Package(",
+    `
 /// This \`Package.swift\` exists to be able to import the package in an Xcode project in the same repository.
 ///
 /// Compared to the repository root \`Package.swift\`, everything is the same but the target paths.
-let package = Package(`)
+let package = Package(`,
+  ),
 )
 
-await replaceRegex({ 
-  files: join(PATH_ROOT, 'README.md'),
+await replaceRegex({
+  files: join(PATH_ROOT, "README.md"),
   from: /from: "\d+\.\d+\.\d+"/g,
   to: `from: "${nextVersion}"`,
 })
 
-execSync(`git add .`, { stdio: 'inherit' })
-execSync(`git commit -m "chore: 🎉 Release version ${nextVersion}"`, { stdio: 'inherit' })
+execSync(`git add .`, { stdio: "inherit" })
+execSync(`git commit -m "chore: 🎉 Release version ${nextVersion}"`, {
+  stdio: "inherit",
+})
 
 execSync(`np ${bump} --no-cleanup --no-tests --no-publish`)
 execSync(`open ${PATH_BUILD}`)
+execSync(
+  `echo "If all went well you should now see the browser open on the release notes, and finder with the built zip file. Drag the zip file to Github's Release Notes and publish the release."`,
+)
