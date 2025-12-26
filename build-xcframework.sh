@@ -19,11 +19,15 @@ if [ ! -d boost/include ]; then
 	if [ ! -d boost/$BOOST_NAME ]; then
 		
 		if [ ! -f boost/$BOOST_NAME.tar.bz2 ]; then
-			echo "### downloading https://boostorg.jfrog.io/artifactory/main/release/$BOOST_VER/source/$BOOST_NAME.tar.bz2 ..."
-			curl -L https://boostorg.jfrog.io/artifactory/main/release/$BOOST_VER/source/$BOOST_NAME.tar.bz2 -o boost/$BOOST_NAME.tar.bz2
+			echo "### downloading https://archives.boost.io/release/$BOOST_VER/source/$BOOST_NAME.tar.bz2 ..."
+			curl -fL https://archives.boost.io/release/$BOOST_VER/source/$BOOST_NAME.tar.bz2 -o boost/$BOOST_NAME.tar.bz2
 		fi
+		file boost/$BOOST_NAME.tar.bz2 | grep -q bzip2 || {
+		  echo "Boost download is not a bzip2 archive"
+		  exit 1
+		}
 		echo "### extracting $BOOST_NAME.tar.bz2 ..."
-		tar -xf boost/$BOOST_NAME.tar.bz2 -C boost
+		tar -xjf boost/$BOOST_NAME.tar.bz2 -C boost
 	fi
 	mkdir boost/include
 	cp -rf boost/$BOOST_NAME/boost boost/include
