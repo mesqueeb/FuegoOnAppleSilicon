@@ -55,6 +55,9 @@ func findGroup(
   for (rowDirection, colDirection) in directions {
     let nextRi = tile.ri + rowDirection
     let nextCi = tile.ci + colDirection
+
+    if !inBounds(nextRi, nextCi) { continue }
+
     let nextT = TileIndexes(nextRi, nextCi)
 
     if let nextColor = boardState[nextT] {

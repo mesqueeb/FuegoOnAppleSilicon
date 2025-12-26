@@ -42,9 +42,40 @@ import Testing
     (.black, .E5)
   ]
 
-  #expect(deadStones.count == expectedDeadStones.count, "The number of dead stones is not as expected.")
+  #expect(
+    deadStones.count == expectedDeadStones.count,
+    "The number of dead stones is not as expected."
+  )
   for deadStone in deadStones {
-    #expect(expectedDeadStones.contains(where: { $0 == deadStone }), "Unexpected dead stone found: \(deadStone)")
+    #expect(
+      expectedDeadStones.contains(where: { $0 == deadStone }),
+      "Unexpected dead stone found: \(deadStone)"
+    )
+  }
+}
+
+@Test func singleBlackStoneSurroundedByWhiteInCorner() {
+  let deadStones = determineDeadStones(
+    board: [
+      (.white, .A2) /*          */,
+      (.black, .A1), (.white, .B1),
+    ],
+    lastStonePlaced: .B1
+  )
+
+  let expectedDeadStones: [(GoStoneColor, GoBoardCoordinate)] = [
+    (.black, .A1)
+  ]
+
+  #expect(
+    deadStones.count == expectedDeadStones.count,
+    "The number of dead stones is not as expected."
+  )
+  for deadStone in deadStones {
+    #expect(
+      expectedDeadStones.contains(where: { $0 == deadStone }),
+      "Unexpected dead stone found: \(deadStone)"
+    )
   }
 }
 
