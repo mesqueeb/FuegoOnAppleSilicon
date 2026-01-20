@@ -55,7 +55,7 @@ public enum GoBoardCoordinate: String, CustomStringConvertible, Sendable {
   }
 
   /// Initialise from a provided col-row with 1-1 being the top left corner
-  init?(col: Int, row: Int, boardSize: Int) {
+  public init?(col: Int, row: Int, boardSize: Int) {
     let letters = Array("ABCDEFGHJKLMNOPQRST")
     guard boardSize <= letters.count,
       (1...boardSize).contains(col),
