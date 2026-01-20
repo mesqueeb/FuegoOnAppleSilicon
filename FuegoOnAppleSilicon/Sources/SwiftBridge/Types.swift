@@ -1,3 +1,31 @@
+// /// The Go Board Coordinates in SGF from aa until ss
+// public enum GoBoardCoordinateSGF: String, CustomStringConvertible, Sendable {
+//   case aa, ba, ca, da, ea, fa, ga, ha, ia, ja, ka, la, ma, na, oa, pa, qa, ra, sa,
+//     ab, bb, cb, db, eb, fb, gb, hb, ib, jb, kb, lb, mb, nb, ob, pb, qb, rb, sb,
+//     ac, bc, cc, dc, ec, fc, gc, hc, ic, jc, kc, lc, mc, nc, oc, pc, qc, rc, sc,
+//     ad, bd, cd, dd, ed, fd, gd, hd, id, jd, kd, ld, md, nd, od, pd, qd, rd, sd,
+//     ae, be, ce, de, ee, fe, ge, he, ie, je, ke, le, me, ne, oe, pe, qe, re, se,
+//     af, bf, cf, df, ef, ff, gf, hf, _if, jf, kf, lf, mf, nf, of, pf, qf, rf, sf,
+//     ag, bg, cg, dg, eg, fg, gg, hg, ig, jg, kg, lg, mg, ng, og, pg, qg, rg, sg,
+//     ah, bh, ch, dh, eh, fh, gh, hh, ih, jh, kh, lh, mh, nh, oh, ph, qh, rh, sh,
+//     ai, bi, ci, di, ei, fi, gi, hi, ii, ji, ki, li, mi, ni, oi, pi, qi, ri, si,
+//     aj, bj, cj, dj, ej, fj, gj, hj, ij, jj, kj, lj, mj, nj, oj, pj, qj, rj, sj,
+//     ak, bk, ck, dk, ek, fk, gk, hk, ik, jk, kk, lk, mk, nk, ok, pk, qk, rk, sk,
+//     al, bl, cl, dl, el, fl, gl, hl, il, jl, kl, ll, ml, nl, ol, pl, ql, rl, sl,
+//     am, bm, cm, dm, em, fm, gm, hm, im, jm, km, lm, mm, nm, om, pm, qm, rm, sm,
+//     an, bn, cn, dn, en, fn, gn, hn, _in, jn, kn, ln, mn, nn, on, pn, qn, rn, sn,
+//     ao, bo, co, _do, eo, fo, go, ho, io, jo, ko, lo, mo, no, oo, po, qo, ro, so,
+//     ap, bp, cp, dp, ep, fp, gp, hp, ip, jp, kp, lp, mp, np, op, pp, qp, rp, sp,
+//     aq, bq, cq, dq, eq, fq, gq, hq, iq, jq, kq, lq, mq, nq, oq, pq, qq, rq, sq,
+//     ar, br, cr, dr, er, fr, gr, hr, ir, jr, kr, lr, mr, nr, or, pr, qr, rr, sr,
+//     _as, bs, cs, ds, es, fs, gs, hs, _is, js, ks, ls, ms, ns, os, ps, qs, rs, ss
+
+//   /// The string used when this enum is interpolated
+//   public var description: String {
+//     return self.rawValue
+//   }
+// }
+
 /// The Go Board Coordinates from A1 until T19
 public enum GoBoardCoordinate: String, CustomStringConvertible, Sendable {
   case A19, B19, C19, D19, E19, F19, G19, H19, J19, K19, L19, M19, N19, O19, P19, Q19, R19, S19,
@@ -24,6 +52,20 @@ public enum GoBoardCoordinate: String, CustomStringConvertible, Sendable {
   /// The string used when this enum is interpolated
   public var description: String {
     return self.rawValue
+  }
+
+  /// Initialise from a provided col-row with 1-1 being the top left corner
+  init?(col: Int, row: Int, boardSize: Int) {
+    let letters = Array("ABCDEFGHJKLMNOPQRST")
+    guard boardSize <= letters.count,
+      (1...boardSize).contains(col),
+      (1...boardSize).contains(row)
+    else { return nil }
+    // Flip Y-axis: coordinates (top-left) → GoBoardCoordinate (bottom-left)
+    let flippedRow = boardSize + 1 - row
+    // Column letters, skipping I
+    let colChar = letters[col - 1]
+    self.init(rawValue: "\(colChar)\(flippedRow)")
   }
 }
 
