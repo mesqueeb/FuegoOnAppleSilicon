@@ -1,5 +1,3 @@
-let BOARDSIZE = 19
-
 /// `nil` when there's no stone, or the color
 typealias BoardState = [TileIndexes: GoStoneColor?]
 
@@ -31,20 +29,21 @@ func goBoardCoordinateToTileIndexes(_ coordinate: GoBoardCoordinate) -> TileInde
 }
 
 /// Helper function to check if a position is within bounds
-func inBounds(_ ri: Int, _ col: Int) -> Bool {
-  return ri >= 0 && ri < BOARDSIZE && col >= 0 && col < BOARDSIZE
+func inBounds(_ ri: Int, _ col: Int, boardSize: Int) -> Bool {
+  return ri >= 0 && ri < boardSize && col >= 0 && col < boardSize
 }
 
 /// Helper function to perform flood-fill and find connected groups
 func findGroup(
   _ tile: TileIndexes,
   _ boardState: BoardState,
-  visited: inout Set<TileIndexes>
+  visited: inout Set<TileIndexes>,
+  boardSize: Int
 ) -> (group: [TileIndexes], hasLiberty: Bool) {
   var group: [TileIndexes] = []
   var hasLiberty = false
 
-  if !inBounds(tile.ri, tile.ci) { return (group: group, hasLiberty: hasLiberty) }
+  if !inBounds(tile.ri, tile.ci, boardSize: boardSize) { return (group: group, hasLiberty: hasLiberty) }
   if visited.contains(tile) { return (group: group, hasLiberty: hasLiberty) }
 
   let directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
@@ -58,13 +57,13 @@ func findGroup(
     let nextRi = tile.ri + rowDirection
     let nextCi = tile.ci + colDirection
 
-    if !inBounds(nextRi, nextCi) { continue }
+    if !inBounds(nextRi, nextCi, boardSize: boardSize) { continue }
 
     let nextT = TileIndexes(nextRi, nextCi)
 
     if let nextColor = boardState[nextT] {
       if nextColor == tileColor {
-        let nestedResults = findGroup(nextT, boardState, visited: &visited)
+        let nestedResults = findGroup(nextT, boardState, visited: &visited, boardSize: boardSize)
         group.append(contentsOf: nestedResults.group)
         if nestedResults.hasLiberty { hasLiberty = true }
       } else {
@@ -83,7 +82,8 @@ func findGroup(
 /// Given an array of Go Stones and their coordinates, determine the stones that are dead.
 public func determineDeadStones(
   board: [(GoStoneColor, GoBoardCoordinate)],
-  lastStonePlaced: GoBoardCoordinate?
+  lastStonePlaced: GoBoardCoordinate?,
+  boardSize: Int
 ) -> [(GoStoneColor, GoBoardCoordinate)] {
   // Initialize the board
   var boardState: BoardState = [:]
@@ -100,7 +100,7 @@ public func determineDeadStones(
   // Traverse the board to find all groups and check their liberties
   for tile in boardState.keys {
     if !visited.contains(tile) {
-      let (tileGroup, hasLiberty) = findGroup(tile, boardState, visited: &visited)
+      let (tileGroup, hasLiberty) = findGroup(tile, boardState, visited: &visited, boardSize: boardSize)
       if !hasLiberty {
         dead.append(contentsOf: tileGroup)
       }

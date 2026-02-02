@@ -99,7 +99,8 @@ import Testing
       (.white, .D5), (.black, .E5), (.white, .F5),
       /*          */ (.white, .E6),
     ],
-    lastStonePlaced: .E6
+    lastStonePlaced: .E6,
+    boardSize: 19
   )
 
   let expectedDeadStones: [(GoStoneColor, GoBoardCoordinate)] = [
@@ -124,7 +125,8 @@ import Testing
       (.white, .A2) /*          */,
       (.black, .A1), (.white, .B1),
     ],
-    lastStonePlaced: .B1
+    lastStonePlaced: .B1,
+    boardSize: 19
   )
 
   let expectedDeadStones: [(GoStoneColor, GoBoardCoordinate)] = [
@@ -151,7 +153,8 @@ import Testing
       (.white, .D5), (.black, .E5), (.white, .F5),
       /*          */ (.white, .E6),
     ],
-    lastStonePlaced: .E6
+    lastStonePlaced: .E6,
+    boardSize: 19
   )
 
   let expectedDeadStones: [(GoStoneColor, GoBoardCoordinate)] = [
@@ -178,7 +181,8 @@ import Testing
       (.white, .C5), /*          */ (.black, .E5), (.white, .F5),
       /*          */ (.white, .D6), (.white, .E6),
     ],
-    lastStonePlaced: .E6
+    lastStonePlaced: .E6,
+    boardSize: 19
   )
 
   let expectedDeadStones: [(GoStoneColor, GoBoardCoordinate)] = []
@@ -198,7 +202,8 @@ import Testing
       (.white, .C6), (.black, .D6), (.black, .E6), (.black, .F6), (.white, .G6),
       /*          */ (.white, .D7), (.white, .E7), (.white, .F7),
     ],
-    lastStonePlaced: .E7
+    lastStonePlaced: .E7,
+    boardSize: 19
   )
 
   let expectedDeadStones: [(GoStoneColor, GoBoardCoordinate)] = []
@@ -218,7 +223,8 @@ import Testing
       (.white, .C6), (.black, .D6), (.black, .E6), (.black, .F6), (.white, .G6),
       /*          */ (.white, .D7), (.white, .E7), (.white, .F7),
     ],
-    lastStonePlaced: .E5
+    lastStonePlaced: .E5,
+    boardSize: 19
   )
 
   let expectedDeadStones: [(GoStoneColor, GoBoardCoordinate)] = [
