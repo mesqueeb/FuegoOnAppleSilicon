@@ -25,17 +25,17 @@ let package = Package(
     .target(
       name: "FuegoCBridge",
       dependencies: ["FuegoXCFramework"],
-      path: "FuegoOnAppleSilicon/Sources/CBridge"
+      path: "Sources/CBridge"
     ),
     .target(
       name: "FuegoOnAppleSilicon",
       dependencies: ["FuegoCBridge"],
-      path: "FuegoOnAppleSilicon/Sources/SwiftBridge"
+      path: "Sources/SwiftBridge"
     ),
     .testTarget(
       name: "FuegoOnAppleSiliconTests",
       dependencies: ["FuegoOnAppleSilicon"],
-      path: "FuegoOnAppleSilicon/Tests"
+      path: "Tests"
     ),
   ]
 )

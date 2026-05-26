@@ -65,11 +65,11 @@ do {
 }
 ```
 
-The library comes with some useful types and helper functions, be sure to check out the [Swift wrapper's source code here](./FuegoOnAppleSilicon/Sources/SwiftBridge)
+The library comes with some useful types and helper functions, be sure to check out the [Swift wrapper's source code here](./Sources/SwiftBridge)
 
 ### Sample Project
 
-There is a sample Xcode project provided as part of the repo that you reference here: [FuegoTestApp](./xcode/FuegoTestApp/)
+There is a sample Xcode project provided as part of the repo that you reference here: [FuegoTestApp](./Xcode/FuegoTestApp/)
 
 ### Documentation
 

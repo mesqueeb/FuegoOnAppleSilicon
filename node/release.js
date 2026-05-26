@@ -58,17 +58,17 @@ let package = Package(
     .target(
       name: "FuegoCBridge",
       dependencies: ["FuegoXCFramework"],
-      path: "FuegoOnAppleSilicon/Sources/CBridge"
+      path: "Sources/CBridge"
     ),
     .target(
       name: "FuegoOnAppleSilicon",
       dependencies: ["FuegoCBridge"],
-      path: "FuegoOnAppleSilicon/Sources/SwiftBridge"
+      path: "Sources/SwiftBridge"
     ),
     .testTarget(
       name: "FuegoOnAppleSiliconTests",
       dependencies: ["FuegoOnAppleSilicon"],
-      path: "FuegoOnAppleSilicon/Tests"
+      path: "Tests"
     ),
   ]
 )
@@ -76,17 +76,6 @@ let package = Package(
 
 // Write the updated Package.swift
 writeFileSync(join(PATH_ROOT, "Package.swift"), manifestContent)
-writeFileSync(
-  join(PATH_ROOT, "/FuegoOnAppleSilicon/Package.swift"),
-  manifestContent.replaceAll('path: "FuegoOnAppleSilicon/', 'path: "').replace(
-    "let package = Package(",
-    `
-/// This \`Package.swift\` exists to be able to import the package in an Xcode project in the same repository.
-///
-/// Compared to the repository root \`Package.swift\`, everything is the same but the target paths.
-let package = Package(`,
-  ),
-)
 
 await replaceRegex({
   files: join(PATH_ROOT, "README.md"),

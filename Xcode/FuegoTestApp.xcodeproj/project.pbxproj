@@ -122,7 +122,7 @@
 			);
 			mainGroup = F7A406002C13418E008FBC77;
 			packageReferences = (
-				F7239A8F2C3E2D89007B679F /* XCLocalSwiftPackageReference "../FuegoOnAppleSilicon" */,
+				F7239A8F2C3E2D89007B679F /* XCLocalSwiftPackageReference ".." */,
 			);
 			productRefGroup = F7A4060A2C13418E008FBC77 /* Products */;
 			projectDirPath = "";
@@ -386,9 +386,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		F7239A8F2C3E2D89007B679F /* XCLocalSwiftPackageReference "../FuegoOnAppleSilicon" */ = {
+		F7239A8F2C3E2D89007B679F /* XCLocalSwiftPackageReference ".." */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = ../FuegoOnAppleSilicon;
+			relativePath = ..;
 		};
 /* End XCLocalSwiftPackageReference section */
 
