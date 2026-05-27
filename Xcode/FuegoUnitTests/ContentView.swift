@@ -27,11 +27,8 @@ struct ContentView: View {
 
   var body: some View {
     VStack {
-      Button(action: runUnitTests) {
-        Text("Run Unit Tests")
-      }
-      Text("Result: \(resultText)")
-        .padding()
+      Button(action: runUnitTests) { Text("Run Unit Tests") }
+      Text("Result: \(resultText)").padding()
     }
     .padding()
   }

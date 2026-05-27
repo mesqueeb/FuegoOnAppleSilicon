@@ -2,18 +2,9 @@ import FuegoOnAppleSilicon
 import SwiftUI
 
 let testCommands = [
-  "boardsize 19",
-  "clear_board",
-  "komi 6.5",
-  "play b D4",
-  "showboard",
-  "genmove w",
-  "showboard",
-  "play b E4",
-  "showboard",
-  "genmove w",
-  "showboard",
-  // "set_free_handicap d16 q16 d4 q4",
+  "boardsize 19", "clear_board", "komi 6.5", "play b D4", "showboard", "genmove w", "showboard",
+  "play b E4", "showboard", "genmove w",
+  "showboard",// "set_free_handicap d16 q16 d4 q4",
   // "genmove w"
 ]
 
@@ -97,23 +88,16 @@ struct ContentView: View {
   var body: some View {
     VStack(spacing: 16) {
       if fuegoBridge == nil {
-        Button("Start Engine") { Task { await startEngine() } }
-          .padding()
-          .foregroundColor(.white)
-          .background(Color.blue)
-          .cornerRadius(10)
+        Button("Start Engine") { Task { await startEngine() } }.padding().foregroundColor(.white)
+          .background(Color.blue).cornerRadius(10)
       }
 
       if fuegoBridge != nil {
-        TextField("Enter text here", text: $inputText)
-          .textFieldStyle(RoundedBorderTextFieldStyle())
+        TextField("Enter text here", text: $inputText).textFieldStyle(RoundedBorderTextFieldStyle())
           .padding()
 
-        Button("Submit") { submitCommand() }
-          .padding()
-          .foregroundColor(.white)
-          .background(Color.blue)
-          .cornerRadius(10)
+        Button("Submit") { submitCommand() }.padding().foregroundColor(.white)
+          .background(Color.blue).cornerRadius(10)
 
         VStack {
           ForEach(Array(sentCommands.enumerated()), id: \.offset) { index, command in
@@ -125,11 +109,9 @@ struct ContentView: View {
 
         Text("Error: \(fuegoError)")
 
-        Button("Stop Engine") { Task { await stopEngine() } }
-          .padding()
+        Button("Stop Engine") { Task { await stopEngine() } }.padding()
       }
     }
-    .padding()
-    .onDisappear { Task { await stopEngine() } }
+    .padding().onDisappear { Task { await stopEngine() } }
   }
 }

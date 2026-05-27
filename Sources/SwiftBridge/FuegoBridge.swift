@@ -47,9 +47,7 @@ public actor FuegoBridge {
       return
     }
 
-    defer {
-      fuego_free_string(result.result)
-    }
+    defer { fuego_free_string(result.result) }
     throw FuegoBridgeError.unableToStart(self.handleCString(result.result) ?? "Unknown error")
   }
 
@@ -59,24 +57,18 @@ public actor FuegoBridge {
     self.cookie = nil
   }
 
-  @discardableResult
-  public func submitCommand(_ command: String) throws -> String? {
-    guard let cookie else {
-      throw FuegoBridgeError.notStarted
-    }
+  @discardableResult public func submitCommand(_ command: String) throws -> String? {
+    guard let cookie else { throw FuegoBridgeError.notStarted }
     let count = command.utf8.count
 
     let result = command.withCString { baseAddress in
       fuego_process_command(cookie, baseAddress, UInt64(count))
     }
-    defer {
-      fuego_free_string(result.result)
-    }
-    if result.success == 0 {
-      return self.handleCString(result.result)
-    } else {
+    defer { fuego_free_string(result.result) }
+    guard result.success == 0 else {
       throw FuegoBridgeError.commandError(self.handleCString(result.result) ?? "Unknown error")
     }
+    return self.handleCString(result.result)
   }
 
   private func handleCString(_ str: UnsafeRawPointer?) -> String? {
@@ -106,22 +98,14 @@ extension FuegoBridge {
   }
 
   /// Use this to clear the Go board
-  public func clearboard() throws {
-    try self.submitCommand("clear_board")
-  }
+  public func clearboard() throws { try self.submitCommand("clear_board") }
 
   /// Eg. boardsize(19)
-  public func boardsize(_ size: Int) throws {
-    try self.submitCommand("boardsize \(size)")
-  }
+  public func boardsize(_ size: Int) throws { try self.submitCommand("boardsize \(size)") }
 
   /// Eg. komi(6.5)
-  public func komi(_ value: Float) throws {
-    try self.submitCommand("komi \(value)")
-  }
+  public func komi(_ value: Float) throws { try self.submitCommand("komi \(value)") }
 
   /// Use this to clear the Go board
-  public func showboard() throws -> String? {
-    return try self.submitCommand("showboard")
-  }
+  public func showboard() throws -> String? { return try self.submitCommand("showboard") }
 }

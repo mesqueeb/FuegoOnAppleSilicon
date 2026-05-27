@@ -95,17 +95,14 @@ import Testing
 @Test func singleBlackStoneSurroundedByWhite() {
   let deadStones = determineDeadStones(
     board: [
-      /*          */ (.white, .E4),
-      (.white, .D5), (.black, .E5), (.white, .F5),
+      /*          */ (.white, .E4), (.white, .D5), (.black, .E5), (.white, .F5),
       /*          */ (.white, .E6),
     ],
     lastStonePlaced: .E6,
     boardSize: 19
   )
 
-  let expectedDeadStones: [(GoStoneColor, GoBoardCoordinate)] = [
-    (.black, .E5)
-  ]
+  let expectedDeadStones: [(GoStoneColor, GoBoardCoordinate)] = [(.black, .E5)]
 
   #expect(
     deadStones.count == expectedDeadStones.count,
@@ -121,17 +118,12 @@ import Testing
 
 @Test func singleBlackStoneSurroundedByWhiteInCorner() {
   let deadStones = determineDeadStones(
-    board: [
-      (.white, .A2) /*          */,
-      (.black, .A1), (.white, .B1),
-    ],
+    board: [(.white, .A2) /*          */, (.black, .A1), (.white, .B1)],
     lastStonePlaced: .B1,
     boardSize: 19
   )
 
-  let expectedDeadStones: [(GoStoneColor, GoBoardCoordinate)] = [
-    (.black, .A1)
-  ]
+  let expectedDeadStones: [(GoStoneColor, GoBoardCoordinate)] = [(.black, .A1)]
 
   #expect(
     deadStones.count == expectedDeadStones.count,
@@ -148,18 +140,14 @@ import Testing
 @Test func twoBlackStonesSurroundedByWhite() {
   let deadStones = determineDeadStones(
     board: [
-      /*          */ (.white, .E3),
-      (.white, .D4), (.black, .E4), (.white, .F4),
-      (.white, .D5), (.black, .E5), (.white, .F5),
-      /*          */ (.white, .E6),
+      /*          */ (.white, .E3), (.white, .D4), (.black, .E4), (.white, .F4), (.white, .D5),
+      (.black, .E5), (.white, .F5), /*          */ (.white, .E6),
     ],
     lastStonePlaced: .E6,
     boardSize: 19
   )
 
-  let expectedDeadStones: [(GoStoneColor, GoBoardCoordinate)] = [
-    (.black, .E4), (.black, .E5),
-  ]
+  let expectedDeadStones: [(GoStoneColor, GoBoardCoordinate)] = [(.black, .E4), (.black, .E5)]
 
   #expect(
     deadStones.count == expectedDeadStones.count,
@@ -176,9 +164,8 @@ import Testing
 @Test func threeBlackStonesWithOneFreeSpotSurroundedByWhite() {
   let deadStones = determineDeadStones(
     board: [
-      /*          */ (.white, .D3), (.white, .E3),
-      (.white, .C4), (.black, .D4), (.black, .E4), (.white, .F4),
-      (.white, .C5), /*          */ (.black, .E5), (.white, .F5),
+      /*          */ (.white, .D3), (.white, .E3), (.white, .C4), (.black, .D4), (.black, .E4),
+      (.white, .F4), (.white, .C5), /*          */ (.black, .E5), (.white, .F5),
       /*          */ (.white, .D6), (.white, .E6),
     ],
     lastStonePlaced: .E6,
@@ -196,11 +183,10 @@ import Testing
 @Test func blackStonesInCircleWithOneFreeSpotNotDead() {
   let deadStones = determineDeadStones(
     board: [
-      /*          */ (.white, .D3), (.white, .E3), (.white, .F3),
-      (.white, .C4), (.black, .D4), (.black, .E4), (.black, .F4), (.white, .G4),
-      (.white, .C5), (.black, .D5), /*          */ (.black, .F5), (.white, .G5),
-      (.white, .C6), (.black, .D6), (.black, .E6), (.black, .F6), (.white, .G6),
-      /*          */ (.white, .D7), (.white, .E7), (.white, .F7),
+      /*          */ (.white, .D3), (.white, .E3), (.white, .F3), (.white, .C4), (.black, .D4),
+      (.black, .E4), (.black, .F4), (.white, .G4), (.white, .C5), (.black, .D5), /*          */
+      (.black, .F5), (.white, .G5), (.white, .C6), (.black, .D6), (.black, .E6), (.black, .F6),
+      (.white, .G6), /*          */ (.white, .D7), (.white, .E7), (.white, .F7),
     ],
     lastStonePlaced: .E7,
     boardSize: 19
@@ -217,19 +203,17 @@ import Testing
 @Test func blackStonesInCircleWithOneWhiteStoneInMiddleDead() {
   let deadStones = determineDeadStones(
     board: [
-      /*          */ (.white, .D3), (.white, .E3), (.white, .F3),
-      (.white, .C4), (.black, .D4), (.black, .E4), (.black, .F4), (.white, .G4),
-      (.white, .C5), (.black, .D5), (.white, .E5), (.black, .F5), (.white, .G5),
-      (.white, .C6), (.black, .D6), (.black, .E6), (.black, .F6), (.white, .G6),
-      /*          */ (.white, .D7), (.white, .E7), (.white, .F7),
+      /*          */ (.white, .D3), (.white, .E3), (.white, .F3), (.white, .C4), (.black, .D4),
+      (.black, .E4), (.black, .F4), (.white, .G4), (.white, .C5), (.black, .D5), (.white, .E5),
+      (.black, .F5), (.white, .G5), (.white, .C6), (.black, .D6), (.black, .E6), (.black, .F6),
+      (.white, .G6), /*          */ (.white, .D7), (.white, .E7), (.white, .F7),
     ],
     lastStonePlaced: .E5,
     boardSize: 19
   )
 
   let expectedDeadStones: [(GoStoneColor, GoBoardCoordinate)] = [
-    (.black, .D4), (.black, .E4), (.black, .F4),
-    (.black, .D5), /*          */ (.black, .F5),
+    (.black, .D4), (.black, .E4), (.black, .F4), (.black, .D5), /*          */ (.black, .F5),
     (.black, .D6), (.black, .E6), (.black, .F6),
   ]
 

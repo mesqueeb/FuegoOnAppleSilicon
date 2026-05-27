@@ -11,22 +11,15 @@ let package = Package(
   name: "FuegoOnAppleSilicon",
   platforms: [.iOS(.v14), .macOS(.v13), .visionOS(.v1)],
   products: [
-    .library(
-      name: "FuegoOnAppleSilicon",
-      targets: ["FuegoOnAppleSilicon", "FuegoCBridge"]
-    ),
+    .library(name: "FuegoOnAppleSilicon", targets: ["FuegoOnAppleSilicon", "FuegoCBridge"])
   ],
   targets: [
     .binaryTarget(
       name: "FuegoXCFramework",
-      url: "https://github.com/mesqueeb/FuegoOnAppleSilicon/releases/download/v1.2.0/Fuego-1.2.0.xcframework.zip",
+      url:
+        "https://github.com/mesqueeb/FuegoOnAppleSilicon/releases/download/v1.2.0/Fuego-1.2.0.xcframework.zip",
       checksum: "a5f5844a4ce754e8360de76b01a9a20140fefe2eed85b1f44d69987d7c94c4f3"
-    ),
-    .target(
-      name: "FuegoCBridge",
-      dependencies: ["FuegoXCFramework"],
-      path: "Sources/CBridge"
-    ),
+    ), .target(name: "FuegoCBridge", dependencies: ["FuegoXCFramework"], path: "Sources/CBridge"),
     .target(
       name: "FuegoOnAppleSilicon",
       dependencies: ["FuegoCBridge"],

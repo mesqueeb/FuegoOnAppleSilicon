@@ -43,7 +43,9 @@ func findGroup(
   var group: [TileIndexes] = []
   var hasLiberty = false
 
-  if !inBounds(tile.ri, tile.ci, boardSize: boardSize) { return (group: group, hasLiberty: hasLiberty) }
+  if !inBounds(tile.ri, tile.ci, boardSize: boardSize) {
+    return (group: group, hasLiberty: hasLiberty)
+  }
   if visited.contains(tile) { return (group: group, hasLiberty: hasLiberty) }
 
   let directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
@@ -62,14 +64,13 @@ func findGroup(
     let nextT = TileIndexes(nextRi, nextCi)
 
     if let nextColor = boardState[nextT] {
-      if nextColor == tileColor {
-        let nestedResults = findGroup(nextT, boardState, visited: &visited, boardSize: boardSize)
-        group.append(contentsOf: nestedResults.group)
-        if nestedResults.hasLiberty { hasLiberty = true }
-      } else {
+      guard nextColor == tileColor else {
         // opponent stone - no liberty here
         continue
       }
+      let nestedResults = findGroup(nextT, boardState, visited: &visited, boardSize: boardSize)
+      group.append(contentsOf: nestedResults.group)
+      if nestedResults.hasLiberty { hasLiberty = true }
     } else {
       // no stone - this is a liberty
       hasLiberty = true
@@ -100,10 +101,13 @@ public func determineDeadStones(
   // Traverse the board to find all groups and check their liberties
   for tile in boardState.keys {
     if !visited.contains(tile) {
-      let (tileGroup, hasLiberty) = findGroup(tile, boardState, visited: &visited, boardSize: boardSize)
-      if !hasLiberty {
-        dead.append(contentsOf: tileGroup)
-      }
+      let (tileGroup, hasLiberty) = findGroup(
+        tile,
+        boardState,
+        visited: &visited,
+        boardSize: boardSize
+      )
+      if !hasLiberty { dead.append(contentsOf: tileGroup) }
     }
   }
 
