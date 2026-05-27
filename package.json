@@ -22,5 +22,6 @@
     "url": "https://github.com/mesqueeb/FuegoOnAppleSilicon.git"
   },
   "homepage": "https://github.com/mesqueeb/FuegoOnAppleSilicon#readme",
-  "bugs": "https://github.com/mesqueeb/FuegoOnAppleSilicon/issues"
+  "bugs": "https://github.com/mesqueeb/FuegoOnAppleSilicon/issues",
+  "packageManager": "pnpm@11.3.0"
 }
