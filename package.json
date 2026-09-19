@@ -12,7 +12,7 @@
   },
   "devDependencies": {
     "@inquirer/select": "^2.3.5",
-    "np": "^12.1.1",
+    "bumpp": "^12.3.0",
     "replace-regex": "^0.0.3",
     "semver": "^7.6.2"
   },

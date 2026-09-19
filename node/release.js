@@ -88,8 +88,8 @@ execSync(`git commit -m "chore: 🎉 Release version ${nextVersion}"`, {
   stdio: "inherit",
 })
 
-execSync(`np ${bump} --no-cleanup --no-tests --no-publish`)
-execSync(`open ${PATH_BUILD}`)
-execSync(
-  `echo "If all went well you should now see the browser open on the release notes, and finder with the built zip file. Drag the zip file to Github's Release Notes and publish the release."`,
-)
+execSync(`bumpp --release ${bump} --no-push --yes`, { stdio: "inherit" })
+execSync(`git push --follow-tags`, { stdio: "inherit" })
+// the zip is attached to the release so the binaryTarget url in Package.swift resolves right away
+execSync(`gh release create v${nextVersion} --generate-notes ${zipFullPath}`, { stdio: "inherit" })
+console.log(`Released v${nextVersion} with ${zipFilename} attached.`)
